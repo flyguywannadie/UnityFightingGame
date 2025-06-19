@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputBuffer : MonoBehaviour
 {
@@ -7,32 +9,101 @@ public class InputBuffer : MonoBehaviour
     [SerializeField] private Sprite[] directions;
 
     [SerializeField] private BaseCharacter myCharacter;
-    
-    [SerializeField] private List<BufferedInput> inputs = new List<BufferedInput>();
 
-    void Update()
+	[SerializeField] private List<BufferedInput> inputs;
+	//[SerializeField] private int inputIndex = 0;
+
+	public void Start()
+	{
+		ClearBuffer();
+		AddNewInput(new BufferedInput());
+	}
+
+	public void InputUpdate()
     {
-        int d = 4;
+		UpdateBuffer();
 
-        if (Input.GetKey(KeyCode.A))
-        {
-            d -= 1;
-        } 
-        if (Input.GetKey(KeyCode.S))
-        {
-            d -= 3;
-        }
-		if (Input.GetKey(KeyCode.D))
+		myCharacter.CharUpdate(inputs[0]);
+	}
+
+    private void UpdateBuffer()
+	{
+		int d = 4;
+		BufferedInput newInput = new BufferedInput();
+
+		if (IsKeyPressed(KeyCode.A))
 		{
-            d += 1;
+			d -= 1;
+			newInput.SetBack();
 		}
-		if (Input.GetKey(KeyCode.Space))
+		if (IsKeyPressed(KeyCode.S))
 		{
-            d += 3;
+			d -= 3;
+			newInput.SetDown();
+		}
+		if (IsKeyPressed(KeyCode.D))
+		{
+			d += 1;
+			newInput.SetForward();
+		}
+		if (IsKeyPressed(KeyCode.Space))
+		{
+			d += 3;
+			newInput.SetUp();
+		}
+		if (IsKeyPressed(KeyCode.U))
+		{
+			newInput.SetLight();
+		}
+		if (IsKeyPressed(KeyCode.I))
+		{
+			newInput.SetHeavy();
+		}
+		if (IsKeyPressed(KeyCode.O))
+		{
+			newInput.SetSpecial();
 		}
 
 		direction.sprite = directions[d];
 
-        myCharacter.CharUpdate();
+		if (newInput.inputFlag != inputs[0].inputFlag)
+		{
+			AddNewInput(newInput);
+			//SelectNextInput(newinputflag);
+		}
+
+		inputs[0].frames++;
+	}
+
+	//private void SelectNextInput(int newinputflag)
+	//{
+	//	inputIndex++;
+	//	if (inputIndex >= inputs.Length)
+	//	{
+	//		inputIndex = 0;
+	//	}
+
+	//	inputs[inputIndex].frames = 0;
+	//	inputs[inputIndex].inputFlag = newinputflag;
+	//}
+
+	private void AddNewInput(BufferedInput input)
+	{
+		inputs.Insert(0, input);
+		
+		if (inputs.Count >= 21)
+		{
+			inputs.RemoveAt(20);
+		}
+	}
+
+	private bool IsKeyPressed(KeyCode key)
+	{
+		return (Input.GetKey(key) || Input.GetKeyDown(key));
+	}
+
+	private void ClearBuffer()
+	{
+		inputs.Clear();
 	}
 }
