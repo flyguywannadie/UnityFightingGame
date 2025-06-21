@@ -67,7 +67,7 @@ public class BufferedInput
 
 	#region Input Movement Boolean Logic
 
-	public bool DoingNothing()
+	public bool NoDirection()
 	{
 		return inputFlag == 0;
 	}

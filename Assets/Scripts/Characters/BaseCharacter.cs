@@ -1,26 +1,27 @@
 using UnityEngine;
 
+public enum GenericStates
+{
+	IDLE = 0,
+	WALKING = 1,
+	BLOCKSTUN = 2,
+	HITSTUN = 3,
+	JUMP = 4,
+	INAIR = 5,
+	INAIRBLOCKSTUN = 6,
+	INAIRHITSTUN = 7,
+	INAIRKNOCKDOWNUP = 8,
+	INAIRKNOCKDOWNMID = 9,
+	INAIRKNOCKDOWNDOWN = 10,
+	KNOCKDOWN = 11,
+	ONGROUND = 12,
+	GETUP = 13,
+	CROUCH = 14,
+	BACKWALKING = 15,
+}
+
 public abstract class BaseCharacter : MonoBehaviour
 {
-	public enum GenericStates
-	{
-		IDLE = 0,
-		WALKING = 1,
-		BLOCKSTUN = 2,
-		HITSTUN = 3,
-		JUMP = 4,
-		INAIR = 5,
-		INAIRBLOCKSTUN = 6,
-		INAIRHITSTUN = 7,
-		INAIRKNOCKDOWNUP = 8,
-		INAIRKNOCKDOWNMID = 9,
-		INAIRKNOCKDOWNDOWN = 10,
-		KNOCKDOWN = 11,
-		ONGROUND = 12,
-		GETUP = 13,
-		CROUCH = 14,
-		BACKWALKING = 15,
-	}
 
 	[SerializeField] protected int speed = 5;
 	[SerializeField] protected int jumpPower = 5;
@@ -31,6 +32,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] protected Animator anims;
 	[SerializeField] protected bool inControl = true;
 	[SerializeField] protected bool onGround = true;
+	[SerializeField] protected int hitstun = 0;
 	[SerializeField] protected int knocked = 0;
 	[SerializeField] private Transform otherPerson;
 
@@ -46,7 +48,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	{
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
 
-		if (onGround)
+		if (onGround && inControl)
 		{
 			motion = Vector2.zero;
 			if (knocked > 0)
@@ -105,6 +107,11 @@ public abstract class BaseCharacter : MonoBehaviour
 	{
 		motion += new Vector2(0,jumpPower);
 		inControl = false;
+	}
+
+	public virtual void SetMotion(float x, float y)
+	{
+		motion = new Vector2(x, y);
 	}
 
 	public void SetStateFromAnimator(GenericStates state)

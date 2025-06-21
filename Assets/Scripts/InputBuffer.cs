@@ -51,15 +51,15 @@ public class InputBuffer : MonoBehaviour
 			d += 3;
 			newInput.SetUp();
 		}
-		if (IsKeyPressed(KeyCode.U))
+		if (Input.GetKeyDown(KeyCode.U))
 		{
 			newInput.SetLight();
 		}
-		if (IsKeyPressed(KeyCode.I))
+		if (Input.GetKeyDown(KeyCode.I))
 		{
 			newInput.SetHeavy();
 		}
-		if (IsKeyPressed(KeyCode.O))
+		if (Input.GetKeyDown(KeyCode.O))
 		{
 			newInput.SetSpecial();
 		}

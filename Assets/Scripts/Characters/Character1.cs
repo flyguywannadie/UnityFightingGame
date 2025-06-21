@@ -9,8 +9,12 @@ public class Character1 : BaseCharacter
         SPECIAL = 102
     }
 
+	bool blockingHigh = false;
+	bool blockingLow = false;
+
 	public override void CharUpdate(BufferedInput input)
 	{
+
 		if (onGround && knocked <= 0 && inControl)
 		{
 			if (AmIFacingBackward())
@@ -19,7 +23,7 @@ public class Character1 : BaseCharacter
 			}
 			Debug.Log(input.DownBack());
 
-			if (input.DoingNothing())
+			if (input.NoDirection())
 			{
 				SetState(GenericStates.IDLE);
 			}
@@ -66,34 +70,70 @@ public class Character1 : BaseCharacter
 
 			if (input.Heavy())
 			{
-				SetState(GenericStates.BLOCKSTUN);
+				inControl = false;
+				SetState((int)SpecificStates.HEAVY);
 			}
 
 			if (input.Special())
 			{
-				SetState(GenericStates.HITSTUN);
+				inControl = false;
+				SetState((int)SpecificStates.SPECIAL);
 			}
+
+
+			blockingHigh = input.Back() && !input.Down();
+			blockingLow = input.DownBack();
 		} 
-		else if (!onGround)
+		else if (!onGround && knocked <= 0)
 		{
-			if (input.Light())
+			if (input.NoDirection())
 			{
-				motion.y = 3;
-				knocked = 30;
-				SetState(GenericStates.INAIRKNOCKDOWNUP);
-			}
-
-			if (input.Heavy())
-			{
-				SetState(GenericStates.INAIRBLOCKSTUN);
-			}
-
-			if (input.Special())
-			{
-				SetState(GenericStates.INAIRHITSTUN);
+				SetState(GenericStates.INAIR);
 			}
 		}
 
+		if (Input.GetKeyDown(KeyCode.H))
+		{
+			GetHit(0, false, 30, 10, false);
+		}
+
+		if (Input.GetKeyDown(KeyCode.J))
+		{
+			GetHit(0, true, 30, 10, false);
+		}
+
 		base.CharUpdate(input);
+	}
+
+	public void GetHit(int damage, bool islow, int stun, int blockstun, bool knockdown)
+	{
+		if (islow)
+		{
+			if (blockingLow)
+			{
+				hitstun = blockstun;
+				SetState(GenericStates.BLOCKSTUN);
+			}
+			else
+			{
+				hitstun = stun;
+				SetState(GenericStates.HITSTUN);
+			}
+		} 
+		else
+		{
+			if (blockingHigh)
+			{
+				hitstun = blockstun;
+				SetState(GenericStates.BLOCKSTUN);
+			}
+			else
+			{
+				hitstun = stun;
+				SetState(GenericStates.HITSTUN);
+			}
+		}
+
+		// health - damage
 	}
 }
