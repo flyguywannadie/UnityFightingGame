@@ -16,6 +16,12 @@ public class MoveDefinition : ScriptableObject
         UPFORWARD
     }
 
+    public class MotionPiece
+    {
+        public Direction direction = Direction.FORWARD;
+        public int frameCount = -1;
+    }
+
     public string name = "New Move";
     public Direction[] motion;
 }
