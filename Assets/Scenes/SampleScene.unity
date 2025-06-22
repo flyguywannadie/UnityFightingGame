@@ -388,8 +388,11 @@ MonoBehaviour:
   anims: {fileID: 231097113}
   inControl: 1
   onGround: 1
+  hitstun: 0
   knocked: 0
   otherPerson: {fileID: 1017023371}
+  states:
+  - {fileID: 11400000, guid: ba59ec85af09ceb4aa88ee2751e42cc5, type: 2}
 --- !u!1 &463554546
 GameObject:
   m_ObjectHideFlags: 0

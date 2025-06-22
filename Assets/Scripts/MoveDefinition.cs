@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,12 +17,24 @@ public class MoveDefinition : ScriptableObject
         UPFORWARD
     }
 
+    public enum Button
+    {
+        NONE,
+        LIGHT,
+        HEAVY,
+        SPECIAL
+    }
+
+    [Serializable]
     public class MotionPiece
     {
         public Direction direction = Direction.FORWARD;
-        public int frameCount = -1;
+        public Button button = Button.NONE;
+        public int frameCount = 0;
     }
 
-    public string name = "New Move";
-    public Direction[] motion;
+    public string moveName = "New Move";
+    public Button action = Button.LIGHT;
+    public MotionPiece[] motion;
+    public int moveState;
 }
