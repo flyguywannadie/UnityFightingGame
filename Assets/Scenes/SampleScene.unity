@@ -393,6 +393,8 @@ MonoBehaviour:
   otherPerson: {fileID: 1017023371}
   states:
   - {fileID: 11400000, guid: ba59ec85af09ceb4aa88ee2751e42cc5, type: 2}
+  - {fileID: 11400000, guid: 325c41c2f56fe624a8bc311cf06ab9ff, type: 2}
+  stateIndex: 0
 --- !u!1 &463554546
 GameObject:
   m_ObjectHideFlags: 0

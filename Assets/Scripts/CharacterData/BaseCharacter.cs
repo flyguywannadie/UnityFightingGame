@@ -1,3 +1,4 @@
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -21,6 +22,13 @@ public enum CharacterSubStates
 	BACKWALKING = 15,
 }
 
+public enum CharacterState
+{
+	STANDING = 0,
+	CROUCHING = 1,
+	INAIR = 2,
+}
+
 public abstract class BaseCharacter : MonoBehaviour
 {
 	[SerializeField] protected int speed = 5;
@@ -36,6 +44,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] protected int knocked = 0;
 	[SerializeField] private Transform otherPerson;
 	[SerializeField] private BaseState[] states;
+	[SerializeField] private int stateIndex = 0;
 
 	public void Start()
 	{
@@ -54,17 +63,18 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 		myVisuals.flipX = faceBack;
 
-		states[0].StateUpdate(this, input);
+		states[stateIndex].StateUpdate(this, input);
+
+		states[stateIndex].HandleMovement(this, input);
 
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
-
-		motion.y -= 9.8f * Time.fixedDeltaTime;
-		if (motion.y <= 0.0f)
-		{
-			whoIMove.position.Set(whoIMove.position.x, 0, 0);
-			motion = Vector2.zero;
-			onGround = true;
-		}
+		//motion.y -= 9.8f * Time.fixedDeltaTime;
+		//if (motion.y <= 0.0f)
+		//{
+		//	whoIMove.position.Set(whoIMove.position.x, 0, 0);
+		//	motion = Vector2.zero;
+		//	onGround = true;
+		//}
 
 		//if (onGround && inControl)
 		//{
@@ -125,6 +135,13 @@ public abstract class BaseCharacter : MonoBehaviour
 		onGround = false;
 	}
 
+	public virtual void LandFromJump()
+	{
+		whoIMove.position.Set(whoIMove.position.x, 0, 0);
+		motion = Vector2.zero;
+		onGround = true;
+	}
+
 	public virtual void SetMotion(float x, float y)
 	{
 		motion = new Vector2(x, y);
@@ -147,6 +164,16 @@ public abstract class BaseCharacter : MonoBehaviour
 		{
 			inControl = true;
 		}
+	}
+
+	public void SetState(CharacterState state)
+	{
+		SetState((int)state);
+	}
+
+	public void SetState(int state)
+	{
+		stateIndex = state;
 	}
 
 	public virtual void GetHit(int damage, bool islow, int stun, int blockstun, bool knockdown)

@@ -11,6 +11,29 @@ public class State_Standing : BaseState
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
+		if (input.Down())
+		{
+			c.SetState(CharacterState.CROUCHING);
+		}
+	}
+
+	public override void HandleGettingHit(BaseCharacter c, BufferedInput input)
+	{
+		if (input.Back() && !input.Down())
+		{
+			//hitstun = blockstun;
+			c.SetSubState(CharacterSubStates.BLOCKSTUN);
+		}
+		else
+		{
+			//hitstun = stun;
+			c.SetSubState(CharacterSubStates.HITSTUN);
+		}
+	}
+
+	public override void HandleMovement(BaseCharacter c, BufferedInput input)
+	{
+		//throw new System.NotImplementedException();
 		if (input.Walking())
 		{
 			int usedSpeed = c.GetSpeed();
@@ -36,40 +59,5 @@ public class State_Standing : BaseState
 		{
 			c.SetMotion(0, 0);
 		}
-	}
-
-	public override void HandleGettingHit(BaseCharacter c, BufferedInput input)
-	{
-		//if (islow)
-		//{
-		//	if (blockingLow)
-		//	{
-		//		hitstun = blockstun;
-		//		SetSubState(CharacterSubStates.BLOCKSTUN);
-		//	}
-		//	else
-		//	{
-		//		hitstun = stun;
-		//		SetSubState(CharacterSubStates.HITSTUN);
-		//	}
-		//}
-		//else
-		//{
-		//	if (blockingHigh)
-		//	{
-		//		hitstun = blockstun;
-		//		SetSubState(CharacterSubStates.BLOCKSTUN);
-		//	}
-		//	else
-		//	{
-		//		hitstun = stun;
-		//		SetSubState(CharacterSubStates.HITSTUN);
-		//	}
-		//}
-	}
-
-	public override void HandleMovement(BaseCharacter c, BufferedInput input)
-	{
-		throw new System.NotImplementedException();
 	}
 }
