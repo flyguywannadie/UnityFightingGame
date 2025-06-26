@@ -15,19 +15,11 @@ public class State_Standing : BaseState
 		{
 			c.SetState(CharacterState.CROUCHING);
 		}
-	}
-
-	public override void HandleGettingHit(BaseCharacter c, BufferedInput input)
-	{
-		if (input.Back() && !input.Down())
+		if (input.Up())
 		{
-			//hitstun = blockstun;
-			c.SetSubState(CharacterSubStates.BLOCKSTUN);
-		}
-		else
-		{
-			//hitstun = stun;
-			c.SetSubState(CharacterSubStates.HITSTUN);
+			//c.SetState(CharacterState.INAIR);
+			//c.JumpAction();
+			c.SetSubState(CharacterSubStates.JUMP);
 		}
 	}
 
@@ -36,6 +28,7 @@ public class State_Standing : BaseState
 		//throw new System.NotImplementedException();
 		if (input.Walking())
 		{
+			c.SetSubState(CharacterSubStates.WALKING);
 			int usedSpeed = c.GetSpeed();
 
 			if (c.AmIFacingBackward())
@@ -46,18 +39,29 @@ public class State_Standing : BaseState
 			if (input.Back())
 			{
 				c.SetMotion(-usedSpeed, 0);
-				c.SetSubState(CharacterSubStates.BACKWALKING);
 			}
 
 			if (input.Forward())
 			{
 				c.SetMotion(usedSpeed, 0);
-				c.SetSubState(CharacterSubStates.WALKING);
 			}
 		}
 		else
 		{
 			c.SetMotion(0, 0);
+			c.SetSubState(CharacterSubStates.IDLE);
 		}
+	}
+
+	public override void HandleGettingHit(BaseCharacter c, BufferedInput input, bool low)
+	{
+		bool blocked = false;
+		if (input.Back() && !input.Down() && low)
+		{
+			//hitstun = blockstun;
+			blocked = true;
+		}
+
+		c.GetHit(0, 30, blocked);
 	}
 }

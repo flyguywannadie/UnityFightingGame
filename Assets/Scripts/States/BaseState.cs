@@ -6,7 +6,7 @@ public abstract class BaseState : ScriptableObject
 	[SerializeField] private MoveDefinition[] moves;
 
 	public abstract void StateUpdate(BaseCharacter c, BufferedInput input);
-	public abstract void HandleGettingHit(BaseCharacter c, BufferedInput input);
+	public abstract void HandleGettingHit(BaseCharacter c, BufferedInput input, bool low);
 	public abstract void HandleMovement(BaseCharacter c, BufferedInput input);
 
 	public MoveDefinition[] GetMoves()

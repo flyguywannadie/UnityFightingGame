@@ -10,16 +10,13 @@ public enum CharacterSubStates
 	HITSTUN = 3,
 	JUMP = 4,
 	INAIR = 5,
-	INAIRBLOCKSTUN = 6,
-	INAIRHITSTUN = 7,
-	INAIRKNOCKDOWNUP = 8,
-	INAIRKNOCKDOWNMID = 9,
-	INAIRKNOCKDOWNDOWN = 10,
-	KNOCKDOWN = 11,
-	ONGROUND = 12,
-	GETUP = 13,
-	CROUCH = 14,
-	BACKWALKING = 15,
+	INAIRKNOCKDOWNUP = 6,
+	INAIRKNOCKDOWNMID = 7,
+	INAIRKNOCKDOWNDOWN = 8,
+	KNOCKDOWN = 9,
+	ONGROUND = 10,
+	GETUP = 11,
+	CROUCH = 12,
 }
 
 public enum CharacterState
@@ -39,12 +36,13 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] protected SpriteRenderer myVisuals;
 	[SerializeField] protected Animator anims;
 	[SerializeField] protected bool inControl = true;
-	[SerializeField] protected bool onGround = true;
+	//[SerializeField] protected bool onGround = true;
 	[SerializeField] protected int hitstun = 0;
 	[SerializeField] protected int knocked = 0;
 	[SerializeField] private Transform otherPerson;
 	[SerializeField] private BaseState[] states;
 	[SerializeField] private int stateIndex = 0;
+	[SerializeField] private BufferedInput myLastInput;
 
 	public void Start()
 	{
@@ -61,13 +59,29 @@ public abstract class BaseCharacter : MonoBehaviour
 		{
 			input.FlipForwardBack();
 		}
-		myVisuals.flipX = faceBack;
+
+		if (hitstun > 0)
+		{
+			hitstun--;
+			SetAnimatorValues();
+			return;
+		}
+
+		if (IsOnGround())
+		{
+			myVisuals.flipX = faceBack;
+		}
 
 		states[stateIndex].StateUpdate(this, input);
 
 		states[stateIndex].HandleMovement(this, input);
 
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
+
+		SetAnimatorValues();
+
+		myLastInput = input;
+
 		//motion.y -= 9.8f * Time.fixedDeltaTime;
 		//if (motion.y <= 0.0f)
 		//{
@@ -125,26 +139,32 @@ public abstract class BaseCharacter : MonoBehaviour
 		//		}
 		//	}
 		//}
-
-		//anims.SetInteger("STATE", myState);
 	}
 
 	public virtual void JumpAction()
 	{
 		motion += new Vector2(0,jumpPower);
-		onGround = false;
 	}
 
 	public virtual void LandFromJump()
 	{
 		whoIMove.position.Set(whoIMove.position.x, 0, 0);
 		motion = Vector2.zero;
-		onGround = true;
+	}
+
+	public virtual bool IsOnGround()
+	{
+		return (whoIMove.position.y <= 0.0f);
 	}
 
 	public virtual void SetMotion(float x, float y)
 	{
 		motion = new Vector2(x, y);
+	}
+
+	public virtual void AddMotion(float x, float y)
+	{
+		motion += new Vector2(x, y);
 	}
 
 	public void SetSubStateFromAnimator(CharacterSubStates state)
@@ -176,11 +196,42 @@ public abstract class BaseCharacter : MonoBehaviour
 		stateIndex = state;
 	}
 
-	public virtual void GetHit(int damage, bool islow, int stun, int blockstun, bool knockdown)
+	public virtual void SetAnimatorValues()
 	{
-		//states[0].HandleGettingHit(this, CurrentPipelineHelpURLAttribute);
+		anims.SetInteger("State", stateIndex);
+		anims.SetInteger("SubState", myState);
+		if (AmIFacingBackward())
+		{
+			anims.SetFloat("XMotion", -motion.x);
+		} else
+		{
+			anims.SetFloat("XMotion", motion.x);
+		}
+		anims.SetFloat("YMotion", motion.y);
+		anims.SetInteger("Stun", hitstun);
+	}
 
+	public virtual void ProcessGettingHit(bool low)
+	{
+		states[stateIndex].HandleGettingHit(this, myLastInput, low);
+		SetAnimatorValues();
+	}
+
+	public virtual void GetHit(int damage, int stun, bool blocked)
+	{
+		//states[0].HandleGettingHit(this, input);
+
+		if (blocked)
+		{
+			SetSubState(CharacterSubStates.BLOCKSTUN);
+			stun = stun / 4;
+		}
+		else
+		{
+			SetSubState(CharacterSubStates.HITSTUN);
+		}
 		// health - damage
+		this.hitstun = stun;
 	}
 
 	public int GetSpeed()

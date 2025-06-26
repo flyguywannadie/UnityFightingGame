@@ -387,13 +387,13 @@ MonoBehaviour:
   myVisuals: {fileID: 231097112}
   anims: {fileID: 231097113}
   inControl: 1
-  onGround: 1
   hitstun: 0
   knocked: 0
   otherPerson: {fileID: 1017023371}
   states:
   - {fileID: 11400000, guid: ba59ec85af09ceb4aa88ee2751e42cc5, type: 2}
   - {fileID: 11400000, guid: 325c41c2f56fe624a8bc311cf06ab9ff, type: 2}
+  - {fileID: 11400000, guid: 58bf3042162975c479b767e035a07c99, type: 2}
   stateIndex: 0
 --- !u!1 &463554546
 GameObject:

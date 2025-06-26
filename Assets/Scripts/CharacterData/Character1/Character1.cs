@@ -9,8 +9,20 @@ public class Character1 : BaseCharacter
         SPECIAL = 102
     }
 
-	bool blockingHigh = false;
-	bool blockingLow = false;
+	public void LateUpdate()
+	{
+		if (Input.GetKeyDown(KeyCode.H))
+		{
+			//GetHit(0, false, 30, false);
+			ProcessGettingHit(true);
+		}
+
+		if (Input.GetKeyDown(KeyCode.J))
+		{
+			//GetHit(0, true, 30, 10, false);
+			ProcessGettingHit(false);
+		}
+	}
 
 	public override void CharUpdate(BufferedInput input)
 	{
@@ -64,16 +76,6 @@ public class Character1 : BaseCharacter
 		//		SetSubState(CharacterSubStates.INAIR);
 		//	}
 		//}
-
-		if (Input.GetKeyDown(KeyCode.H))
-		{
-			GetHit(0, false, 30, 10, false);
-		}
-
-		if (Input.GetKeyDown(KeyCode.J))
-		{
-			GetHit(0, true, 30, 10, false);
-		}
 
 		base.CharUpdate(input);
 	}
