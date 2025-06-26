@@ -35,7 +35,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] protected Transform whoIMove;
 	[SerializeField] protected SpriteRenderer myVisuals;
 	[SerializeField] protected Animator anims;
-	[SerializeField] protected bool inControl = true;
+	[SerializeField] protected bool inControl;
 	//[SerializeField] protected bool onGround = true;
 	[SerializeField] protected int hitstun = 0;
 	[SerializeField] protected int knocked = 0;
@@ -46,6 +46,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public void Start()
 	{
+		inControl = true;
 		if (whoIMove == null)
 		{
 			whoIMove = transform;
@@ -72,9 +73,12 @@ public abstract class BaseCharacter : MonoBehaviour
 			myVisuals.flipX = faceBack;
 		}
 
-		states[stateIndex].StateUpdate(this, input);
-
-		states[stateIndex].HandleMovement(this, input);
+		if (inControl)
+		{
+			states[stateIndex].StateUpdate(this, input);
+		}
+		
+		//states[stateIndex].HandleMovement(this, input);
 
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
 
@@ -141,12 +145,25 @@ public abstract class BaseCharacter : MonoBehaviour
 		//}
 	}
 
+	public virtual void LoseControl()
+	{
+		inControl = false;
+	}
+
+	public virtual void RegainControl()
+	{
+		inControl = true;
+	}
+
 	public virtual void JumpAction()
 	{
 		motion += new Vector2(0,jumpPower);
+		whoIMove.Translate(motion * Time.fixedDeltaTime);
+		SetSubState(CharacterSubStates.IDLE);
+		SetState(CharacterState.INAIR);
 	}
 
-	public virtual void LandFromJump()
+	public virtual void LandFromAir()
 	{
 		whoIMove.position.Set(whoIMove.position.x, 0, 0);
 		motion = Vector2.zero;
@@ -193,6 +210,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public void SetState(int state)
 	{
+		RegainControl();
 		stateIndex = state;
 	}
 
@@ -213,7 +231,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public virtual void ProcessGettingHit(bool low)
 	{
-		states[stateIndex].HandleGettingHit(this, myLastInput, low);
+		GetHit(0, 30, states[stateIndex].HandleGettingHit(myLastInput, low));
 		SetAnimatorValues();
 	}
 

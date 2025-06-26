@@ -30,7 +30,7 @@ public class MoveDefinition : ScriptableObject
     {
         public Direction direction = Direction.FORWARD;
         public Button button = Button.NONE;
-        public int frameCount = 0;
+        public int frameRequirement = 0;
     }
 
     public string moveName = "New Move";

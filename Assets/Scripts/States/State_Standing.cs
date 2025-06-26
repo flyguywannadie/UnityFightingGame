@@ -4,28 +4,13 @@ using UnityEngine;
 public class State_Standing : BaseState
 {
 
-	//public void SetState(BaseCharacter character, int val = 0)
-	//{
-	//	throw new System.NotImplementedException();
-	//}
+	public override bool HandleGettingHit(BufferedInput input, bool low)
+	{
+		return (input.Back() && !input.Down() && low);
+	}
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
-		if (input.Down())
-		{
-			c.SetState(CharacterState.CROUCHING);
-		}
-		if (input.Up())
-		{
-			//c.SetState(CharacterState.INAIR);
-			//c.JumpAction();
-			c.SetSubState(CharacterSubStates.JUMP);
-		}
-	}
-
-	public override void HandleMovement(BaseCharacter c, BufferedInput input)
-	{
-		//throw new System.NotImplementedException();
 		if (input.Walking())
 		{
 			c.SetSubState(CharacterSubStates.WALKING);
@@ -48,20 +33,20 @@ public class State_Standing : BaseState
 		}
 		else
 		{
-			c.SetMotion(0, 0);
 			c.SetSubState(CharacterSubStates.IDLE);
+			c.SetMotion(0, 0);
 		}
-	}
 
-	public override void HandleGettingHit(BaseCharacter c, BufferedInput input, bool low)
-	{
-		bool blocked = false;
-		if (input.Back() && !input.Down() && low)
+		if (input.Down())
 		{
-			//hitstun = blockstun;
-			blocked = true;
+			c.SetState(CharacterState.CROUCHING);
 		}
-
-		c.GetHit(0, 30, blocked);
+		else if (input.Up())
+		{
+			//c.SetState(CharacterState.INAIR);
+			//c.JumpAction();
+			c.SetSubState(CharacterSubStates.JUMP);
+			c.LoseControl();
+		}
 	}
 }

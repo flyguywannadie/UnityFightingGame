@@ -17,6 +17,11 @@ public class BufferedInput
 
 	#region Input Setters
 
+	public void Clear()
+	{
+		inputFlag = 0;
+	}
+
 	public void SetForward()
 	{
 		inputFlag |= FORWARD;
@@ -79,6 +84,11 @@ public class BufferedInput
 
 	public bool Forward()
 	{
+		return F() & !B();
+	}
+
+	private bool F()
+	{
 		return (inputFlag & FORWARD) == FORWARD;
 	}
 
@@ -88,6 +98,11 @@ public class BufferedInput
 	}
 
 	public bool Down()
+	{
+		return D() & !U();
+	}
+
+	private bool D()
 	{
 		return (inputFlag & DOWN) == DOWN;
 	}
@@ -99,6 +114,11 @@ public class BufferedInput
 
 	public bool Back()
 	{
+		return B() & !F();
+	}
+
+	private bool B()
+	{
 		return (inputFlag & BACK) == BACK;
 	}
 
@@ -108,6 +128,11 @@ public class BufferedInput
 	}
 
 	public bool Up()
+	{
+		return U() & !D();
+	}
+
+	private bool U()
 	{
 		return (inputFlag & UP) == UP;
 	}

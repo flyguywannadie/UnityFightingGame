@@ -3,25 +3,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Crouching State", menuName = "Scriptable Objects/States/Crouching")]
 public class State_Crouching : BaseState
 {
-	public override void HandleGettingHit(BaseCharacter c, BufferedInput input, bool low)
+	public override bool HandleGettingHit(BufferedInput input, bool low)
 	{
-		bool blocked = false;
-		if (input.DownBack() && low)
-		{
-			//hitstun = blockstun;
-			blocked = true;
-		}
-
-		c.GetHit(0, 30, blocked);
-	}
-
-	public override void HandleMovement(BaseCharacter c, BufferedInput input)
-	{
-		c.SetMotion(0, 0);
+		return (input.DownBack() && low);
 	}
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
+		c.SetMotion(0, 0);
 		if (!input.Down())
 		{
 			c.SetState(CharacterState.STANDING);
