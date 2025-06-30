@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708d93a153861124eb2aa81a47b21204, type: 3}
+  m_Name: Char1_Jump
+  m_EditorClassIdentifier: 
+  ID: 4
+  Data:
+  - duration: 6
+    sprite: {fileID: 21300000, guid: eec3480948cbdef44a773b00aecdaac9, type: 3}
+  - duration: 2
+    sprite: {fileID: 21300000, guid: 27df4e5a95399924d99d734c5ad7be1d, type: 3}
+  loop: 0
+  changeStateOnFinish: 1
+  endState: 2
+  Events:
+  - callFrame: 5
+    name: JumpAction
+  - callFrame: 7
+    name: GainControl
+  - callFrame: 7
+    name: GoAir

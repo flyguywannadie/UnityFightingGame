@@ -7,6 +7,7 @@ public abstract class BaseState : ScriptableObject
 
 	public abstract void StateUpdate(BaseCharacter c, BufferedInput input);
 	public abstract bool HandleGettingHit(BufferedInput input, bool low);
+	//public virtual void MovementOverride(BaseCharacter c, BufferedInput input) {}
 
 	public MoveDefinition[] GetMoves()
 	{

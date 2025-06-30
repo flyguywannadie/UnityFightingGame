@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 231097112}
   - component: {fileID: 231097113}
   - component: {fileID: 231097114}
+  - component: {fileID: 231097115}
   m_Layer: 0
   m_Name: Visuals
   m_TagString: Untagged
@@ -353,7 +354,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 231097110}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 53e3650333778b04e938298654d6289b, type: 2}
   m_CullingMode: 0
@@ -385,7 +386,7 @@ MonoBehaviour:
   motion: {x: 0, y: 0}
   whoIMove: {fileID: 52288768}
   myVisuals: {fileID: 231097112}
-  anims: {fileID: 231097113}
+  animator: {fileID: 231097115}
   inControl: 1
   hitstun: 0
   knocked: 0
@@ -395,6 +396,32 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 325c41c2f56fe624a8bc311cf06ab9ff, type: 2}
   - {fileID: 11400000, guid: 58bf3042162975c479b767e035a07c99, type: 2}
   stateIndex: 0
+  myLastInput:
+    inputFlag: 0
+    frames: 0
+  changeState: 0
+--- !u!114 &231097115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231097110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc9744068e6e36b4ca671383665e778a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentFrame: 0
+  visuals: {fileID: 231097112}
+  animations:
+  - {fileID: 11400000, guid: 2574b07b64138c44b96a8c5f402afa9d, type: 2}
+  - {fileID: 11400000, guid: 40b5753fdfb18824a988a045fcf9296b, type: 2}
+  - {fileID: 11400000, guid: 70f327962d412704a9d8d598c4e52a62, type: 2}
+  - {fileID: 11400000, guid: eec416d6e54b7ba4484a7862fda2ea43, type: 2}
+  - {fileID: 11400000, guid: 0e8a9c7e817ac6440ae33a8f6540ea68, type: 2}
+  - {fileID: 11400000, guid: 72076d9084c9b644ab5a317c95d943ba, type: 2}
+  currentAnimation: 0
 --- !u!1 &463554546
 GameObject:
   m_ObjectHideFlags: 0

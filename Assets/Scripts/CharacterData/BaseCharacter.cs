@@ -1,6 +1,7 @@
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Windows;
 
 public enum CharacterSubStates
 {
@@ -17,6 +18,7 @@ public enum CharacterSubStates
 	ONGROUND = 10,
 	GETUP = 11,
 	CROUCH = 12,
+	BACKWALKING = 13,
 }
 
 public enum CharacterState
@@ -34,7 +36,8 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] protected Vector2 motion;
 	[SerializeField] protected Transform whoIMove;
 	[SerializeField] protected SpriteRenderer myVisuals;
-	[SerializeField] protected Animator anims;
+	[SerializeField] protected CharacterAnimator animator;
+	//[SerializeField] protected Animation anims;
 	[SerializeField] protected bool inControl;
 	//[SerializeField] protected bool onGround = true;
 	[SerializeField] protected int hitstun = 0;
@@ -43,6 +46,8 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] private BaseState[] states;
 	[SerializeField] private int stateIndex = 0;
 	[SerializeField] private BufferedInput myLastInput;
+
+	public bool changeState;
 
 	public void Start()
 	{
@@ -61,88 +66,74 @@ public abstract class BaseCharacter : MonoBehaviour
 			input.FlipForwardBack();
 		}
 
+		bool newinput = (input.inputFlag != myLastInput.inputFlag);
+
 		if (hitstun > 0)
 		{
 			hitstun--;
-			SetAnimatorValues();
 			return;
 		}
 
-		if (IsOnGround())
+		bool currentlyGrounded = IsOnGround();
+		if (currentlyGrounded)
 		{
 			myVisuals.flipX = faceBack;
+		} else
+		{
+			if (stateIndex != (int)CharacterState.INAIR)
+			{
+				SetState(CharacterState.INAIR);
+			}
+
+			AddMotion(0, -9.8f * Time.fixedDeltaTime);
 		}
 
-		if (inControl)
+		animator.AnimatorUpdate(this);
+
+		if (inControl && newinput)
 		{
 			states[stateIndex].StateUpdate(this, input);
 		}
 		
-		//states[stateIndex].HandleMovement(this, input);
+		//states[stateIndex].MovementOverride(this, input);
 
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
+		if (!currentlyGrounded && IsOnGround())
+		{
+			if (input.Down())
+			{
+				SetState(CharacterState.CROUCHING);
+				SetSubState(CharacterSubStates.CROUCH);
+			}
+			else
+			{
+				SetState(CharacterState.STANDING);
+				SetSubState(CharacterSubStates.IDLE);
 
-		SetAnimatorValues();
+				int usedSpeed = GetSpeed();
+
+				if (AmIFacingBackward())
+				{
+					usedSpeed *= -1;
+				}
+
+				if (myLastInput.Back())
+				{
+					AddMotion(-usedSpeed, 0);
+					SetSubState(CharacterSubStates.BACKWALKING);
+				}
+
+				if (myLastInput.Forward())
+				{
+					AddMotion(usedSpeed, 0);
+					SetSubState(CharacterSubStates.WALKING);
+				}
+			}
+
+			LandFromAir();
+		}
 
 		myLastInput = input;
-
-		//motion.y -= 9.8f * Time.fixedDeltaTime;
-		//if (motion.y <= 0.0f)
-		//{
-		//	whoIMove.position.Set(whoIMove.position.x, 0, 0);
-		//	motion = Vector2.zero;
-		//	onGround = true;
-		//}
-
-		//if (onGround && inControl)
-		//{
-		//	motion = Vector2.zero;
-		//	if (knocked > 0)
-		//	{
-		//		knocked -= 1;
-		//		if (knocked <= 5)
-		//		{
-		//			SetState(GenericStates.GETUP);
-		//		}
-		//	}
-		//}
-		//else if (!inControl)
-		//{
-		//	motion.y -= 9.8f * Time.fixedDeltaTime;
-
-		//	if (knocked > 0)
-		//	{
-		//		if (motion.y > 1.0f)
-		//		{
-		//			SetState(GenericStates.INAIRKNOCKDOWNUP);
-		//		}
-		//		else if (motion.y < -1.0f)
-		//		{
-		//			SetState(GenericStates.INAIRKNOCKDOWNDOWN);
-		//		} else
-		//		{
-		//			SetState(GenericStates.INAIRKNOCKDOWNMID);
-		//		}
-
-		//		if (whoIMove.position.y <= 0)
-		//		{
-		//			whoIMove.position.Set(whoIMove.position.x, 0, 0);
-		//			motion = Vector2.zero;
-		//			onGround = true;
-		//			SetState(GenericStates.KNOCKDOWN);
-		//		}
-		//	} else
-		//	{
-		//		if (whoIMove.position.y <= 0)
-		//		{
-		//			whoIMove.position.Set(whoIMove.position.x, 0, 0);
-		//			motion = Vector2.zero;
-		//			onGround = true;
-		//			inControl = true;
-		//			SetState(GenericStates.IDLE);
-		//		}
-		//	}
-		//}
 	}
 
 	public virtual void LoseControl()
@@ -150,17 +141,37 @@ public abstract class BaseCharacter : MonoBehaviour
 		inControl = false;
 	}
 
-	public virtual void RegainControl()
+	public virtual void GainControl()
 	{
 		inControl = true;
 	}
 
 	public virtual void JumpAction()
 	{
-		motion += new Vector2(0,jumpPower);
+		AddMotion(0, jumpPower);
+		int usedSpeed = GetSpeed();
+
+		if (AmIFacingBackward())
+		{
+			usedSpeed *= -1;
+		}
+
+		if (myLastInput.Back())
+		{
+			AddMotion(-usedSpeed, 0);
+		}
+
+		if (myLastInput.Forward())
+		{
+			AddMotion(usedSpeed, 0);
+		}
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
-		SetSubState(CharacterSubStates.IDLE);
 		SetState(CharacterState.INAIR);
+	}
+
+	public virtual void GoAir()
+	{
+		SetSubState(CharacterSubStates.INAIR);
 	}
 
 	public virtual void LandFromAir()
@@ -186,7 +197,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public void SetSubStateFromAnimator(CharacterSubStates state)
 	{
-		SetSubState((int)state);
+		//SetSubState((int)state);
 	}
 
 	public void SetSubState(CharacterSubStates state)
@@ -197,10 +208,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	public void SetSubState(int state)
 	{
 		myState = state;
-		if (state == (int)CharacterSubStates.IDLE)
-		{
-			inControl = true;
-		}
+		animator.ChangeAnimationToID(state);
 	}
 
 	public void SetState(CharacterState state)
@@ -210,29 +218,13 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public void SetState(int state)
 	{
-		RegainControl();
 		stateIndex = state;
-	}
-
-	public virtual void SetAnimatorValues()
-	{
-		anims.SetInteger("State", stateIndex);
-		anims.SetInteger("SubState", myState);
-		if (AmIFacingBackward())
-		{
-			anims.SetFloat("XMotion", -motion.x);
-		} else
-		{
-			anims.SetFloat("XMotion", motion.x);
-		}
-		anims.SetFloat("YMotion", motion.y);
-		anims.SetInteger("Stun", hitstun);
+		myLastInput.Clear();
 	}
 
 	public virtual void ProcessGettingHit(bool low)
 	{
 		GetHit(0, 30, states[stateIndex].HandleGettingHit(myLastInput, low));
-		SetAnimatorValues();
 	}
 
 	public virtual void GetHit(int damage, int stun, bool blocked)

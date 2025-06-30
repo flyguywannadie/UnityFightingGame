@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Grounded State", menuName = "Scriptable Objects/States/Grounded")]
 public class State_Standing : BaseState
 {
-
 	public override bool HandleGettingHit(BufferedInput input, bool low)
 	{
 		return (input.Back() && !input.Down() && low);
@@ -13,7 +12,6 @@ public class State_Standing : BaseState
 	{
 		if (input.Walking())
 		{
-			c.SetSubState(CharacterSubStates.WALKING);
 			int usedSpeed = c.GetSpeed();
 
 			if (c.AmIFacingBackward())
@@ -24,11 +22,13 @@ public class State_Standing : BaseState
 			if (input.Back())
 			{
 				c.SetMotion(-usedSpeed, 0);
+				c.SetSubState(CharacterSubStates.BACKWALKING);
 			}
 
 			if (input.Forward())
 			{
 				c.SetMotion(usedSpeed, 0);
+				c.SetSubState(CharacterSubStates.WALKING);
 			}
 		}
 		else
@@ -40,13 +40,14 @@ public class State_Standing : BaseState
 		if (input.Down())
 		{
 			c.SetState(CharacterState.CROUCHING);
+			c.SetSubState(CharacterSubStates.CROUCH);
+			c.SetMotion(0, 0);
 		}
 		else if (input.Up())
 		{
-			//c.SetState(CharacterState.INAIR);
-			//c.JumpAction();
 			c.SetSubState(CharacterSubStates.JUMP);
 			c.LoseControl();
+			c.SetMotion(0, 0);
 		}
 	}
 }

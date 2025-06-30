@@ -10,33 +10,40 @@ public class State_Crouching : BaseState
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
-		c.SetMotion(0, 0);
 		if (!input.Down())
 		{
 			c.SetState(CharacterState.STANDING);
+			c.SetSubState(CharacterSubStates.IDLE);
+
+			int usedSpeed = c.GetSpeed();
+
+			if (c.AmIFacingBackward())
+			{
+				usedSpeed *= -1;
+			}
+
+			if (input.Back())
+			{
+				c.SetMotion(-usedSpeed, 0);
+				c.SetSubState(CharacterSubStates.BACKWALKING);
+			}
+
+			if (input.Forward())
+			{
+				c.SetMotion(usedSpeed, 0);
+				c.SetSubState(CharacterSubStates.WALKING);
+			}
+
 			if (input.Up())
 			{
-				c.SetState(CharacterState.INAIR);
-
-				int usedSpeed = c.GetSpeed();
-
-				if (c.AmIFacingBackward())
-				{
-					usedSpeed *= -1;
-				}
-
-				if (input.Back())
-				{
-					c.SetMotion(-usedSpeed, 0);
-				}
-
-				if (input.Forward())
-				{
-					c.SetMotion(usedSpeed, 0);
-				}
-
-				c.JumpAction();
+				c.SetSubState(CharacterSubStates.JUMP);
+				c.LoseControl();
+				c.SetMotion(0, 0);
 			}
+		}
+		else
+		{
+			c.SetSubState(CharacterSubStates.CROUCH);
 		}
 	}
 }

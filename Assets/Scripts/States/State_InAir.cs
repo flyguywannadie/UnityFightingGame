@@ -12,20 +12,6 @@ public class State_InAir : BaseState
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
-		c.AddMotion(0, -9.8f * Time.fixedDeltaTime);
 
-		if (c.IsOnGround())
-		{
-			if (input.Down())
-			{
-				c.SetState(CharacterState.CROUCHING);
-			}
-			else
-			{
-				c.SetState(CharacterState.STANDING);
-			}
-
-			c.LandFromAir();
-		}
 	}
 }
