@@ -23,12 +23,14 @@ public class State_Standing : BaseState
 			{
 				c.SetMotion(-usedSpeed, 0);
 				c.SetSubState(CharacterSubStates.BACKWALKING);
+				Debug.Log("Back");
 			}
 
 			if (input.Forward())
 			{
 				c.SetMotion(usedSpeed, 0);
 				c.SetSubState(CharacterSubStates.WALKING);
+				Debug.Log("Forward");
 			}
 		}
 		else

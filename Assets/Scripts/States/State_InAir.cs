@@ -12,6 +12,6 @@ public class State_InAir : BaseState
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
-
+		c.SetSubState(CharacterSubStates.INAIR);
 	}
 }

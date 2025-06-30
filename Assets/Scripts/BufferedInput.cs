@@ -59,13 +59,21 @@ public class BufferedInput
 
 	public void FlipForwardBack()
 	{
-		bool f = (inputFlag & FORWARD) == FORWARD;
-		bool b = (inputFlag & BACK) == BACK;
+		int inputcopy = inputFlag;
+
+		bool f = ((inputcopy & FORWARD) == FORWARD);
+		bool b = ((inputcopy & BACK) == BACK);
 
 		if (f^b)
 		{
 			inputFlag ^= (FORWARD | BACK);
 		}
+	}
+
+	public void CopyInput(BufferedInput input)
+	{
+		inputFlag = input.inputFlag;
+		frames = input.frames;
 	}
 
 	#endregion

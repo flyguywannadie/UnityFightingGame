@@ -44,7 +44,7 @@ public class CharacterAnimator : MonoBehaviour
 		CharacterAnimation anim = animations.Find(x => x.ID == id);
 		if (anim == null)
 		{
-			Debug.LogError("There is no animation of ID: " + id);
+			Debug.LogError("There is no animation of ID: " + id + " (" + ((CharacterSubStates)id).ToString() + ")");
 			return;
 		}
 		//Debug.Log("Test");

@@ -56,6 +56,7 @@ public abstract class BaseCharacter : MonoBehaviour
 		{
 			whoIMove = transform;
 		}
+		myLastInput = new BufferedInput();
 	}
 
 	public virtual void CharUpdate(BufferedInput input)
@@ -67,12 +68,7 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 
 		bool newinput = (input.inputFlag != myLastInput.inputFlag);
-
-		if (hitstun > 0)
-		{
-			hitstun--;
-			return;
-		}
+		myLastInput.CopyInput(input);
 
 		bool currentlyGrounded = IsOnGround();
 		if (currentlyGrounded)
@@ -88,19 +84,37 @@ public abstract class BaseCharacter : MonoBehaviour
 			AddMotion(0, -9.8f * Time.fixedDeltaTime);
 		}
 
-		animator.AnimatorUpdate(this);
+		if (hitstun > 0)
+		{
+			hitstun--;
+			MoveCharacter();
+			if (hitstun > 0)
+			{
+				animator.AnimatorUpdate(this);
+				return;
+			}
+			newinput = true;
+		}
 
 		if (inControl && newinput)
 		{
 			states[stateIndex].StateUpdate(this, input);
 		}
-		
+
+		animator.AnimatorUpdate(this);
+
 		//states[stateIndex].MovementOverride(this, input);
 
+		MoveCharacter();
+	}
+
+	protected virtual void MoveCharacter()
+	{
+		bool currentlyGrounded = IsOnGround();
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
 		if (!currentlyGrounded && IsOnGround())
 		{
-			if (input.Down())
+			if (myLastInput.Down())
 			{
 				SetState(CharacterState.CROUCHING);
 				SetSubState(CharacterSubStates.CROUCH);
@@ -109,31 +123,10 @@ public abstract class BaseCharacter : MonoBehaviour
 			{
 				SetState(CharacterState.STANDING);
 				SetSubState(CharacterSubStates.IDLE);
-
-				int usedSpeed = GetSpeed();
-
-				if (AmIFacingBackward())
-				{
-					usedSpeed *= -1;
-				}
-
-				if (myLastInput.Back())
-				{
-					AddMotion(-usedSpeed, 0);
-					SetSubState(CharacterSubStates.BACKWALKING);
-				}
-
-				if (myLastInput.Forward())
-				{
-					AddMotion(usedSpeed, 0);
-					SetSubState(CharacterSubStates.WALKING);
-				}
 			}
 
 			LandFromAir();
 		}
-
-		myLastInput = input;
 	}
 
 	public virtual void LoseControl()
@@ -177,7 +170,26 @@ public abstract class BaseCharacter : MonoBehaviour
 	public virtual void LandFromAir()
 	{
 		whoIMove.position.Set(whoIMove.position.x, 0, 0);
-		motion = Vector2.zero;
+		SetMotion(0, 0);
+
+		int usedSpeed = GetSpeed();
+
+		if (AmIFacingBackward())
+		{
+			usedSpeed *= -1;
+		}
+
+		if (myLastInput.Back())
+		{
+			AddMotion(-usedSpeed, 0);
+			SetSubState(CharacterSubStates.BACKWALKING);
+		}
+
+		if (myLastInput.Forward())
+		{
+			AddMotion(usedSpeed, 0);
+			SetSubState(CharacterSubStates.WALKING);
+		}
 	}
 
 	public virtual bool IsOnGround()

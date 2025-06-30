@@ -11,22 +11,25 @@ public class InputBuffer : MonoBehaviour
     [SerializeField] private BaseCharacter myCharacter;
 
 	[SerializeField] private List<BufferedInput> inputs;
+	private BufferedInput sentInput;
 	//[SerializeField] private int inputIndex = 0;
 
 	public void Start()
 	{
 		ClearBuffer();
 		AddNewInput(new BufferedInput());
+		sentInput = new BufferedInput();
 	}
 
 	public void InputUpdate()
     {
 		UpdateBuffer();
 
-		myCharacter.CharUpdate(inputs[0]);
+		sentInput.CopyInput(inputs[0]);
+		myCharacter.CharUpdate(sentInput);
 	}
 
-    private void UpdateBuffer()
+	private void UpdateBuffer()
 	{
 		int d = 4;
 		BufferedInput newInput = new BufferedInput();
