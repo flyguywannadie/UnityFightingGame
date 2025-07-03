@@ -1,12 +1,10 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using static Unity.Collections.AllocatorManager;
 
-public class State_InAir : BaseState
+public class State_NoAction : BaseState
 {
 	public override bool HandleGettingHit(BufferedInput input, bool low)
 	{
-		return (input.Back());
+		throw new System.NotImplementedException();
 	}
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
@@ -21,6 +19,6 @@ public class State_InAir : BaseState
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
-		c.SetSubState(CharacterSubStates.INAIR);
+		throw new System.NotImplementedException();
 	}
 }

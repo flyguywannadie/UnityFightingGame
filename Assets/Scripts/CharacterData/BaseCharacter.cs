@@ -25,7 +25,9 @@ public enum CharacterState
 {
 	STANDING = 0,
 	CROUCHING = 1,
-	INAIR = 2,
+	JUMP = 2,
+	INAIR = 3,
+	NOACTION = 4,
 }
 
 public abstract class BaseCharacter : MonoBehaviour
@@ -41,7 +43,6 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] protected bool inControl;
 	//[SerializeField] protected bool onGround = true;
 	[SerializeField] protected int hitstun = 0;
-	[SerializeField] protected int knocked = 0;
 	[SerializeField] private Transform otherPerson;
 	[SerializeField] private BaseState[] states;
 	[SerializeField] private int stateIndex = 0;
@@ -57,6 +58,15 @@ public abstract class BaseCharacter : MonoBehaviour
 			whoIMove = transform;
 		}
 		myLastInput = new BufferedInput();
+
+		states = new BaseState[]
+		{
+			new State_Standing(),
+			new State_Crouching(),
+			new State_JumpCrouch(),
+			new State_InAir(),
+			new State_NoAction(),
+		};
 	}
 
 	public virtual void CharUpdate(BufferedInput input)
@@ -236,7 +246,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public virtual void ProcessGettingHit(bool low)
 	{
-		GetHit(0, 30, states[stateIndex].HandleGettingHit(myLastInput, low));
+		//GetHit(0, 30, states[stateIndex].HandleGettingHit(myLastInput, low));
 	}
 
 	public virtual void GetHit(int damage, int stun, bool blocked)

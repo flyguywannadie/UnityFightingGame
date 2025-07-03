@@ -1,11 +1,20 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Crouching State", menuName = "Scriptable Objects/States/Crouching")]
 public class State_Crouching : BaseState
 {
 	public override bool HandleGettingHit(BufferedInput input, bool low)
 	{
 		return (input.DownBack() && low);
+	}
+
+	public override void OnEnterState(BaseCharacter c, BufferedInput input)
+	{
+		throw new System.NotImplementedException();
+	}
+
+	public override void OnExitState(BaseCharacter c, BufferedInput input)
+	{
+		throw new System.NotImplementedException();
 	}
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)

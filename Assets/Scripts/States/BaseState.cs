@@ -1,16 +1,11 @@
 using UnityEngine;
 
-public abstract class BaseState : ScriptableObject
+public abstract class BaseState
 {
 	//void SetState(BaseCharacter character, int val = 0);
-	[SerializeField] private MoveDefinition[] moves;
-
+	public abstract void OnEnterState(BaseCharacter c, BufferedInput input);
 	public abstract void StateUpdate(BaseCharacter c, BufferedInput input);
+	public abstract void OnExitState(BaseCharacter c, BufferedInput input);
 	public abstract bool HandleGettingHit(BufferedInput input, bool low);
 	//public virtual void MovementOverride(BaseCharacter c, BufferedInput input) {}
-
-	public MoveDefinition[] GetMoves()
-	{
-		return moves;
-	}
 }
