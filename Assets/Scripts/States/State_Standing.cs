@@ -9,56 +9,73 @@ public class State_Standing : BaseState
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
-		throw new System.NotImplementedException();
+		c.SetMotion(0,0);
+		c.SetAnimation(CommonAnimations.IDLE);
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)
 	{
-		throw new System.NotImplementedException();
+
 	}
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
-		if (input.Walking())
+		if (input.Up())
 		{
-			int usedSpeed = c.GetSpeed();
-
-			if (c.AmIFacingBackward())
-			{
-				usedSpeed *= -1;
-			}
-
-			if (input.Back())
-			{
-				c.SetMotion(-usedSpeed, 0);
-				c.SetSubState(CharacterSubStates.BACKWALKING);
-				Debug.Log("Back");
-			}
-
-			if (input.Forward())
-			{
-				c.SetMotion(usedSpeed, 0);
-				c.SetSubState(CharacterSubStates.WALKING);
-				Debug.Log("Forward");
-			}
-		}
-		else
-		{
-			c.SetSubState(CharacterSubStates.IDLE);
-			c.SetMotion(0, 0);
+			c.SetState(CharacterState.JUMP);
+			return;
 		}
 
 		if (input.Down())
 		{
 			c.SetState(CharacterState.CROUCHING);
-			c.SetSubState(CharacterSubStates.CROUCH);
-			c.SetMotion(0, 0);
+			return;
 		}
-		else if (input.Up())
+
+		if (input.Walking())
 		{
-			c.SetSubState(CharacterSubStates.JUMP);
-			c.LoseControl();
-			c.SetMotion(0, 0);
+			c.SetState(CharacterState.WALKING);
+			return;
 		}
+
+		//if (input.Walking())
+		//{
+		//	int usedSpeed = c.GetSpeed();
+
+		//	if (c.AmIFacingBackward())
+		//	{
+		//		usedSpeed *= -1;
+		//	}
+
+		//	if (input.Back())
+		//	{
+		//		c.SetMotion(-usedSpeed, 0);
+		//		c.SetSubState(CharacterSubStates.BACKWALKING);
+		//	}
+
+		//	if (input.Forward())
+		//	{
+		//		c.SetMotion(usedSpeed, 0);
+		//		c.SetSubState(CharacterSubStates.WALKING);
+		//	}
+		//}
+		//else
+		//{
+		//	c.SetSubState(CharacterSubStates.IDLE);
+		//	c.SetMotion(0, 0);
+		//}
+
+		//if (input.Down())
+		//{
+		//	c.SetState(CharacterState.CROUCHING);
+		//	c.SetSubState(CharacterSubStates.CROUCH);
+		//	c.SetMotion(0, 0);
+		//}
+		//else if (input.Up())
+		//{
+		//	c.SetSubState(CharacterSubStates.JUMP);
+		//	c.LoseControl();
+		//	c.SetMotion(0, 0);
+		//}
 	}
 }

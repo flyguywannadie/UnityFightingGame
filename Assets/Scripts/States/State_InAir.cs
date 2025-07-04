@@ -11,16 +11,29 @@ public class State_InAir : BaseState
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
-		throw new System.NotImplementedException();
+		c.SetAnimation(CommonAnimations.INAIR);
+		int usedSpeed = c.GetSpeed();
+		if (c.AmIFacingBackward())
+		{
+			usedSpeed *= -1;
+		}
+		if (input.Back())
+		{
+			c.AddMotion(-usedSpeed, 0);
+		}
+		if (input.Forward())
+		{
+			c.AddMotion(usedSpeed, 0);
+		}
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)
 	{
-		throw new System.NotImplementedException();
+
 	}
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
-		c.SetSubState(CharacterSubStates.INAIR);
+		
 	}
 }

@@ -23,7 +23,7 @@ public class CharacterAnimation : ScriptableObject
     public FrameData[] Data;
     public bool loop = true;
     public bool changeStateOnFinish = false;
-    public int endState;
+    public CharacterState endState;
     public List<AnimEvent> Events;
 
     public Sprite GetCurrentSprite(int frame)

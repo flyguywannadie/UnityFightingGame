@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Windows;
 
-public enum CharacterSubStates
+public enum CommonAnimations
 {
 	IDLE = 0,
 	WALKING = 1,
@@ -24,10 +24,11 @@ public enum CharacterSubStates
 public enum CharacterState
 {
 	STANDING = 0,
-	CROUCHING = 1,
-	JUMP = 2,
-	INAIR = 3,
-	NOACTION = 4,
+	WALKING = 1,
+	CROUCHING = 2,
+	JUMP = 3,
+	INAIR = 4,
+	NOACTION = 5,
 }
 
 public abstract class BaseCharacter : MonoBehaviour
@@ -46,9 +47,8 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] private Transform otherPerson;
 	[SerializeField] private BaseState[] states;
 	[SerializeField] private int stateIndex = 0;
+	[SerializeField] private int queuedState = 0;
 	[SerializeField] private BufferedInput myLastInput;
-
-	public bool changeState;
 
 	public void Start()
 	{
@@ -62,6 +62,7 @@ public abstract class BaseCharacter : MonoBehaviour
 		states = new BaseState[]
 		{
 			new State_Standing(),
+			new State_Walking(),
 			new State_Crouching(),
 			new State_JumpCrouch(),
 			new State_InAir(),
@@ -77,20 +78,15 @@ public abstract class BaseCharacter : MonoBehaviour
 			input.FlipForwardBack();
 		}
 
-		bool newinput = (input.inputFlag != myLastInput.inputFlag);
 		myLastInput.CopyInput(input);
 
 		bool currentlyGrounded = IsOnGround();
 		if (currentlyGrounded)
 		{
 			myVisuals.flipX = faceBack;
-		} else
+		}
+		else
 		{
-			if (stateIndex != (int)CharacterState.INAIR)
-			{
-				SetState(CharacterState.INAIR);
-			}
-
 			AddMotion(0, -9.8f * Time.fixedDeltaTime);
 		}
 
@@ -103,10 +99,9 @@ public abstract class BaseCharacter : MonoBehaviour
 				animator.AnimatorUpdate(this);
 				return;
 			}
-			newinput = true;
 		}
 
-		if (inControl && newinput)
+		if (inControl)
 		{
 			states[stateIndex].StateUpdate(this, input);
 		}
@@ -116,6 +111,11 @@ public abstract class BaseCharacter : MonoBehaviour
 		//states[stateIndex].MovementOverride(this, input);
 
 		MoveCharacter();
+
+		if (queuedState != stateIndex)
+		{
+			ChangeState();
+		}
 	}
 
 	protected virtual void MoveCharacter()
@@ -127,12 +127,10 @@ public abstract class BaseCharacter : MonoBehaviour
 			if (myLastInput.Down())
 			{
 				SetState(CharacterState.CROUCHING);
-				SetSubState(CharacterSubStates.CROUCH);
 			}
 			else
 			{
 				SetState(CharacterState.STANDING);
-				SetSubState(CharacterSubStates.IDLE);
 			}
 
 			LandFromAir();
@@ -152,29 +150,8 @@ public abstract class BaseCharacter : MonoBehaviour
 	public virtual void JumpAction()
 	{
 		AddMotion(0, jumpPower);
-		int usedSpeed = GetSpeed();
-
-		if (AmIFacingBackward())
-		{
-			usedSpeed *= -1;
-		}
-
-		if (myLastInput.Back())
-		{
-			AddMotion(-usedSpeed, 0);
-		}
-
-		if (myLastInput.Forward())
-		{
-			AddMotion(usedSpeed, 0);
-		}
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
 		SetState(CharacterState.INAIR);
-	}
-
-	public virtual void GoAir()
-	{
-		SetSubState(CharacterSubStates.INAIR);
 	}
 
 	public virtual void LandFromAir()
@@ -192,13 +169,13 @@ public abstract class BaseCharacter : MonoBehaviour
 		if (myLastInput.Back())
 		{
 			AddMotion(-usedSpeed, 0);
-			SetSubState(CharacterSubStates.BACKWALKING);
+			SetAnimation(CommonAnimations.BACKWALKING);
 		}
 
 		if (myLastInput.Forward())
 		{
 			AddMotion(usedSpeed, 0);
-			SetSubState(CharacterSubStates.WALKING);
+			SetAnimation(CommonAnimations.WALKING);
 		}
 	}
 
@@ -217,20 +194,18 @@ public abstract class BaseCharacter : MonoBehaviour
 		motion += new Vector2(x, y);
 	}
 
-	public void SetSubStateFromAnimator(CharacterSubStates state)
+	public void SetAnimation(CommonAnimations animID)
 	{
-		//SetSubState((int)state);
+		SetAnimation((int)animID);
 	}
 
-	public void SetSubState(CharacterSubStates state)
+	public void SetAnimation(int animID)
 	{
-		SetSubState((int)state);
-	}
-
-	public void SetSubState(int state)
-	{
-		myState = state;
-		animator.ChangeAnimationToID(state);
+		if (animator.GetCurrentAnimationID() == animID)
+		{
+			return;
+		}
+		animator.ChangeAnimationToID(animID);
 	}
 
 	public void SetState(CharacterState state)
@@ -240,8 +215,14 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public void SetState(int state)
 	{
-		stateIndex = state;
-		myLastInput.Clear();
+		queuedState = state;
+	}
+
+	private void ChangeState()
+	{
+		states[stateIndex].OnExitState(this, myLastInput);
+		stateIndex = queuedState;
+		states[stateIndex].OnEnterState(this, myLastInput);
 	}
 
 	public virtual void ProcessGettingHit(bool low)
@@ -255,12 +236,12 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		if (blocked)
 		{
-			SetSubState(CharacterSubStates.BLOCKSTUN);
+			SetAnimation(CommonAnimations.BLOCKSTUN);
 			stun = stun / 4;
 		}
 		else
 		{
-			SetSubState(CharacterSubStates.HITSTUN);
+			SetAnimation(CommonAnimations.HITSTUN);
 		}
 		// health - damage
 		this.hitstun = stun;
