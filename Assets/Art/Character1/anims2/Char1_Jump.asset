@@ -20,11 +20,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 27df4e5a95399924d99d734c5ad7be1d, type: 3}
   loop: 0
   changeStateOnFinish: 1
-  endState: 2
+  endState: 4
   Events:
-  - callFrame: 5
+  - callFrame: 7
     name: JumpAction
-  - callFrame: 7
-    name: GainControl
-  - callFrame: 7
-    name: GoAir

@@ -28,7 +28,8 @@ public enum CharacterState
 	CROUCHING = 2,
 	JUMP = 3,
 	INAIR = 4,
-	NOACTION = 5,
+	ATTACK = 5,
+	NOACTION = 6,
 }
 
 public abstract class BaseCharacter : MonoBehaviour
@@ -49,6 +50,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] private int stateIndex = 0;
 	[SerializeField] private int queuedState = 0;
 	[SerializeField] private BufferedInput myLastInput;
+	[SerializeField] private MoveDefinition[] moves;
 
 	public void Start()
 	{
@@ -66,6 +68,7 @@ public abstract class BaseCharacter : MonoBehaviour
 			new State_Crouching(),
 			new State_JumpCrouch(),
 			new State_InAir(),
+			new State_Attack(),
 			new State_NoAction(),
 		};
 	}
@@ -88,16 +91,10 @@ public abstract class BaseCharacter : MonoBehaviour
 		else
 		{
 			AddMotion(0, -9.8f * Time.fixedDeltaTime);
-		}
-
-		if (hitstun > 0)
-		{
-			hitstun--;
-			MoveCharacter();
-			if (hitstun > 0)
+			if (!(stateIndex == (int)CharacterState.INAIR))
 			{
-				animator.AnimatorUpdate(this);
-				return;
+				SetState(CharacterState.INAIR);
+				ChangeState();
 			}
 		}
 
@@ -108,9 +105,9 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		animator.AnimatorUpdate(this);
 
-		//states[stateIndex].MovementOverride(this, input);
-
 		MoveCharacter();
+
+		TryAttacks();
 
 		if (queuedState != stateIndex)
 		{
@@ -137,6 +134,24 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 	}
 
+	protected virtual void TryAttacks()
+	{
+		int animID = 0;
+		switch(stateIndex)
+		{
+			case (int)CharacterState.STANDING:
+			case (int)CharacterState.WALKING:
+				animID += 100;
+				break;
+		}
+
+		if (myLastInput.Light())
+		{
+			SetState(CharacterState.ATTACK);
+			SetAnimation(100);
+		}
+	}
+
 	public virtual void LoseControl()
 	{
 		inControl = false;
@@ -158,25 +173,6 @@ public abstract class BaseCharacter : MonoBehaviour
 	{
 		whoIMove.position.Set(whoIMove.position.x, 0, 0);
 		SetMotion(0, 0);
-
-		int usedSpeed = GetSpeed();
-
-		if (AmIFacingBackward())
-		{
-			usedSpeed *= -1;
-		}
-
-		if (myLastInput.Back())
-		{
-			AddMotion(-usedSpeed, 0);
-			SetAnimation(CommonAnimations.BACKWALKING);
-		}
-
-		if (myLastInput.Forward())
-		{
-			AddMotion(usedSpeed, 0);
-			SetAnimation(CommonAnimations.WALKING);
-		}
 	}
 
 	public virtual bool IsOnGround()

@@ -26,6 +26,8 @@ public class InputBuffer : MonoBehaviour
 		UpdateBuffer();
 
 		sentInput.CopyInput(inputs[0]);
+
+
 		myCharacter.CharUpdate(sentInput);
 	}
 
@@ -54,7 +56,7 @@ public class InputBuffer : MonoBehaviour
 			d += 3;
 			newInput.SetUp();
 		}
-		if (Input.GetKeyDown(KeyCode.U))
+		if (IsKeyPressed(KeyCode.U))//Input.GetKeyDown(KeyCode.U))
 		{
 			newInput.SetLight();
 		}

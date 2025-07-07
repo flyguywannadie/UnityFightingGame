@@ -150,6 +150,10 @@ public class BufferedInput
 		return Forward() & Up();
 	}
 
+	#endregion
+
+	#region Input Attack Boolean Logic
+
 	public bool PressingAttacks()
 	{
 		return Light() | Heavy() | Special();

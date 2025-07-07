@@ -389,17 +389,14 @@ MonoBehaviour:
   animator: {fileID: 231097115}
   inControl: 1
   hitstun: 0
-  knocked: 0
   otherPerson: {fileID: 1017023371}
-  states:
-  - {fileID: 11400000, guid: ba59ec85af09ceb4aa88ee2751e42cc5, type: 2}
-  - {fileID: 11400000, guid: 325c41c2f56fe624a8bc311cf06ab9ff, type: 2}
-  - {fileID: 11400000, guid: 58bf3042162975c479b767e035a07c99, type: 2}
   stateIndex: 0
+  queuedState: 0
   myLastInput:
     inputFlag: 0
     frames: 0
-  changeState: 0
+  moves:
+  - {fileID: 11400000, guid: aa38cfde28737d7419f8e2d3cad6ac31, type: 2}
 --- !u!114 &231097115
 MonoBehaviour:
   m_ObjectHideFlags: 0
