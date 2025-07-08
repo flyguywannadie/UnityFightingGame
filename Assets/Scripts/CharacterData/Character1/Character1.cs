@@ -2,13 +2,6 @@ using UnityEngine;
 
 public class Character1 : BaseCharacter
 {
-    protected enum SpecificStates
-    {
-        LIGHT = 100,
-        HEAVY = 101,
-        SPECIAL = 102
-    }
-
 	public void LateUpdate()
 	{
 		if (Input.GetKeyDown(KeyCode.H))
@@ -78,5 +71,17 @@ public class Character1 : BaseCharacter
 		//}
 
 		base.CharUpdate(input);
+	}
+
+	public void AnimTest()
+	{
+		if (AmIFacingBackward())
+		{
+			AddMotion(-10, 0);
+		}
+		else
+		{
+			AddMotion(10, 0);
+		}
 	}
 }

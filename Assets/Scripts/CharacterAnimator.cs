@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class CharacterAnimator : MonoBehaviour
 {
+	public string animPath = "CharAnimations/Char1";
+
 	public int currentFrame = 0;
 
 	public SpriteRenderer visuals;
 
 	public List<CharacterAnimation> animations;
 	public int currentAnimation;
+
+	private void Start()
+	{
+		animations = new List<CharacterAnimation>(Resources.LoadAll<CharacterAnimation>(animPath));
+		ChangeAnimationToID(0);
+	}
 
 	public void AnimatorUpdate(BaseCharacter c)
 	{
@@ -29,7 +37,7 @@ public class CharacterAnimator : MonoBehaviour
 				c.SetState(current.endState);
 			}
 		}
-		
+
 		visuals.sprite = current.GetCurrentSprite(currentFrame);
 
 		List<CharacterAnimation.AnimEvent> es = current.Events.FindAll(x => x.callFrame == currentFrame);
@@ -45,6 +53,8 @@ public class CharacterAnimator : MonoBehaviour
 		if (anim == null)
 		{
 			Debug.LogError("There is no animation of ID: " + id + " (" + ((CommonAnimations)id).ToString() + ")");
+			currentAnimation = 0;
+			currentFrame = 0;
 			return;
 		}
 		//Debug.Log("Test");

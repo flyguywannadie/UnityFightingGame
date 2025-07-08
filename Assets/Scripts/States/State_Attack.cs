@@ -9,6 +9,10 @@ public class State_Attack : BaseState
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
+		if (c.IsOnGround())
+		{
+			c.SetMotion(0, 0);
+		}
 		c.LoseControl();
 	}
 

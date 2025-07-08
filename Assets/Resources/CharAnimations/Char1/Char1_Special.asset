@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708d93a153861124eb2aa81a47b21204, type: 3}
+  m_Name: Char1_Special
+  m_EditorClassIdentifier: 
+  ID: 102
+  Data:
+  - duration: 9
+    sprite: {fileID: 21300000, guid: 4629d15dbe1008546a596c365b91d9ab, type: 3}
+  - duration: 12
+    sprite: {fileID: 21300000, guid: de065e77856801c41ad0f868d1701e4d, type: 3}
+  - duration: 6
+    sprite: {fileID: 21300000, guid: ef5a45e36ac3ee44284ad11a6fc9bbf0, type: 3}
+  loop: 0
+  changeStateOnFinish: 1
+  endState: 0
+  Events:
+  - callFrame: 10
+    name: AnimTest
+  - callFrame: 23
+    name: AnimStop

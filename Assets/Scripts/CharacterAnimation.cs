@@ -40,7 +40,7 @@ public class CharacterAnimation : ScriptableObject
             }
         }
 
-        return Data[0].sprite;
+        return Data[Data.Length - 1].sprite;
     }
 
     public int GetAnimationDuration()

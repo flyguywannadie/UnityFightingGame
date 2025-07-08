@@ -14,6 +14,14 @@ public class InputBuffer : MonoBehaviour
 	private BufferedInput sentInput;
 	//[SerializeField] private int inputIndex = 0;
 
+	private bool w;
+	private bool a;
+	private bool s;
+	private bool d;
+	private bool u;
+	private bool i;
+	private bool o;
+
 	public void Start()
 	{
 		ClearBuffer();
@@ -21,55 +29,79 @@ public class InputBuffer : MonoBehaviour
 		sentInput = new BufferedInput();
 	}
 
+	public void Update()
+	{
+		InputCheck();
+	}
+
+	private void InputCheck()
+	{
+		if (!a && IsKeyPressed(KeyCode.A)) { a = true; }
+		if (!s && IsKeyPressed(KeyCode.S)) { s = true; }
+		if (!d && IsKeyPressed(KeyCode.D)) { d = true; }
+		if (!w && IsKeyPressed(KeyCode.Space)) { w = true; }
+		if (!u && Input.GetKeyDown(KeyCode.U)) { u = true; }
+		if (!i && IsKeyPressed(KeyCode.I)) { i = true; }
+		if (!o && IsKeyPressed(KeyCode.O)) { o = true; }
+	}
+
 	public void InputUpdate()
     {
+		InputCheck();
+
 		UpdateBuffer();
 
 		sentInput.CopyInput(inputs[0]);
-
 
 		myCharacter.CharUpdate(sentInput);
 	}
 
 	private void UpdateBuffer()
 	{
-		int d = 4;
+		int dir = 4;
 		BufferedInput newInput = new BufferedInput();
 
-		if (IsKeyPressed(KeyCode.A))
+		if (a)
 		{
-			d -= 1;
+			dir -= 1;
 			newInput.SetBack();
+			a = false;
 		}
-		if (IsKeyPressed(KeyCode.S))
+		if (s)
 		{
-			d -= 3;
+			dir -= 3;
 			newInput.SetDown();
+			s = false;
 		}
-		if (IsKeyPressed(KeyCode.D))
+		if (d)
 		{
-			d += 1;
+			dir += 1;
 			newInput.SetForward();
+			d = false;
 		}
-		if (IsKeyPressed(KeyCode.Space))
+		if (w)
 		{
-			d += 3;
+			dir += 3;
 			newInput.SetUp();
+			w = false;
 		}
-		if (IsKeyPressed(KeyCode.U))//Input.GetKeyDown(KeyCode.U))
+		if (u)
 		{
 			newInput.SetLight();
+			u = false;
 		}
-		if (Input.GetKeyDown(KeyCode.I))
+		if (i)
 		{
 			newInput.SetHeavy();
+			i = false;
 		}
-		if (Input.GetKeyDown(KeyCode.O))
+		if (o)
 		{
 			newInput.SetSpecial();
+			o = false;
 		}
 
-		direction.sprite = directions[d];
+		direction.sprite = directions[dir];
 
 		if (newInput.inputFlag != inputs[0].inputFlag)
 		{

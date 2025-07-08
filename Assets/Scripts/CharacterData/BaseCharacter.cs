@@ -37,7 +37,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] protected int speed = 5;
 	[SerializeField] protected int jumpPower = 5;
 	[SerializeField] protected int myState = 0;
-	[SerializeField] protected Vector2 motion;
+	[SerializeField] public Vector2 motion { get; protected set; }
 	[SerializeField] protected Transform whoIMove;
 	[SerializeField] protected SpriteRenderer myVisuals;
 	[SerializeField] protected CharacterAnimator animator;
@@ -86,28 +86,31 @@ public abstract class BaseCharacter : MonoBehaviour
 		bool currentlyGrounded = IsOnGround();
 		if (currentlyGrounded)
 		{
-			myVisuals.flipX = faceBack;
+			if (inControl)
+			{
+				myVisuals.flipX = faceBack;
+			}
 		}
 		else
 		{
 			AddMotion(0, -9.8f * Time.fixedDeltaTime);
-			if (!(stateIndex == (int)CharacterState.INAIR))
-			{
-				SetState(CharacterState.INAIR);
-				ChangeState();
-			}
+			//if (!(stateIndex == (int)CharacterState.INAIR))
+			//{
+			//	SetState(CharacterState.INAIR);
+			//	ChangeState();
+			//}
 		}
 
 		if (inControl)
 		{
 			states[stateIndex].StateUpdate(this, input);
+
+			TryAttacks();
 		}
 
 		animator.AnimatorUpdate(this);
 
 		MoveCharacter();
-
-		TryAttacks();
 
 		if (queuedState != stateIndex)
 		{
@@ -137,18 +140,37 @@ public abstract class BaseCharacter : MonoBehaviour
 	protected virtual void TryAttacks()
 	{
 		int animID = 0;
+
 		switch(stateIndex)
 		{
 			case (int)CharacterState.STANDING:
 			case (int)CharacterState.WALKING:
 				animID += 100;
 				break;
+			case (int)CharacterState.CROUCHING:
+				animID += 200;
+				break;
+			case (int)CharacterState.INAIR:
+				animID += 300;
+				break;
 		}
 
 		if (myLastInput.Light())
 		{
 			SetState(CharacterState.ATTACK);
-			SetAnimation(100);
+			SetAnimation(animID);
+		}
+
+		if (myLastInput.Heavy())
+		{
+			SetState(CharacterState.ATTACK);
+			SetAnimation(animID + 1);
+		}
+
+		if (myLastInput.Special())
+		{
+			SetState(CharacterState.ATTACK);
+			SetAnimation(animID + 2);
 		}
 	}
 
@@ -160,6 +182,11 @@ public abstract class BaseCharacter : MonoBehaviour
 	public virtual void GainControl()
 	{
 		inControl = true;
+	}
+
+	public void AnimStop()
+	{
+		SetMotion(0, 0);
 	}
 
 	public virtual void JumpAction()
@@ -212,6 +239,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	public void SetState(int state)
 	{
 		queuedState = state;
+		//ChangeState();
 	}
 
 	private void ChangeState()
