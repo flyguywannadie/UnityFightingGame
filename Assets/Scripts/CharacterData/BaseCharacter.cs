@@ -61,6 +61,11 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 		myLastInput = new BufferedInput();
 
+		InitializeStates();
+	}
+
+	protected virtual void InitializeStates()
+	{
 		states = new BaseState[]
 		{
 			new State_Standing(),
@@ -139,6 +144,15 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	protected virtual void TryAttacks()
 	{
+		if (queuedState != stateIndex)
+		{
+			ChangeState();
+			if (!inControl)
+			{
+				return;
+			}
+		}
+
 		int animID = 0;
 
 		switch(stateIndex)

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708d93a153861124eb2aa81a47b21204, type: 3}
+  m_Name: Char1_Special_Air
+  m_EditorClassIdentifier: 
+  ID: 0
+  Data: []
+  loop: 1
+  changeStateOnFinish: 0
+  endState: 0
+  Events: []

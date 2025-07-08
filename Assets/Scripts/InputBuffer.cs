@@ -40,7 +40,7 @@ public class InputBuffer : MonoBehaviour
 		if (!s && IsKeyPressed(KeyCode.S)) { s = true; }
 		if (!d && IsKeyPressed(KeyCode.D)) { d = true; }
 		if (!w && IsKeyPressed(KeyCode.Space)) { w = true; }
-		if (!u && Input.GetKeyDown(KeyCode.U)) { u = true; }
+		if (!u && IsKeyPressed(KeyCode.U)) { u = true; }
 		if (!i && IsKeyPressed(KeyCode.I)) { i = true; }
 		if (!o && IsKeyPressed(KeyCode.O)) { o = true; }
 	}
