@@ -4,7 +4,7 @@ using static Unity.Collections.AllocatorManager;
 
 public class State_InAir : BaseState
 {
-	public override bool HandleGettingHit(BufferedInput input, bool low)
+	public override bool HandleGettingHit(BufferedInput input, bool low, bool overhead)
 	{
 		return (input.Back());
 	}

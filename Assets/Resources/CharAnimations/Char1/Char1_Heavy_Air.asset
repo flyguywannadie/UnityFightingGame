@@ -20,6 +20,25 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 8109e4d9995c0814b9a64ad1eed8ed4f, type: 3}
   - duration: 7
     sprite: {fileID: 21300000, guid: 8b544137ee8b84a4284f53a393e50829, type: 3}
+  HitboxData:
+  - duration: 18
+    boxes:
+    - position: {x: -0.1, y: 0}
+      size: {x: 0.6, y: 2}
+      boxType: 0
+  - duration: 3
+    boxes:
+    - position: {x: 0.1, y: -0.05}
+      size: {x: 0.85, y: 1.7}
+      boxType: 0
+    - position: {x: 0.31, y: 0}
+      size: {x: 0.3, y: 1.76}
+      boxType: 1
+  - duration: 7
+    boxes:
+    - position: {x: -0.2, y: -0.2}
+      size: {x: 0.6, y: 1.7}
+      boxType: 0
   loop: 0
   changeStateOnFinish: 1
   endState: 4

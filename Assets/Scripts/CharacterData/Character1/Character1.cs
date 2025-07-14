@@ -7,13 +7,13 @@ public class Character1 : BaseCharacter
 		if (Input.GetKeyDown(KeyCode.H))
 		{
 			//GetHit(0, false, 30, false);
-			ProcessGettingHit(true);
+			ProcessGettingHit(true, false);
 		}
 
 		if (Input.GetKeyDown(KeyCode.J))
 		{
 			//GetHit(0, true, 30, 10, false);
-			ProcessGettingHit(false);
+			ProcessGettingHit(true, false);
 		}
 	}
 

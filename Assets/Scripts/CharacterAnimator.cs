@@ -13,8 +13,15 @@ public class CharacterAnimator : MonoBehaviour
 	public List<CharacterAnimation> animations;
 	public int currentAnimation;
 
+	public int currentAnimFrame;
+	public int currentHitboxFrame;
+
+	public HitboxBuilder hitboxBuilder;
+
 	private void Start()
 	{
+		currentFrame = 0;
+		currentHitboxFrame = -1;
 		animations = new List<CharacterAnimation>(Resources.LoadAll<CharacterAnimation>(animPath));
 		ChangeAnimationToID(0);
 	}
@@ -24,7 +31,7 @@ public class CharacterAnimator : MonoBehaviour
 		CharacterAnimation current = animations[currentAnimation];
 
 		currentFrame++;
-		
+
 		if (currentFrame > current.GetAnimationDuration())
 		{
 			if (current.loop)
@@ -39,6 +46,13 @@ public class CharacterAnimator : MonoBehaviour
 		}
 
 		visuals.sprite = current.GetCurrentSprite(currentFrame);
+
+		int hitboxIndex = current.GetHitboxDataIndex(currentFrame);
+		if (hitboxIndex > currentHitboxFrame)
+		{
+			hitboxBuilder.BuildHitbox(current.GetHitboxData(hitboxIndex));
+			currentHitboxFrame = hitboxIndex;
+		}
 
 		List<CharacterAnimation.AnimEvent> es = current.Events.FindAll(x => x.callFrame == currentFrame);
 		foreach (CharacterAnimation.AnimEvent e in es)
@@ -61,10 +75,16 @@ public class CharacterAnimator : MonoBehaviour
 
 		currentAnimation = animations.IndexOf(anim);
 		currentFrame = 0;
+		currentHitboxFrame = -1;
 	}
 
 	public int GetCurrentAnimationID()
 	{
 		return animations[currentAnimation].ID;
+	}
+	
+	public CharacterAnimation.FrameData GetCurrentFrameData(int currentFrame)
+	{
+		return animations[currentAnimation].GetHitboxData(currentFrame);
 	}
 }

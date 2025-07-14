@@ -18,6 +18,17 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: eec3480948cbdef44a773b00aecdaac9, type: 3}
   - duration: 2
     sprite: {fileID: 21300000, guid: 27df4e5a95399924d99d734c5ad7be1d, type: 3}
+  HitboxData:
+  - duration: 6
+    boxes:
+    - position: {x: 0.2, y: -0.5}
+      size: {x: 0.8, y: 1}
+      boxType: 0
+  - duration: 2
+    boxes:
+    - position: {x: 0.15, y: 0}
+      size: {x: 0.6, y: 2}
+      boxType: 0
   loop: 0
   changeStateOnFinish: 1
   endState: 4

@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class State_Standing : BaseState
 {
-	public override bool HandleGettingHit(BufferedInput input, bool low)
+	public override bool HandleGettingHit(BufferedInput input, bool low, bool overhead)
 	{
-		return (input.Back() && !input.Down() && low);
+		return (input.Back() && !low);
 	}
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)

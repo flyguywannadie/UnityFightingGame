@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class State_Crouching : BaseState
 {
-	public override bool HandleGettingHit(BufferedInput input, bool low)
+	public override bool HandleGettingHit(BufferedInput input, bool low, bool overhead)
 	{
-		return (input.DownBack() && low);
+		return (input.DownBack() && !overhead);
 	}
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)

@@ -44,7 +44,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	//[SerializeField] protected Animation anims;
 	[SerializeField] protected bool inControl;
 	//[SerializeField] protected bool onGround = true;
-	[SerializeField] protected int hitstun = 0;
+	//[SerializeField] protected int hitstun = 0;
 	[SerializeField] private Transform otherPerson;
 	[SerializeField] private BaseState[] states;
 	[SerializeField] private int stateIndex = 0;
@@ -62,6 +62,7 @@ public abstract class BaseCharacter : MonoBehaviour
 		myLastInput = new BufferedInput();
 
 		InitializeStates();
+		editorHitboxes = false;
 	}
 
 	protected virtual void InitializeStates()
@@ -93,7 +94,16 @@ public abstract class BaseCharacter : MonoBehaviour
 		{
 			if (inControl)
 			{
-				myVisuals.flipX = faceBack;
+				if (faceBack)
+				{
+					whoIMove.localScale = new Vector3(-1, 1, 1);
+				}
+				else
+				{
+					whoIMove.localScale = new Vector3(1, 1, 1);
+				}
+					
+				//myVisuals.flipX = faceBack;
 			}
 		}
 		else
@@ -212,7 +222,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public virtual void LandFromAir()
 	{
-		whoIMove.position.Set(whoIMove.position.x, 0, 0);
+		whoIMove.position = new Vector3(whoIMove.position.x, 0, 0);
 		SetMotion(0, 0);
 	}
 
@@ -263,26 +273,26 @@ public abstract class BaseCharacter : MonoBehaviour
 		states[stateIndex].OnEnterState(this, myLastInput);
 	}
 
-	public virtual void ProcessGettingHit(bool low)
+	public virtual void ProcessGettingHit(bool low, bool overhead)
 	{
-		//GetHit(0, 30, states[stateIndex].HandleGettingHit(myLastInput, low));
+		GetHit(0, 30, states[stateIndex].HandleGettingHit(myLastInput, true, false));
 	}
 
-	public virtual void GetHit(int damage, int stun, bool blocked)
+	protected virtual void GetHit(int damage, int stun, bool blocked)
 	{
 		//states[0].HandleGettingHit(this, input);
 
-		if (blocked)
-		{
-			SetAnimation(CommonAnimations.BLOCKSTUN);
-			stun = stun / 4;
-		}
-		else
-		{
-			SetAnimation(CommonAnimations.HITSTUN);
-		}
-		// health - damage
-		this.hitstun = stun;
+		//if (blocked)
+		//{
+		//	SetAnimation(CommonAnimations.BLOCKSTUN);
+		//	stun = stun / 4;
+		//}
+		//else
+		//{
+		//	SetAnimation(CommonAnimations.HITSTUN);
+		//}
+		//// health - damage
+		//this.hitstun = stun;
 	}
 
 	public int GetSpeed()
@@ -293,5 +303,61 @@ public abstract class BaseCharacter : MonoBehaviour
 	public bool AmIFacingBackward()
 	{
 		return (otherPerson.position.x < whoIMove.position.x);
+	}
+
+	[SerializeField] private bool editorHitboxes;
+
+	private void OnDrawGizmos()
+	{
+		int currentAnimation = animator.currentAnimation;
+		int currentFrame = animator.currentFrame;
+
+		if (animator.animations.Count <= 0 || animator.animations[currentAnimation] == null)
+		{
+			return;
+		}
+
+		if (!editorHitboxes)
+		{
+			return;
+		}
+
+		CharacterAnimation current = animator.animations[currentAnimation];
+
+		animator.currentFrame = Mathf.Clamp(currentFrame, 0, current.GetAnimationDuration());
+
+		animator.visuals.sprite = current.GetCurrentSprite(currentFrame);
+
+		CharacterAnimation.FrameData frameData = current.GetHitboxData(current.GetHitboxDataIndex(currentFrame));
+
+		DrawBoxes(frameData);
+	}
+
+	private void DrawBoxes(CharacterAnimation.FrameData frameData)
+	{
+		if (frameData.boxes == null)
+		{
+			return;
+		}
+
+		foreach (CharacterAnimation.BoxData box in frameData.boxes)
+		{
+			Vector3 usedPos = box.position;
+			if (myVisuals.flipX)
+			{
+				usedPos.x *= -1;
+			}
+
+			switch (box.boxType)
+			{
+				case BoxType.HITBOX:
+					Gizmos.color = Color.cyan;
+					break;
+				case BoxType.HURTBOX:
+					Gizmos.color = Color.red;
+					break;
+			}
+			Gizmos.DrawWireCube(transform.position + usedPos, box.size);
+		}
 	}
 }

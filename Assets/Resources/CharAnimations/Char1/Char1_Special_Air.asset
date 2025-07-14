@@ -12,9 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708d93a153861124eb2aa81a47b21204, type: 3}
   m_Name: Char1_Special_Air
   m_EditorClassIdentifier: 
-  ID: 0
-  Data: []
-  loop: 1
-  changeStateOnFinish: 0
-  endState: 0
+  ID: 302
+  Data:
+  - duration: 5
+    sprite: {fileID: 21300000, guid: 82bebc215a582de4ca1b6d6b64e5060b, type: 3}
+  - duration: 13
+    sprite: {fileID: 21300000, guid: c3cb96d41bb61954386a9b20e04cff43, type: 3}
+  - duration: 13
+    sprite: {fileID: 21300000, guid: 3095c4b4b6897834787da7b0659f625f, type: 3}
+  HitboxData:
+  - duration: 5
+    boxes:
+    - position: {x: -0.2, y: -0.1}
+      size: {x: 0.9, y: 1.7}
+      boxType: 0
+  - duration: 13
+    boxes:
+    - position: {x: 0, y: -0.2}
+      size: {x: 0.8, y: 1.2}
+      boxType: 0
+    - position: {x: 0.1, y: -0.1}
+      size: {x: 0.8, y: 0.5}
+      boxType: 1
+  - duration: 13
+    boxes:
+    - position: {x: 0.1, y: -0.25}
+      size: {x: 1, y: 1}
+      boxType: 0
+  loop: 0
+  changeStateOnFinish: 1
+  endState: 4
   Events: []

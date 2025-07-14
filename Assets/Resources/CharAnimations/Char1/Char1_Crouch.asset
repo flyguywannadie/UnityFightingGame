@@ -16,6 +16,12 @@ MonoBehaviour:
   Data:
   - duration: 1
     sprite: {fileID: 21300000, guid: 1b5e5a0df0e6e2a4d943a0c81dc80082, type: 3}
+  HitboxData:
+  - duration: 0
+    boxes:
+    - position: {x: 0, y: -0.5}
+      size: {x: 0.8, y: 1}
+      boxType: 0
   loop: 1
   changeStateOnFinish: 0
   endState: 0

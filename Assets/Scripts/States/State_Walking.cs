@@ -1,11 +1,10 @@
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class State_Walking : BaseState
 {
-	public override bool HandleGettingHit(BufferedInput input, bool low)
+	public override bool HandleGettingHit(BufferedInput input, bool low, bool overhead)
 	{
-		throw new System.NotImplementedException();
+		return (input.Back() && !low);
 	}
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)

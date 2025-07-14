@@ -5,6 +5,15 @@ using UnityEngine.InputSystem;
 
 public class InputBuffer : MonoBehaviour
 {
+	public enum InputMode
+	{
+		NONE = 0,
+		CPU = 1,
+		PLAYER = 2,
+	}
+
+	[SerializeField] private InputMode inputMode;
+
     [SerializeField] private SpriteRenderer direction;
     [SerializeField] private Sprite[] directions;
 
@@ -36,6 +45,11 @@ public class InputBuffer : MonoBehaviour
 
 	private void InputCheck()
 	{
+		if (inputMode == InputMode.NONE)
+		{
+			return;
+		}
+
 		if (!a && IsKeyPressed(KeyCode.A)) { a = true; }
 		if (!s && IsKeyPressed(KeyCode.S)) { s = true; }
 		if (!d && IsKeyPressed(KeyCode.D)) { d = true; }

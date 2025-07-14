@@ -4,7 +4,7 @@ public class State_JumpCrouch : BaseState
 {
 	private Vector2 storedMotion;
 
-	public override bool HandleGettingHit(BufferedInput input, bool low)
+	public override bool HandleGettingHit(BufferedInput input, bool low, bool overhead)
 	{
 		return true;
 	}

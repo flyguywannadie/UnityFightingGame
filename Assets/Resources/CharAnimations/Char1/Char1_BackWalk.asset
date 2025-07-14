@@ -22,7 +22,13 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 548630225390daf4a98595673bdbd3db, type: 3}
   - duration: 5
     sprite: {fileID: 21300000, guid: d062738ddee7bba428e7817fc9665688, type: 3}
+  HitboxData:
+  - duration: 0
+    boxes:
+    - position: {x: 0.2, y: -0.2}
+      size: {x: 0.7, y: 1.7}
+      boxType: 0
   loop: 1
   changeStateOnFinish: 0
-  Events: []
   endState: 0
+  Events: []

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class State_Attack : BaseState
 {
-	public override bool HandleGettingHit(BufferedInput input, bool low)
+	public override bool HandleGettingHit(BufferedInput input, bool low, bool overhead)
 	{
 		return true;
 	}
