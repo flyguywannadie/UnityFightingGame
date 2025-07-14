@@ -582,7 +582,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 599a7dc15b13a554390fdf8047d7d4e4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ac69adb66d274584b9755182ac40c7fa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -656,10 +656,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animPath: CharAnimations/Char1
-  currentFrame: 0
+  currentFrame: 13
   visuals: {fileID: 231097112}
   animations:
-  - {fileID: 11400000, guid: 7871c98394b5a6f4ab200f6296fed56b, type: 2}
+  - {fileID: 11400000, guid: 868bdd33de489d34a9e5985787f0e560, type: 2}
   currentAnimation: 0
   currentAnimFrame: 0
   currentHitboxFrame: 0
