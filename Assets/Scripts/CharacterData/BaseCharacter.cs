@@ -29,14 +29,17 @@ public enum CharacterState
 	JUMP = 3,
 	INAIR = 4,
 	ATTACK = 5,
-	NOACTION = 6,
+	BLOCKSTUN = 6,
+	HITSTUN = 7,
+	NOACTION = 8,
 }
 
 public abstract class BaseCharacter : MonoBehaviour
 {
 	[SerializeField] protected int speed = 5;
-	[SerializeField] protected int jumpPower = 5;
+	[SerializeField] protected int jumpPower = 4;
 	[SerializeField] protected int myState = 0;
+	[SerializeField] protected float gravity = -9.8f;
 	[SerializeField] public Vector2 motion { get; protected set; }
 	[SerializeField] protected Transform whoIMove;
 	[SerializeField] protected SpriteRenderer myVisuals;
@@ -44,7 +47,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	//[SerializeField] protected Animation anims;
 	[SerializeField] protected bool inControl;
 	//[SerializeField] protected bool onGround = true;
-	//[SerializeField] protected int hitstun = 0;
+	[SerializeField] protected int hitstun = 0;
 	[SerializeField] private Transform otherPerson;
 	[SerializeField] private BaseState[] states;
 	[SerializeField] private int stateIndex = 0;
@@ -75,6 +78,8 @@ public abstract class BaseCharacter : MonoBehaviour
 			new State_JumpCrouch(),
 			new State_InAir(),
 			new State_Attack(),
+			new State_Blockstun(),
+			new State_Hitstun(),
 			new State_NoAction(),
 		};
 	}
@@ -108,12 +113,33 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 		else
 		{
-			AddMotion(0, -9.8f * Time.fixedDeltaTime);
+			AddMotion(0, gravity * Time.fixedDeltaTime);
 			//if (!(stateIndex == (int)CharacterState.INAIR))
 			//{
 			//	SetState(CharacterState.INAIR);
 			//	ChangeState();
 			//}
+		}
+
+		if (hitstun > 0)
+		{
+			hitstun -= 1;
+
+			if (hitstun <= 0)
+			{
+				if (!currentlyGrounded)
+				{
+					SetState(CharacterState.INAIR);
+				}
+				else if (input.Down())
+				{
+					SetState(CharacterState.CROUCHING);
+				}
+				else
+				{
+					SetState(CharacterState.STANDING);
+				}
+			}
 		}
 
 		if (inControl)
@@ -139,13 +165,16 @@ public abstract class BaseCharacter : MonoBehaviour
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
 		if (!currentlyGrounded && IsOnGround())
 		{
-			if (myLastInput.Down())
+			if (hitstun <= 0)
 			{
-				SetState(CharacterState.CROUCHING);
-			}
-			else
-			{
-				SetState(CharacterState.STANDING);
+				if (myLastInput.Down())
+				{
+					SetState(CharacterState.CROUCHING);
+				}
+				else
+				{
+					SetState(CharacterState.STANDING);
+				}
 			}
 
 			LandFromAir();
@@ -273,26 +302,32 @@ public abstract class BaseCharacter : MonoBehaviour
 		states[stateIndex].OnEnterState(this, myLastInput);
 	}
 
-	public virtual void ProcessGettingHit(bool low, bool overhead)
+	public virtual void GetHit(bool low, bool overhead)
 	{
-		GetHit(0, 30, states[stateIndex].HandleGettingHit(myLastInput, true, false));
+		ProcessHit(0, 30, states[stateIndex].WasAttackBlocked(myLastInput, low, overhead));
 	}
 
-	protected virtual void GetHit(int damage, int stun, bool blocked)
+	protected virtual void ProcessHit(int damage, int stun, bool blocked)
 	{
-		//states[0].HandleGettingHit(this, input);
+		//states[0].WasAttackBlocked(this, input);
 
-		//if (blocked)
-		//{
-		//	SetAnimation(CommonAnimations.BLOCKSTUN);
-		//	stun = stun / 4;
-		//}
-		//else
-		//{
-		//	SetAnimation(CommonAnimations.HITSTUN);
-		//}
-		//// health - damage
-		//this.hitstun = stun;
+		if (blocked)
+		{
+			SetState(CharacterState.BLOCKSTUN);
+			stun = stun / 4;
+		}
+		else
+		{
+			SetState(CharacterState.HITSTUN);
+		}
+
+		// health - damage
+		this.hitstun = stun;
+	}
+
+	public int GetHitstun()
+	{
+		return hitstun;
 	}
 
 	public int GetSpeed()

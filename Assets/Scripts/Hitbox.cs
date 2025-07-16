@@ -47,7 +47,7 @@ public class Hitbox : MonoBehaviour
 				break;
 			case BoxType.HURTBOX:
 				box.enabled = false;
-				GameManager.QueueCollision(collision.GetComponent<BaseCharacter>());
+				GameManager.instance.QueueCollision(collision.attachedRigidbody.GetComponent<BaseCharacter>(), false, false);
 				Debug.Log("Hurtbox: " + tag + " " + name + " has hit with thing: " + collision.name);
 				break;
 		}

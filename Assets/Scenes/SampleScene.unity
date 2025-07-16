@@ -267,6 +267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 55983433}
   - component: {fileID: 55983434}
+  - component: {fileID: 55983435}
   m_Layer: 0
   m_Name: InputBuffer
   m_TagString: Untagged
@@ -315,6 +316,36 @@ MonoBehaviour:
   - {fileID: -1625013159, guid: caf5e8e3921705f4088dcb57894b2cd5, type: 3}
   myCharacter: {fileID: 1821535271}
   inputs: []
+--- !u!114 &55983435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55983432}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &180686220
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,10 +661,12 @@ MonoBehaviour:
   speed: 5
   jumpPower: 5
   myState: 0
+  gravity: -9.8
   whoIMove: {fileID: 52288768}
   myVisuals: {fileID: 231097112}
   animator: {fileID: 231097115}
   inControl: 1
+  hitstun: 0
   otherPerson: {fileID: 1956800223}
   stateIndex: 0
   queuedState: 0
@@ -2400,10 +2433,12 @@ MonoBehaviour:
   speed: 5
   jumpPower: 5
   myState: 0
+  gravity: -9.8
   whoIMove: {fileID: 1956800223}
   myVisuals: {fileID: 1821535273}
   animator: {fileID: 1821535272}
   inControl: 1
+  hitstun: 0
   otherPerson: {fileID: 52288768}
   stateIndex: 0
   queuedState: 0

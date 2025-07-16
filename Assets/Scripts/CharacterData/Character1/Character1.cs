@@ -6,14 +6,17 @@ public class Character1 : BaseCharacter
 	{
 		if (Input.GetKeyDown(KeyCode.H))
 		{
-			//GetHit(0, false, 30, false);
-			ProcessGettingHit(true, false);
+			GetHit(false, false);
 		}
 
 		if (Input.GetKeyDown(KeyCode.J))
 		{
-			//GetHit(0, true, 30, 10, false);
-			ProcessGettingHit(true, false);
+			GetHit(true, false);
+		}
+
+		if (Input.GetKeyDown(KeyCode.K))
+		{
+			GetHit(false, true);
 		}
 	}
 

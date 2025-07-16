@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class State_Attack : BaseState
 {
-	public override bool HandleGettingHit(BufferedInput input, bool low, bool overhead)
+	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
 	{
-		return true;
+		return false;
 	}
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)

@@ -47,6 +47,13 @@ public class InputBuffer : MonoBehaviour
 	{
 		if (inputMode == InputMode.NONE)
 		{
+			if (!a && IsKeyPressed(KeyCode.LeftArrow)) { a = true; }
+			if (!s && IsKeyPressed(KeyCode.DownArrow)) { s = true; }
+			if (!d && IsKeyPressed(KeyCode.RightArrow)) { d = true; }
+			if (!w && IsKeyPressed(KeyCode.UpArrow)) { w = true; }
+			if (!u && Input.GetKeyDown(KeyCode.B)) { u = true; }
+			if (!i && Input.GetKeyDown(KeyCode.N)) { i = true; }
+			if (!o && Input.GetKeyDown(KeyCode.M)) { o = true; }
 			return;
 		}
 
@@ -54,9 +61,14 @@ public class InputBuffer : MonoBehaviour
 		if (!s && IsKeyPressed(KeyCode.S)) { s = true; }
 		if (!d && IsKeyPressed(KeyCode.D)) { d = true; }
 		if (!w && IsKeyPressed(KeyCode.Space)) { w = true; }
-		if (!u && IsKeyPressed(KeyCode.U)) { u = true; }
-		if (!i && IsKeyPressed(KeyCode.I)) { i = true; }
-		if (!o && IsKeyPressed(KeyCode.O)) { o = true; }
+		if (!u && Input.GetKeyDown(KeyCode.U)) { u = true; }
+		if (!i && Input.GetKeyDown(KeyCode.I)) { i = true; }
+		if (!o && Input.GetKeyDown(KeyCode.O)) { o = true; }
+	}
+
+	public void OnJump()
+	{
+		Debug.Log("New Input System");
 	}
 
 	public void InputUpdate()

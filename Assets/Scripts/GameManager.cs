@@ -3,23 +3,33 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	public static GameManager instance { get; private set; }
 	[SerializeField] private InputBuffer[] characterControllers;
 
-	private class CharCollision
+	private class CharInteraction
 	{
 		private BaseCharacter taker;
+		private bool low;
+		private bool overhead;
 
-		public CharCollision(BaseCharacter taker)
+		public CharInteraction(BaseCharacter taker, bool low, bool overhead)
 		{
 			this.taker = taker;
+			this.low = low;
+			this.overhead = overhead;
 		}
 
-		public void DoCollision()
+		public void DoInteraction()
 		{
-			taker.ProcessGettingHit(true, false);
+			taker.GetHit(low, overhead);
 		}
 	}
-	[SerializeField] private List<CharCollision> collisions = new List<CharCollision>();
+	[SerializeField] private List<CharInteraction> interactions = new List<CharInteraction>();
+
+	private void Start()
+	{
+		instance = this;
+	}
 
 	private void FixedUpdate()
 	{
@@ -28,14 +38,18 @@ public class GameManager : MonoBehaviour
 			control.InputUpdate();
 		}
 
-		foreach (CharCollision collision in collisions)
+		if (interactions.Count > 0)
 		{
-			collision.DoCollision();
+			foreach (CharInteraction collision in interactions)
+			{
+				collision.DoInteraction();
+			}
+			interactions.Clear();
 		}
 	}
 
-	public static void QueueCollision(BaseCharacter taker)
+	public void QueueCollision(BaseCharacter taker, bool low, bool overhead)
 	{
-		
+		interactions.Add(new CharInteraction(taker, low, overhead));
 	}
 }

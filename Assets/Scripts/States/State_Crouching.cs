@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class State_Crouching : BaseState
 {
-	public override bool HandleGettingHit(BufferedInput input, bool low, bool overhead)
+	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
 	{
 		return (input.DownBack() && !overhead);
 	}

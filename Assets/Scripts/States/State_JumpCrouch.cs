@@ -4,15 +4,15 @@ public class State_JumpCrouch : BaseState
 {
 	private Vector2 storedMotion;
 
-	public override bool HandleGettingHit(BufferedInput input, bool low, bool overhead)
+	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
 	{
 		return true;
 	}
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
-		storedMotion = c.motion;
-		int usedSpeed = c.GetSpeed();
+		storedMotion = Vector2.zero;
+		int usedSpeed = c.GetSpeed() ;
 		if (c.AmIFacingBackward())
 		{
 			usedSpeed *= -1;

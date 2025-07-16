@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class State_Walking : BaseState
 {
-	public override bool HandleGettingHit(BufferedInput input, bool low, bool overhead)
+	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
 	{
 		return (input.Back() && !low);
 	}
@@ -14,7 +14,7 @@ public class State_Walking : BaseState
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)
 	{
-
+		c.SetMotion(0, 0);
 	}
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
