@@ -476,6 +476,9 @@ MonoBehaviour:
   characterControllers:
   - {fileID: 16322286}
   - {fileID: 55983434}
+  characters:
+  - {fileID: 231097114}
+  - {fileID: 1821535271}
 --- !u!1 &55983432
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,6 +849,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!1 &214251564
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,6 +949,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!1 &231097110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,6 +1467,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1566,6 +1590,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!61 &680098351
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1659,6 +1690,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!61 &748062664
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1752,6 +1790,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!61 &988774446
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1906,6 +1951,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!1 &1017023370
 GameObject:
   m_ObjectHideFlags: 0
@@ -1969,6 +2021,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!61 &1023878043
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2123,6 +2182,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!1 &1173918356
 GameObject:
   m_ObjectHideFlags: 0
@@ -2352,6 +2418,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!1 &1446885597
 GameObject:
   m_ObjectHideFlags: 0
@@ -2471,6 +2544,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!61 &1479571029
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2745,6 +2825,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   box: {fileID: 0}
   myBoxType: 0
+  myHurtboxProperty:
+    damage: 5
+    hitstun: 15
+    blockstun: 10
+    attackHeight: 0
+    knockback: {x: 1, y: 0}
+    AttackTags: 
 --- !u!61 &1790880868
 BoxCollider2D:
   m_ObjectHideFlags: 0
