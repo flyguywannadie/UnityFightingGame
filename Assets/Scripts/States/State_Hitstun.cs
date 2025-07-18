@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class State_Hitstun : BaseState
 {
-	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
+	public override bool WasAttackBlocked(BufferedInput input, HurtboxProperties property)
 	{
 		return false;
 	}
@@ -11,17 +11,17 @@ public class State_Hitstun : BaseState
 	{
 		if (!c.IsOnGround())
 		{
-			c.SetAnimation(CommonAnimations.HITSTUN);
+			c.SetAnimation(CommonAnimations.AIRHIT);
 		}
 		else if (input.Down())
 		{
-			c.SetAnimation(CommonAnimations.HITSTUN);
+			c.SetAnimation(CommonAnimations.CROUCHHIT);
 		}
 		else
 		{
 			c.SetAnimation(CommonAnimations.HITSTUN);
 		}
-		c.LoseControl();
+		//c.LoseControl();
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)
@@ -33,11 +33,11 @@ public class State_Hitstun : BaseState
 	{
 		if (!c.IsOnGround())
 		{
-			c.SetAnimation(CommonAnimations.HITSTUN);
+			c.SetAnimation(CommonAnimations.AIRHIT);
 		}
 		else if (input.Down())
 		{
-			c.SetAnimation(CommonAnimations.HITSTUN);
+			c.SetAnimation(CommonAnimations.CROUCHHIT);
 		}
 		else
 		{

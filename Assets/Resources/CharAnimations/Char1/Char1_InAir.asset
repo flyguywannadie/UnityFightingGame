@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 708d93a153861124eb2aa81a47b21204, type: 3}
   m_Name: Char1_InAir
   m_EditorClassIdentifier: 
-  ID: 5
+  ID: 6
+  customID: 0
   Data:
   - duration: 1
     sprite: {fileID: 21300000, guid: 1bd7a21ed39070b48a0f2100409eb30c, type: 3}
@@ -20,7 +21,7 @@ MonoBehaviour:
   - duration: 0
     boxes:
     - position: {x: 0, y: -0.1}
-      size: {x: 0.6, y: 1.5}
+      size: {x: 0.7, y: 1.5}
       boxType: 0
   loop: 1
   changeStateOnFinish: 0

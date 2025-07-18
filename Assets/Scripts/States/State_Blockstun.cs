@@ -2,26 +2,54 @@ using UnityEngine;
 
 public class State_Blockstun : BaseState
 {
-	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
+	private bool onground;
+	private CommonAnimations blockingAnim;
+
+	public override bool WasAttackBlocked(BufferedInput input, HurtboxProperties property)
 	{
-		return true;
+		bool blocked = false;
+		CommonAnimations newblock = blockingAnim;
+		if (!onground)
+		{
+			blocked = input.Back();
+			newblock = CommonAnimations.AIRBLOCK;
+		}
+		else if (input.Down())
+		{
+			blocked = input.Back() && !(property.attackHeight == AttackHeight.OVERHEAD);
+			newblock = CommonAnimations.CROUCHBLOCK;
+		}
+		else
+		{
+			blocked = input.Back() && !(property.attackHeight == AttackHeight.LOW);
+			newblock = CommonAnimations.BLOCKSTUN;
+		}
+
+		if (blocked)
+		{
+			blockingAnim = newblock;
+		}
+
+		return blocked;
 	}
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
-		if (!c.IsOnGround())
+		onground = c.IsOnGround();
+		if (!onground)
 		{
-			c.SetAnimation(CommonAnimations.BLOCKSTUN);
+			blockingAnim = CommonAnimations.AIRBLOCK;
 		}
 		else if (input.Down())
 		{
-			c.SetAnimation(CommonAnimations.BLOCKSTUN);
+			blockingAnim = CommonAnimations.CROUCHBLOCK;
 		}
 		else
 		{
-			c.SetAnimation(CommonAnimations.BLOCKSTUN);
+			blockingAnim = CommonAnimations.BLOCKSTUN;
 		}
-		c.LoseControl();
+		c.SetAnimation(blockingAnim);
+		//c.LoseControl();
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)
@@ -31,17 +59,7 @@ public class State_Blockstun : BaseState
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
-		if (!c.IsOnGround())
-		{
-			c.SetAnimation(CommonAnimations.BLOCKSTUN);
-		}
-		else if (input.Down())
-		{
-			c.SetAnimation(CommonAnimations.BLOCKSTUN);
-		}
-		else
-		{
-			c.SetAnimation(CommonAnimations.BLOCKSTUN);
-		}
+		onground = c.IsOnGround();
+		c.SetAnimation(blockingAnim);
 	}
 }

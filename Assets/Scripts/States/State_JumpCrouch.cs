@@ -4,7 +4,7 @@ public class State_JumpCrouch : BaseState
 {
 	private Vector2 storedMotion;
 
-	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
+	public override bool WasAttackBlocked(BufferedInput input, HurtboxProperties property)
 	{
 		return true;
 	}

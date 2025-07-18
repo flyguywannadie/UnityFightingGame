@@ -2,24 +2,6 @@ using UnityEngine;
 
 public class Character1 : BaseCharacter
 {
-	public void LateUpdate()
-	{
-		if (Input.GetKeyDown(KeyCode.H))
-		{
-			GetHit(false, false);
-		}
-
-		if (Input.GetKeyDown(KeyCode.J))
-		{
-			GetHit(true, false);
-		}
-
-		if (Input.GetKeyDown(KeyCode.K))
-		{
-			GetHit(false, true);
-		}
-	}
-
 	public override void CharUpdate(BufferedInput input)
 	{
 		//if (onGround && knocked <= 0 && inControl)

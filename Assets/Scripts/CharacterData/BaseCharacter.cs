@@ -5,20 +5,25 @@ using UnityEngine.Windows;
 
 public enum CommonAnimations
 {
-	IDLE = 0,
-	WALKING = 1,
-	BLOCKSTUN = 2,
-	HITSTUN = 3,
-	JUMP = 4,
-	INAIR = 5,
-	INAIRKNOCKDOWNUP = 6,
-	INAIRKNOCKDOWNMID = 7,
-	INAIRKNOCKDOWNDOWN = 8,
-	KNOCKDOWN = 9,
-	ONGROUND = 10,
-	GETUP = 11,
-	CROUCH = 12,
-	BACKWALKING = 13,
+	CUSTOM = 0,
+	IDLE = 1,
+	WALKING = 2,
+	BLOCKSTUN = 3,
+	HITSTUN = 4,
+	JUMP = 5,
+	INAIR = 6,
+	INAIRKNOCKDOWNUP = 7,
+	INAIRKNOCKDOWNMID = 8,
+	INAIRKNOCKDOWNDOWN = 9,
+	KNOCKDOWN = 10,
+	ONGROUND = 11,
+	GETUP = 12,
+	CROUCH = 13,
+	BACKWALKING = 14,
+	CROUCHBLOCK = 15,
+	CROUCHHIT = 16,
+	AIRBLOCK = 17,
+	AIRHIT = 18,
 }
 
 public enum CharacterState
@@ -66,6 +71,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		InitializeStates();
 		editorHitboxes = false;
+		SetState(CharacterState.STANDING);
 	}
 
 	protected virtual void InitializeStates()
@@ -139,6 +145,7 @@ public abstract class BaseCharacter : MonoBehaviour
 				{
 					SetState(CharacterState.STANDING);
 				}
+				LoseControl();
 			}
 		}
 
@@ -302,19 +309,27 @@ public abstract class BaseCharacter : MonoBehaviour
 		states[stateIndex].OnEnterState(this, myLastInput);
 	}
 
-	public virtual void GetHit(bool low, bool overhead)
+	public virtual void GetHit(HurtboxProperties property)
 	{
-		ProcessHit(0, 30, states[stateIndex].WasAttackBlocked(myLastInput, low, overhead));
+		bool blocked = false;
+		if (property.attackHeight != AttackHeight.UNBLOCKABLE) {
+			blocked = states[stateIndex].WasAttackBlocked(myLastInput, property);
+		}
+
+		int stun = property.hitstun;
+		if (blocked)
+		{
+			stun = property.blockstun;
+		}
+
+		ProcessHit(property.damage, stun, blocked);
 	}
 
 	protected virtual void ProcessHit(int damage, int stun, bool blocked)
 	{
-		//states[0].WasAttackBlocked(this, input);
-
 		if (blocked)
 		{
 			SetState(CharacterState.BLOCKSTUN);
-			stun = stun / 4;
 		}
 		else
 		{

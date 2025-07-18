@@ -4,6 +4,7 @@ public class Hitbox : MonoBehaviour
 {
 	[SerializeField] private BoxCollider2D box;
 	[SerializeField] private BoxType myBoxType;
+	[SerializeField] private HurtboxProperties myHurtboxProperty;
 
 	private void Start()
 	{
@@ -19,7 +20,7 @@ public class Hitbox : MonoBehaviour
 		box.size = usedBox.size;
 
 		myBoxType = usedBox.boxType;
-		switch (usedBox.boxType)
+		switch (myBoxType)
 		{
 			case BoxType.HITBOX:
 				gameObject.layer = LayerMask.NameToLayer(gameObject.tag + "Hit");
@@ -28,6 +29,8 @@ public class Hitbox : MonoBehaviour
 				gameObject.layer = LayerMask.NameToLayer(gameObject.tag + "Hurt");
 				break;
 		}
+
+		//myHurtboxProperty = property;
 	}
 
 	public void Clear()
@@ -47,7 +50,7 @@ public class Hitbox : MonoBehaviour
 				break;
 			case BoxType.HURTBOX:
 				box.enabled = false;
-				GameManager.instance.QueueCollision(collision.attachedRigidbody.GetComponent<BaseCharacter>(), false, false);
+				GameManager.instance.QueueCollision(collision.attachedRigidbody.GetComponent<BaseCharacter>(), new HurtboxProperties());
 				Debug.Log("Hurtbox: " + tag + " " + name + " has hit with thing: " + collision.name);
 				break;
 		}

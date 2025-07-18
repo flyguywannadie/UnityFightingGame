@@ -4,7 +4,7 @@ using static Unity.Collections.AllocatorManager;
 
 public class State_InAir : BaseState
 {
-	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
+	public override bool WasAttackBlocked(BufferedInput input, HurtboxProperties property)
 	{
 		return (input.Back());
 	}

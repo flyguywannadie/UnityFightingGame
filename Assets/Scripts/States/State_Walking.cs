@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class State_Walking : BaseState
 {
-	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
+	public override bool WasAttackBlocked(BufferedInput input, HurtboxProperties property)
 	{
-		return (input.Back() && !low);
+		return (input.Back() && !(property.attackHeight == AttackHeight.LOW));
 	}
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)

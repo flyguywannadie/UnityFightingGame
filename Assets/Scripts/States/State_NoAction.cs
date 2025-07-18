@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class State_NoAction : BaseState
 {
-	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
+	public override bool WasAttackBlocked(BufferedInput input, HurtboxProperties property)
 	{
 		return true;
 	}

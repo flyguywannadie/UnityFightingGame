@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 708d93a153861124eb2aa81a47b21204, type: 3}
-  m_Name: Char1_Block
+  m_Name: Char1_Crouch_Block
   m_EditorClassIdentifier: 
-  ID: 3
+  ID: 15
   customID: 0
   Data:
   - duration: 1
-    sprite: {fileID: 21300000, guid: 71fc991c64d26f947a37eae5be03074f, type: 3}
+    sprite: {fileID: 21300000, guid: b66298f0c49bd7a429cca292f847af01, type: 3}
   HitboxData:
   - duration: 0
     boxes:
-    - position: {x: -0.1, y: -0.3}
-      size: {x: 0.6, y: 1.6}
+    - position: {x: -0.1, y: -0.5}
+      size: {x: 0.8, y: 1}
       boxType: 0
   loop: 1
   changeStateOnFinish: 0

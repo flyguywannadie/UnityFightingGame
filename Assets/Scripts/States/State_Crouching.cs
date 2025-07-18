@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class State_Crouching : BaseState
 {
-	public override bool WasAttackBlocked(BufferedInput input, bool low, bool overhead)
+	public override bool WasAttackBlocked(BufferedInput input, HurtboxProperties property)
 	{
-		return (input.DownBack() && !overhead);
+		return (input.DownBack() && !(property.attackHeight == AttackHeight.OVERHEAD));
 	}
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)

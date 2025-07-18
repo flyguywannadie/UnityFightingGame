@@ -38,42 +38,111 @@ public class InputBuffer : MonoBehaviour
 		sentInput = new BufferedInput();
 	}
 
-	public void Update()
-	{
-		InputCheck();
-	}
+	//private void InputCheck()
+	//{
+	//	if (inputMode == InputMode.NONE)
+	//	{
+	//		if (!a && IsKeyPressed(KeyCode.LeftArrow)) { a = true; }
+	//		if (!s && IsKeyPressed(KeyCode.DownArrow)) { s = true; }
+	//		if (!d && IsKeyPressed(KeyCode.RightArrow)) { d = true; }
+	//		if (!w && IsKeyPressed(KeyCode.UpArrow)) { w = true; }
+	//		if (!u && Input.GetKeyDown(KeyCode.B)) { u = true; }
+	//		if (!i && Input.GetKeyDown(KeyCode.N)) { i = true; }
+	//		if (!o && Input.GetKeyDown(KeyCode.M)) { o = true; }
+	//		return;
+	//	}
 
-	private void InputCheck()
+	//	if (!a && IsKeyPressed(KeyCode.A)) { a = true; }
+	//	if (!s && IsKeyPressed(KeyCode.S)) { s = true; }
+	//	if (!d && IsKeyPressed(KeyCode.D)) { d = true; }
+	//	if (!w && IsKeyPressed(KeyCode.Space)) { w = true; }
+	//	if (!u && Input.GetKeyDown(KeyCode.U)) { u = true; }
+	//	if (!i && Input.GetKeyDown(KeyCode.I)) { i = true; }
+	//	if (!o && Input.GetKeyDown(KeyCode.O)) { o = true; }
+	//}
+
+	public void OnUp(InputAction.CallbackContext ctx)
 	{
-		if (inputMode == InputMode.NONE)
+		var phas = ctx.action.phase;
+		if (phas == InputActionPhase.Started)
 		{
-			if (!a && IsKeyPressed(KeyCode.LeftArrow)) { a = true; }
-			if (!s && IsKeyPressed(KeyCode.DownArrow)) { s = true; }
-			if (!d && IsKeyPressed(KeyCode.RightArrow)) { d = true; }
-			if (!w && IsKeyPressed(KeyCode.UpArrow)) { w = true; }
-			if (!u && Input.GetKeyDown(KeyCode.B)) { u = true; }
-			if (!i && Input.GetKeyDown(KeyCode.N)) { i = true; }
-			if (!o && Input.GetKeyDown(KeyCode.M)) { o = true; }
-			return;
+			w = true;
 		}
-
-		if (!a && IsKeyPressed(KeyCode.A)) { a = true; }
-		if (!s && IsKeyPressed(KeyCode.S)) { s = true; }
-		if (!d && IsKeyPressed(KeyCode.D)) { d = true; }
-		if (!w && IsKeyPressed(KeyCode.Space)) { w = true; }
-		if (!u && Input.GetKeyDown(KeyCode.U)) { u = true; }
-		if (!i && Input.GetKeyDown(KeyCode.I)) { i = true; }
-		if (!o && Input.GetKeyDown(KeyCode.O)) { o = true; }
+		else if (phas == InputActionPhase.Canceled)
+		{
+			w = false;
+		}
 	}
 
-	public void OnJump()
+	public void OnDown(InputAction.CallbackContext ctx)
 	{
-		Debug.Log("New Input System");
+		var phas = ctx.action.phase;
+		if (phas == InputActionPhase.Started)
+		{
+			s = true;
+		}
+		else if (phas == InputActionPhase.Canceled)
+		{
+			s = false;
+		}
+	}
+
+	public void OnLeft(InputAction.CallbackContext ctx)
+	{
+		var phas = ctx.action.phase;
+		if (phas == InputActionPhase.Started)
+		{
+			a = true;
+		}
+		else if (phas == InputActionPhase.Canceled)
+		{
+			a = false;
+		}
+	}
+
+	public void OnRight(InputAction.CallbackContext ctx)
+	{
+		var phas = ctx.action.phase;
+		if (phas == InputActionPhase.Started)
+		{
+			d = true;
+		}
+		else if (phas == InputActionPhase.Canceled)
+		{
+			d = false;
+		}
+	}
+
+	public void OnLight(InputAction.CallbackContext ctx)
+	{
+		var phas = ctx.action.phase;
+		if (phas == InputActionPhase.Started)
+		{
+			u = true;
+		}
+	}
+
+	public void OnHeavy(InputAction.CallbackContext ctx)
+	{
+		var phas = ctx.action.phase;
+		if (phas == InputActionPhase.Started)
+		{
+			i = true;
+		}
+	}
+
+	public void OnSpecial(InputAction.CallbackContext ctx)
+	{
+		var phas = ctx.action.phase;
+		if (phas == InputActionPhase.Started)
+		{
+			o = true;
+		}
 	}
 
 	public void InputUpdate()
     {
-		InputCheck();
+		//InputCheck();
 
 		UpdateBuffer();
 
@@ -91,25 +160,25 @@ public class InputBuffer : MonoBehaviour
 		{
 			dir -= 1;
 			newInput.SetBack();
-			a = false;
+			//a = false;
 		}
 		if (s)
 		{
 			dir -= 3;
 			newInput.SetDown();
-			s = false;
+			//s = false;
 		}
 		if (d)
 		{
 			dir += 1;
 			newInput.SetForward();
-			d = false;
+			//d = false;
 		}
 		if (w)
 		{
 			dir += 3;
 			newInput.SetUp();
-			w = false;
+			//w = false;
 		}
 		if (u)
 		{

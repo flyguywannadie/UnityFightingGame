@@ -6,6 +6,6 @@ public abstract class BaseState
 	public abstract void OnEnterState(BaseCharacter c, BufferedInput input);
 	public abstract void StateUpdate(BaseCharacter c, BufferedInput input);
 	public abstract void OnExitState(BaseCharacter c, BufferedInput input);
-	public abstract bool WasAttackBlocked(BufferedInput input, bool low, bool overhead);
+	public abstract bool WasAttackBlocked(BufferedInput input, HurtboxProperties property);
 	//public virtual void MovementOverride(BaseCharacter c, BufferedInput input) {}
 }

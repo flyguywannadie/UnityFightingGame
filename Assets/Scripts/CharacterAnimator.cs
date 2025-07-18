@@ -23,7 +23,7 @@ public class CharacterAnimator : MonoBehaviour
 		currentFrame = 0;
 		currentHitboxFrame = -1;
 		animations = new List<CharacterAnimation>(Resources.LoadAll<CharacterAnimation>(animPath));
-		ChangeAnimationToID(0);
+		ChangeAnimationToID((int)CommonAnimations.IDLE);
 	}
 
 	public void AnimatorUpdate(BaseCharacter c)
@@ -50,7 +50,8 @@ public class CharacterAnimator : MonoBehaviour
 		int hitboxIndex = current.GetHitboxDataIndex(currentFrame);
 		if (hitboxIndex > currentHitboxFrame)
 		{
-			hitboxBuilder.BuildHitbox(current.GetHitboxData(hitboxIndex));
+			CharacterAnimation.FrameData hitboxdata = current.GetHitboxData(hitboxIndex);
+			hitboxBuilder.BuildHitbox(hitboxdata);
 			currentHitboxFrame = hitboxIndex;
 		}
 
@@ -63,7 +64,7 @@ public class CharacterAnimator : MonoBehaviour
 
 	public void ChangeAnimationToID(int id)
 	{
-		CharacterAnimation anim = animations.Find(x => x.ID == id);
+		CharacterAnimation anim = animations.Find(x => x.GetAnimID() == id);
 		if (anim == null)
 		{
 			Debug.LogError("There is no animation of ID: " + id + " (" + ((CommonAnimations)id).ToString() + ")");
@@ -80,7 +81,14 @@ public class CharacterAnimator : MonoBehaviour
 
 	public int GetCurrentAnimationID()
 	{
-		return animations[currentAnimation].ID;
+		var current = animations[currentAnimation];
+
+		if (current.ID == CommonAnimations.CUSTOM)
+		{
+			return current.customID;
+		}
+
+		return (int)current.ID;
 	}
 	
 	public CharacterAnimation.FrameData GetCurrentFrameData(int currentFrame)

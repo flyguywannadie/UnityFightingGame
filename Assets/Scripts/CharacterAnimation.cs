@@ -23,7 +23,7 @@ public class CharacterAnimation : ScriptableObject
     {
         public int duration;
         public BoxData[] boxes;
-    }
+	}
 
     [Serializable]
     public struct BoxData
@@ -31,7 +31,8 @@ public class CharacterAnimation : ScriptableObject
         public Vector2 position;
         public Vector2 size;
         public BoxType boxType;
-    }
+		public int boxProperty;
+	}
 
     [Serializable]
     public struct AnimEvent
@@ -40,13 +41,15 @@ public class CharacterAnimation : ScriptableObject
         public string name;
     }
 
-    public int ID;
+    public CommonAnimations ID;
+    public int customID;
     public AnimFrames[] Data;
     public List<FrameData> HitboxData;
 	public bool loop = true;
     public bool changeStateOnFinish = false;
     public CharacterState endState;
     public List<AnimEvent> Events;
+    public List<HurtboxProperties> hurtboxProperties;
 
     public Sprite GetCurrentSprite(int frame)
     {
@@ -107,5 +110,19 @@ public class CharacterAnimation : ScriptableObject
 		//	}
 		//}
 		return HitboxData[index];
+    }
+
+    public HurtboxProperties GetHurtboxProperty(int index)
+    {
+        return hurtboxProperties[index];
+    }
+
+    public int GetAnimID()
+    {
+        if (ID == CommonAnimations.CUSTOM)
+        {
+            return customID;
+        }
+        return (int)ID;
     }
 }
