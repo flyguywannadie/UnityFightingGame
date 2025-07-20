@@ -37,7 +37,7 @@ MonoBehaviour:
     - position: {x: 0.9, y: 0.3}
       size: {x: 0.6, y: 2.2}
       hurtboxProperty:
-        damage: 0
+        damage: 15
         hitstun: 30
         blockstun: 15
         attackHeight: 0
