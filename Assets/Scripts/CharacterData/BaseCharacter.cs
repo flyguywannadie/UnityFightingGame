@@ -2,6 +2,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Windows;
+using static Unity.Collections.AllocatorManager;
 
 public enum CommonAnimations
 {
@@ -41,11 +42,16 @@ public enum CharacterState
 
 public abstract class BaseCharacter : MonoBehaviour
 {
+	[SerializeField] protected int maxHealth = 200;
+	[SerializeField] protected int health = 200;
 	[SerializeField] protected int speed = 5;
-	[SerializeField] protected int jumpPower = 4;
+	[SerializeField] protected float jumpHeight = 3;
 	[SerializeField] protected int myState = 0;
-	[SerializeField] protected float gravity = -9.8f;
+	private float gravity = -40f;
+	[SerializeField] protected int combo = 0;
 	[SerializeField] public Vector2 motion { get; protected set; }
+	[SerializeField] protected float knockback;
+	[SerializeField] protected float weight = 12;
 	[SerializeField] protected Transform whoIMove;
 	[SerializeField] protected SpriteRenderer myVisuals;
 	[SerializeField] protected CharacterAnimator animator;
@@ -68,6 +74,8 @@ public abstract class BaseCharacter : MonoBehaviour
 			whoIMove = transform;
 		}
 		myLastInput = new BufferedInput();
+
+		health = maxHealth;
 
 		InitializeStates();
 		editorHitboxes = false;
@@ -92,6 +100,11 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public virtual void CharUpdate(BufferedInput input)
 	{
+		if (health <= 0)
+		{
+			return;
+		}
+
 		bool faceBack = AmIFacingBackward();
 		if (faceBack)
 		{
@@ -105,17 +118,20 @@ public abstract class BaseCharacter : MonoBehaviour
 		{
 			if (inControl)
 			{
+				Vector3 s = whoIMove.localScale;
 				if (faceBack)
 				{
-					whoIMove.localScale = new Vector3(-1, 1, 1);
+					whoIMove.localScale = new Vector3(Mathf.Abs(s.x) * -1, s.y, s.z);
 				}
 				else
 				{
-					whoIMove.localScale = new Vector3(1, 1, 1);
+					whoIMove.localScale = new Vector3(Mathf.Abs(s.x), s.y, s.z);
 				}
 					
 				//myVisuals.flipX = faceBack;
 			}
+
+			knockback = Mathf.MoveTowards(knockback, 0.0f, weight * Time.fixedDeltaTime);
 		}
 		else
 		{
@@ -145,7 +161,12 @@ public abstract class BaseCharacter : MonoBehaviour
 				{
 					SetState(CharacterState.STANDING);
 				}
-				LoseControl();
+				//LoseControl();
+			}
+
+			if (stateIndex == (int)CharacterState.BLOCKSTUN || stateIndex == (int)CharacterState.HITSTUN)
+			{
+				states[stateIndex].StateUpdate(this, input);
 			}
 		}
 
@@ -169,7 +190,11 @@ public abstract class BaseCharacter : MonoBehaviour
 	protected virtual void MoveCharacter()
 	{
 		bool currentlyGrounded = IsOnGround();
-		whoIMove.Translate(motion * Time.fixedDeltaTime);
+		Vector2 usedMotion = motion;
+
+		usedMotion.x += knockback;
+
+		whoIMove.Translate(usedMotion * Time.fixedDeltaTime);
 		if (!currentlyGrounded && IsOnGround())
 		{
 			if (hitstun <= 0)
@@ -242,6 +267,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	public virtual void GainControl()
 	{
 		inControl = true;
+		combo = 0;
 	}
 
 	public void AnimStop()
@@ -251,7 +277,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public virtual void JumpAction()
 	{
-		AddMotion(0, jumpPower);
+		AddMotion(0, jumpHeight);
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
 		SetState(CharacterState.INAIR);
 	}
@@ -316,16 +342,34 @@ public abstract class BaseCharacter : MonoBehaviour
 			blocked = states[stateIndex].WasAttackBlocked(myLastInput, property);
 		}
 
+		int damage = property.damage;
 		int stun = property.hitstun;
+		float knock = property.knockback.x;
 		if (blocked)
 		{
+			damage = 0;
 			stun = property.blockstun;
+			knock *= 0.5f;
+		} else
+		{
+			if (IsOnGround())
+			{
+				SetMotion(motion.x, Mathf.Max(property.knockback.y, 0.0f));
+			} else
+			{
+				SetMotion(motion.x, property.knockback.y);
+			}
 		}
 
-		ProcessHit(property.damage, stun, blocked);
+		if (!AmIFacingBackward())
+		{
+			knock *= -1;
+		}
+
+		ProcessHit(damage, stun, blocked, knock);
 	}
 
-	protected virtual void ProcessHit(int damage, int stun, bool blocked)
+	protected virtual void ProcessHit(int damage, int stun, bool blocked, float knockback)
 	{
 		if (blocked)
 		{
@@ -334,10 +378,23 @@ public abstract class BaseCharacter : MonoBehaviour
 		else
 		{
 			SetState(CharacterState.HITSTUN);
+			combo += 1;
 		}
 
-		// health - damage
+		this.health -= damage;
 		this.hitstun = stun;
+		this.knockback = knockback;
+	}
+
+	public virtual void Reset()
+	{
+		combo = 0;
+		health = maxHealth;
+		hitstun = 0;
+		knockback = 0;
+		motion = Vector2.zero;
+		SetState(CharacterState.STANDING);
+		SetAnimation(CommonAnimations.IDLE);
 	}
 
 	public int GetHitstun()
@@ -348,6 +405,21 @@ public abstract class BaseCharacter : MonoBehaviour
 	public int GetSpeed()
 	{
 		return speed;
+	}
+
+	public int GetMaxHealth()
+	{
+		return maxHealth;
+	}
+
+	public int GetCombo()
+	{
+		return combo;
+	}
+
+	public int GetHealth()
+	{
+		return health;
 	}
 
 	public bool AmIFacingBackward()
@@ -385,12 +457,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	private void DrawBoxes(CharacterAnimation.FrameData frameData)
 	{
-		if (frameData.boxes == null)
-		{
-			return;
-		}
-
-		foreach (CharacterAnimation.BoxData box in frameData.boxes)
+		foreach (BaseBoxData box in frameData.hitboxes)
 		{
 			Vector3 usedPos = box.position;
 			if (myVisuals.flipX)
@@ -398,15 +465,19 @@ public abstract class BaseCharacter : MonoBehaviour
 				usedPos.x *= -1;
 			}
 
-			switch (box.boxType)
+			Gizmos.color = Color.cyan;
+			Gizmos.DrawWireCube(transform.position + usedPos, box.size);
+		}
+
+		foreach (HurtBoxData box in frameData.hurtboxes)
+		{
+			Vector3 usedPos = box.position;
+			if (myVisuals.flipX)
 			{
-				case BoxType.HITBOX:
-					Gizmos.color = Color.cyan;
-					break;
-				case BoxType.HURTBOX:
-					Gizmos.color = Color.red;
-					break;
+				usedPos.x *= -1;
 			}
+
+			Gizmos.color = Color.red;
 			Gizmos.DrawWireCube(transform.position + usedPos, box.size);
 		}
 	}

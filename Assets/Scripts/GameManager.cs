@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
 		public void DoInteraction()
 		{
+			//Debug.Log(taker.name + " Has Been Hit");
 			taker.GetHit(property);
 		}
 	}
@@ -28,6 +29,16 @@ public class GameManager : MonoBehaviour
 	private void Start()
 	{
 		instance = this;
+		RestartGame();
+	}
+
+	private void RestartGame()
+	{
+		characters[0].transform.parent.position = new Vector3(-4,0,0);
+		characters[1].transform.parent.position = new Vector3(4,0,0);
+
+		characters[0].Reset();
+		characters[1].Reset();
 	}
 
 	private void FixedUpdate()
@@ -77,6 +88,11 @@ public class GameManager : MonoBehaviour
 			property.attackHeight = AttackHeight.UNBLOCKABLE;
 			QueueCollision(characters[0],property);
 			QueueCollision(characters[1],property);
+		}
+
+		if (Input.GetKeyDown(KeyCode.Backspace))
+		{
+			RestartGame();
 		}
 	}
 

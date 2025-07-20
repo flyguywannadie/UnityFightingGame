@@ -12,7 +12,7 @@ public class State_JumpCrouch : BaseState
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
 		storedMotion = Vector2.zero;
-		int usedSpeed = c.GetSpeed() ;
+		int usedSpeed = c.GetSpeed();
 		if (c.AmIFacingBackward())
 		{
 			usedSpeed *= -1;
@@ -32,6 +32,7 @@ public class State_JumpCrouch : BaseState
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)
 	{
+		Debug.Log(storedMotion.y);
 		c.AddMotion(storedMotion.x, storedMotion.y);
 		c.GainControl();
 	}

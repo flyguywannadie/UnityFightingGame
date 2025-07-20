@@ -1,12 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
-public enum BoxType
-{
-    HITBOX,
-    HURTBOX
-}
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "New Char Animation", menuName = "Scriptable Objects/CharacterAnimation")]
 public class CharacterAnimation : ScriptableObject
@@ -22,7 +17,9 @@ public class CharacterAnimation : ScriptableObject
     public struct FrameData
     {
         public int duration;
-        public BoxData[] boxes;
+        //public BoxData[] boxes;
+		public BaseBoxData[] hitboxes;
+		public HurtBoxData[] hurtboxes;
 	}
 
     [Serializable]
@@ -30,8 +27,6 @@ public class CharacterAnimation : ScriptableObject
     {
         public Vector2 position;
         public Vector2 size;
-        public BoxType boxType;
-		public int boxProperty;
 	}
 
     [Serializable]
@@ -44,12 +39,11 @@ public class CharacterAnimation : ScriptableObject
     public CommonAnimations ID;
     public int customID;
     public AnimFrames[] Data;
-    public List<FrameData> HitboxData;
+    [FormerlySerializedAs("HitboxData")] public List<FrameData> hitboxDatas;
 	public bool loop = true;
     public bool changeStateOnFinish = false;
     public CharacterState endState;
     public List<AnimEvent> Events;
-    public List<HurtboxProperties> hurtboxProperties;
 
     public Sprite GetCurrentSprite(int frame)
     {
@@ -83,38 +77,33 @@ public class CharacterAnimation : ScriptableObject
     public int GetHitboxDataIndex(int frame)
     {
         int duration = 0;
-        for (int i = 0; i < HitboxData.Count; i++)
+        for (int i = 0; i < hitboxDatas.Count; i++)
         {
-            duration += HitboxData[i].duration;
+            duration += hitboxDatas[i].duration;
             if (frame < duration)
             {
                 return i;
             }
         }
 
-        return HitboxData.Count - 1;
+        return hitboxDatas.Count - 1;
     }
 
     public FrameData GetHitboxData(int index)
     {
-        index = Mathf.Clamp(index, 0, HitboxData.Count - 1);
-		//for (int i = 0; i < HitboxData.Count; i++)
+        index = Mathf.Clamp(index, 0, hitboxDatas.Count - 1);
+		//for (int i = 0; i < hitboxDatas.Count; i++)
 		//{
-		//	if (HitboxData[i].duration > frame)
+		//	if (hitboxDatas[i].duration > frame)
 		//	{
-		//		return HitboxData[i];
+		//		return hitboxDatas[i];
 		//	}
 		//	else
 		//	{
-		//		frame -= HitboxData[i].duration;
+		//		frame -= hitboxDatas[i].duration;
 		//	}
 		//}
-		return HitboxData[index];
-    }
-
-    public HurtboxProperties GetHurtboxProperty(int index)
-    {
-        return hurtboxProperties[index];
+		return hitboxDatas[index];
     }
 
     public int GetAnimID()

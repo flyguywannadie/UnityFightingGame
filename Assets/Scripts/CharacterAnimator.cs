@@ -16,7 +16,7 @@ public class CharacterAnimator : MonoBehaviour
 	public int currentAnimFrame;
 	public int currentHitboxFrame;
 
-	public HitboxBuilder hitboxBuilder;
+	public FrameDataBoxBuilder hitboxBuilder;
 
 	private void Start()
 	{

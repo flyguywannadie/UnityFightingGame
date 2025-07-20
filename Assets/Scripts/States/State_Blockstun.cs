@@ -49,7 +49,7 @@ public class State_Blockstun : BaseState
 			blockingAnim = CommonAnimations.BLOCKSTUN;
 		}
 		c.SetAnimation(blockingAnim);
-		//c.LoseControl();
+		c.LoseControl();
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)

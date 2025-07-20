@@ -21,7 +21,7 @@ public class State_Hitstun : BaseState
 		{
 			c.SetAnimation(CommonAnimations.HITSTUN);
 		}
-		//c.LoseControl();
+		c.LoseControl();
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)

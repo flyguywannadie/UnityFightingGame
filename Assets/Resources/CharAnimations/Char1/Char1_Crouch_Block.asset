@@ -17,12 +17,15 @@ MonoBehaviour:
   Data:
   - duration: 1
     sprite: {fileID: 21300000, guid: b66298f0c49bd7a429cca292f847af01, type: 3}
-  HitboxData:
+  hitboxDatas:
   - duration: 0
     boxes:
     - position: {x: -0.1, y: -0.5}
       size: {x: 0.8, y: 1}
-      boxType: 0
+    hitboxes:
+    - position: {x: -0.1, y: -0.5}
+      size: {x: 0.8, y: 1}
+    hurtboxes: []
   loop: 1
   changeStateOnFinish: 0
   endState: 0

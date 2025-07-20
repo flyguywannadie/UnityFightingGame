@@ -21,25 +21,31 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: c3cb96d41bb61954386a9b20e04cff43, type: 3}
   - duration: 13
     sprite: {fileID: 21300000, guid: 3095c4b4b6897834787da7b0659f625f, type: 3}
-  HitboxData:
+  hitboxDatas:
   - duration: 5
-    boxes:
+    hitboxes:
     - position: {x: -0.2, y: -0.1}
       size: {x: 0.9, y: 1.7}
-      boxType: 0
+    hurtboxes: []
   - duration: 13
-    boxes:
+    hitboxes:
     - position: {x: 0, y: -0.2}
       size: {x: 0.8, y: 1.2}
-      boxType: 0
+    hurtboxes:
     - position: {x: 0.1, y: -0.1}
       size: {x: 0.8, y: 0.5}
-      boxType: 1
+      hurtboxProperty:
+        damage: 20
+        hitstun: 60
+        blockstun: 2
+        attackHeight: 0
+        knockback: {x: 0, y: 0}
+        AttackTags: 
   - duration: 13
-    boxes:
+    hitboxes:
     - position: {x: 0.1, y: -0.25}
       size: {x: 1, y: 1}
-      boxType: 0
+    hurtboxes: []
   loop: 0
   changeStateOnFinish: 1
   endState: 4
