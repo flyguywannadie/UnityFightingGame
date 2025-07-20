@@ -195,6 +195,9 @@ public abstract class BaseCharacter : MonoBehaviour
 		usedMotion.x += knockback;
 
 		whoIMove.Translate(usedMotion * Time.fixedDeltaTime);
+
+		whoIMove.position = new Vector3(Mathf.Clamp(whoIMove.position.x, -9.0f, 9.0f), whoIMove.position.y,0);
+
 		if (!currentlyGrounded && IsOnGround())
 		{
 			if (hitstun <= 0)

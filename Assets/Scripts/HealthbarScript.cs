@@ -16,6 +16,7 @@ public class HealthbarScript : MonoBehaviour
 	private void Update()
 	{
 		health.value = character.GetHealth();
+		combo.gameObject.SetActive(character.GetCombo() > 1);
 		combo.text = character.GetCombo().ToString();
 	}
 }
