@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,10 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private InputBuffer[] characterControllers;
 	[SerializeField] private BaseCharacter[] characters;
 
+	[SerializeField] private bool frameAdvanceMode = false;
+	[SerializeField] private bool advanceFrame = false;
+
+	[Serializable]
 	private class CharInteraction
 	{
 		private BaseCharacter taker;
@@ -43,18 +48,23 @@ public class GameManager : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		foreach (InputBuffer control in characterControllers)
+		if (!frameAdvanceMode || (frameAdvanceMode && advanceFrame))
 		{
-			control.InputUpdate();
-		}
-
-		if (interactions.Count > 0)
-		{
-			foreach (CharInteraction collision in interactions)
+			foreach (InputBuffer control in characterControllers)
 			{
-				collision.DoInteraction();
+				control.InputUpdate();
 			}
-			interactions.Clear();
+
+			if (interactions.Count > 0)
+			{
+				foreach (CharInteraction collision in interactions)
+				{
+					collision.DoInteraction();
+				}
+				interactions.Clear();
+			}
+
+			advanceFrame = false;
 		}
 	}
 
@@ -93,6 +103,16 @@ public class GameManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Backspace))
 		{
 			RestartGame();
+		}
+
+		if (Input.GetKeyDown(KeyCode.G))
+		{
+			frameAdvanceMode = !frameAdvanceMode;
+		}
+
+		if (Input.GetKeyDown(KeyCode.T))
+		{
+			advanceFrame = true;
 		}
 	}
 

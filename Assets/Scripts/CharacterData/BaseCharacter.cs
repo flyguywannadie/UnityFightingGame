@@ -453,6 +453,8 @@ public abstract class BaseCharacter : MonoBehaviour
 		this.health -= damage;
 		this.hitstun = stun;
 		this.knockback = knockback;
+
+		ChangeState();
 	}
 
 	public virtual void ResetChar()
