@@ -1114,7 +1114,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 548630225390daf4a98595673bdbd3db, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b10273dbb245d884ba9ac62ee94881b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1162,8 +1162,7 @@ MonoBehaviour:
   maxHealth: 200
   health: 200
   speed: 5
-  jumpHeight: 15
-  myState: 0
+  jumpPower: 15
   combo: 0
   knockback: 0
   weight: 12
@@ -1172,6 +1171,7 @@ MonoBehaviour:
   animator: {fileID: 231097115}
   inControl: 1
   hitstun: 0
+  knocked: 0
   otherPerson: {fileID: 1956800223}
   stateIndex: 0
   queuedState: 0
@@ -1197,9 +1197,9 @@ MonoBehaviour:
   currentFrame: 0
   visuals: {fileID: 231097112}
   animations:
-  - {fileID: 11400000, guid: 40b5753fdfb18824a988a045fcf9296b, type: 2}
-  - {fileID: 11400000, guid: a909e5c331d648c4297fdd192b06d834, type: 2}
-  - {fileID: 11400000, guid: 23ea0a5f2bd398b4585888964e7489ce, type: 2}
+  - {fileID: 11400000, guid: b803e13195dc7be4abb3f67996f304e1, type: 2}
+  - {fileID: 11400000, guid: f0ac3a58875fadb4491c1dba277ee1fd, type: 2}
+  - {fileID: 11400000, guid: c44525661c903ed41b9657dedcfae5c7, type: 2}
   currentAnimation: 0
   currentAnimFrame: 0
   currentHitboxFrame: 0
@@ -4404,8 +4404,7 @@ MonoBehaviour:
   maxHealth: 200
   health: 200
   speed: 5
-  jumpHeight: 15
-  myState: 0
+  jumpPower: 15
   combo: 0
   knockback: 0
   weight: 12
@@ -4414,6 +4413,7 @@ MonoBehaviour:
   animator: {fileID: 1821535272}
   inControl: 1
   hitstun: 0
+  knocked: 0
   otherPerson: {fileID: 52288768}
   stateIndex: 0
   queuedState: 0
@@ -4422,7 +4422,7 @@ MonoBehaviour:
     frames: 0
   moves:
   - {fileID: 11400000, guid: aa38cfde28737d7419f8e2d3cad6ac31, type: 2}
-  editorHitboxes: 0
+  editorHitboxes: 1
 --- !u!114 &1821535272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4439,7 +4439,7 @@ MonoBehaviour:
   currentFrame: 0
   visuals: {fileID: 1821535273}
   animations:
-  - {fileID: 11400000, guid: 7871c98394b5a6f4ab200f6296fed56b, type: 2}
+  - {fileID: 11400000, guid: 0e8a9c7e817ac6440ae33a8f6540ea68, type: 2}
   currentAnimation: 0
   currentAnimFrame: 0
   currentHitboxFrame: 0
@@ -4488,7 +4488,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 599a7dc15b13a554390fdf8047d7d4e4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1b5e5a0df0e6e2a4d943a0c81dc80082, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4658,7 +4658,7 @@ Transform:
   m_GameObject: {fileID: 1956800222}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4, y: 0, z: 0}
+  m_LocalPosition: {x: 0.08, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:

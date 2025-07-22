@@ -19,7 +19,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 26632d1176ab00542a170bce659ad5af, type: 3}
   - duration: 5
     sprite: {fileID: 21300000, guid: ac69adb66d274584b9755182ac40c7fa, type: 3}
-  - duration: 8
+  - duration: 12
     sprite: {fileID: 21300000, guid: 53ac6894ad79db3438efd2279387226f, type: 3}
   hitboxDatas:
   - duration: 11
@@ -42,8 +42,8 @@ MonoBehaviour:
         blockstun: 15
         attackHeight: 0
         knockback: {x: 2, y: 15}
-        AttackTags: 
-  - duration: 8
+        AttackTags: 0000000002000000
+  - duration: 12
     hitboxes:
     - position: {x: 0.2, y: -0.2}
       size: {x: 0.6, y: 1.6}

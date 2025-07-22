@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class State_Attack : BaseState
+public class State_OnGround : BaseState
 {
 	public override bool WasAttackBlocked(BufferedInput input, HurtboxProperties property)
 	{
@@ -9,20 +9,11 @@ public class State_Attack : BaseState
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
-		if (c.IsOnGround())
-		{
-			c.SetMotion(0, 0);
-		}
-		c.LoseControl();
-		c.LoseCombo();
+		c.SetAnimation(CommonAnimations.ONGROUND);
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)
 	{
-		if (c.IsOnGround())
-		{
-			c.SetMotion(0, 0);
-		}
 		c.GainControl();
 	}
 

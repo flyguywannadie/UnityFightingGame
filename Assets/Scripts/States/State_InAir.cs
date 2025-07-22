@@ -12,6 +12,7 @@ public class State_InAir : BaseState
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
 		c.SetAnimation(CommonAnimations.INAIR);
+		c.LoseCombo();
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)

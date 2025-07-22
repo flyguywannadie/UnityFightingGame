@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class BuiltHurtbox : BaseBuildableBox
 {
@@ -36,7 +36,12 @@ public class BuiltHurtbox : BaseBuildableBox
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		GameManager.instance.QueueCollision(collision.attachedRigidbody.GetComponent<BaseCharacter>(), myHurtboxProperty);
-		Debug.Log("BuiltHurtbox: " + tag + " " + name + " has hit with thing: " + collision.name);
+		if (!myHurtboxProperty.HasTag(AttackTags.IGNOREPUSHBACK))
+		{
+			var pushback = new HurtboxProperties(Vector2.right * 2, new List<AttackTags>() { AttackTags.ONLYPUSH });
+			GameManager.instance.QueueCollision(box.attachedRigidbody.GetComponent<BaseCharacter>(), pushback);
+		}
+		//Debug.Log("BuiltHurtbox: " + tag + " " + name + " has hit with thing: " + collision.name);
 		box.enabled = false;
 	}
 }

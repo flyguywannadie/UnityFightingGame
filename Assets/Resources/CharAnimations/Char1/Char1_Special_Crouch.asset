@@ -27,7 +27,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: fbd8653fcd5052348a81d2c0cba5394e, type: 3}
   - duration: 5
     sprite: {fileID: 21300000, guid: 36382b121e967b3489377cf233468d59, type: 3}
-  - duration: 10
+  - duration: 20
     sprite: {fileID: 21300000, guid: c0dcefe7c7cd4f24f9f7eb7c248af5c1, type: 3}
   hitboxDatas:
   - duration: 8
@@ -44,11 +44,11 @@ MonoBehaviour:
       size: {x: 2, y: 0.5}
       hurtboxProperty:
         damage: 5
-        hitstun: 15
-        blockstun: 15
+        hitstun: 20
+        blockstun: 10
         attackHeight: 0
         knockback: {x: 10, y: 2}
-        AttackTags: 
+        AttackTags: 05000000
   - duration: 5
     hitboxes:
     - position: {x: 0, y: -0.5}
@@ -58,11 +58,11 @@ MonoBehaviour:
       size: {x: 2, y: 0.5}
       hurtboxProperty:
         damage: 5
-        hitstun: 15
-        blockstun: 15
+        hitstun: 20
+        blockstun: 10
         attackHeight: 0
         knockback: {x: 10, y: 2}
-        AttackTags: 
+        AttackTags: 05000000
   - duration: 5
     hitboxes:
     - position: {x: 0, y: -0.5}
@@ -72,11 +72,11 @@ MonoBehaviour:
       size: {x: 2, y: 0.5}
       hurtboxProperty:
         damage: 5
-        hitstun: 15
-        blockstun: 15
+        hitstun: 20
+        blockstun: 10
         attackHeight: 0
         knockback: {x: 10, y: 2}
-        AttackTags: 
+        AttackTags: 05000000
   - duration: 5
     hitboxes:
     - position: {x: 0, y: -0.5}
@@ -86,11 +86,11 @@ MonoBehaviour:
       size: {x: 2, y: 0.5}
       hurtboxProperty:
         damage: 5
-        hitstun: 15
-        blockstun: 15
+        hitstun: 20
+        blockstun: 10
         attackHeight: 0
         knockback: {x: 10, y: 2}
-        AttackTags: 
+        AttackTags: 05000000
   - duration: 5
     hitboxes:
     - position: {x: 0, y: -0.5}
@@ -100,12 +100,12 @@ MonoBehaviour:
       size: {x: 2, y: 0.5}
       hurtboxProperty:
         damage: 5
-        hitstun: 15
-        blockstun: 15
+        hitstun: 20
+        blockstun: 10
         attackHeight: 0
         knockback: {x: 10, y: 2}
-        AttackTags: 
-  - duration: 10
+        AttackTags: 05000000
+  - duration: 20
     hitboxes:
     - position: {x: 0.25, y: -0.65}
       size: {x: 1.3, y: 0.9}

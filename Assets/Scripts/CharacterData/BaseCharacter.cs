@@ -2,6 +2,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Windows;
+using UnityEngine.WSA;
 using static Unity.Collections.AllocatorManager;
 
 public enum CommonAnimations
@@ -25,6 +26,15 @@ public enum CommonAnimations
 	CROUCHHIT = 16,
 	AIRBLOCK = 17,
 	AIRHIT = 18,
+	LIGHT = 19,
+	LIGHTC = 20,
+	LIGHTA = 21,
+	HEAVY = 22,
+	HEAVYC = 23,
+	HEAVYA = 24,
+	SPECIAL = 25,
+	SPECIALC = 26,
+	SPECIALA = 27,
 }
 
 public enum CharacterState
@@ -37,7 +47,9 @@ public enum CharacterState
 	ATTACK = 5,
 	BLOCKSTUN = 6,
 	HITSTUN = 7,
-	NOACTION = 8,
+	KNOCKDOWN = 8,
+	ONGROUND = 9,
+	NOACTION = 10,
 }
 
 public abstract class BaseCharacter : MonoBehaviour
@@ -45,8 +57,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] protected int maxHealth = 200;
 	[SerializeField] protected int health = 200;
 	[SerializeField] protected int speed = 5;
-	[SerializeField] protected float jumpHeight = 3;
-	[SerializeField] protected int myState = 0;
+	[SerializeField] protected float jumpPower = 15;
 	private float gravity = -40f;
 	[SerializeField] protected int combo = 0;
 	[SerializeField] public Vector2 motion { get; protected set; }
@@ -59,6 +70,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] protected bool inControl;
 	//[SerializeField] protected bool onGround = true;
 	[SerializeField] protected int hitstun = 0;
+	[SerializeField] protected int knocked = 0;
 	[SerializeField] private Transform otherPerson;
 	[SerializeField] private BaseState[] states;
 	[SerializeField] private int stateIndex = 0;
@@ -94,6 +106,8 @@ public abstract class BaseCharacter : MonoBehaviour
 			new State_Attack(),
 			new State_Blockstun(),
 			new State_Hitstun(),
+			new State_Knockdown(),
+			new State_OnGround(),
 			new State_NoAction(),
 		};
 	}
@@ -102,7 +116,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	{
 		if (health <= 0)
 		{
-			return;
+			input.Clear();
 		}
 
 		bool faceBack = AmIFacingBackward();
@@ -143,7 +157,20 @@ public abstract class BaseCharacter : MonoBehaviour
 			//}
 		}
 
-		if (hitstun > 0)
+		if (knocked > 0)
+		{
+			if (currentlyGrounded)
+			{
+				knocked -= 1;
+				
+				if (knocked <= 0)
+				{
+					SetAnimation(CommonAnimations.GETUP);
+					GainControl();
+				}
+			}
+		}
+		else if (hitstun > 0)
 		{
 			hitstun -= 1;
 
@@ -161,19 +188,14 @@ public abstract class BaseCharacter : MonoBehaviour
 				{
 					SetState(CharacterState.STANDING);
 				}
-				//LoseControl();
-			}
-
-			if (stateIndex == (int)CharacterState.BLOCKSTUN || stateIndex == (int)CharacterState.HITSTUN)
-			{
-				states[stateIndex].StateUpdate(this, input);
+				GainControl();
 			}
 		}
 
+		states[stateIndex].StateUpdate(this, input);
+		
 		if (inControl)
 		{
-			states[stateIndex].StateUpdate(this, input);
-
 			TryAttacks();
 		}
 
@@ -270,6 +292,10 @@ public abstract class BaseCharacter : MonoBehaviour
 	public virtual void GainControl()
 	{
 		inControl = true;
+	}
+
+	public void LoseCombo()
+	{
 		combo = 0;
 	}
 
@@ -280,7 +306,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public virtual void JumpAction()
 	{
-		AddMotion(0, jumpHeight);
+		AddMotion(0, jumpPower);
 		whoIMove.Translate(motion * Time.fixedDeltaTime);
 		SetState(CharacterState.INAIR);
 	}
@@ -340,41 +366,76 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	public virtual void GetHit(HurtboxProperties property)
 	{
+		bool flipKnockback = !AmIFacingBackward();
+
+		if (property.HasTag(AttackTags.ONLYPUSH))
+		{
+			float push = property.knockback.x;
+
+			if (flipKnockback)
+			{
+				push *= -1;
+			}
+
+			ProcessHit(0, 0, push);
+			return;
+		}
+
+		int damage = property.damage;
+		bool currentlyGrounded = IsOnGround();
+		if (CompareCurrentState(CharacterState.ONGROUND))
+		{
+			if (currentlyGrounded && property.HasTag(AttackTags.OTG))
+			{
+				knocked = 1;
+				ProcessHit(damage, 0, 0);
+				combo += 1;
+			}
+			return;
+		}
+
 		bool blocked = false;
 		if (property.attackHeight != AttackHeight.UNBLOCKABLE) {
 			blocked = states[stateIndex].WasAttackBlocked(myLastInput, property);
 		}
 
-		int damage = property.damage;
 		int stun = property.hitstun;
-		float knock = property.knockback.x;
+		float knockback = property.knockback.x;
+		float yknockback = property.knockback.y / (float)Mathf.Max(combo, 1);
+		//Debug.Log(yknockback + " - " + combo + " - " + Mathf.Max(combo, 1));
 		if (blocked)
 		{
 			damage = 0;
 			stun = property.blockstun;
-			knock *= 0.5f;
+			knockback *= 0.5f;
 		} else
 		{
-			if (IsOnGround())
+			if (currentlyGrounded)
 			{
-				SetMotion(motion.x, Mathf.Max(property.knockback.y, 0.0f));
+				if (property.HasTag(AttackTags.LAUNCH))
+				{
+					SetMotion(motion.x, Mathf.Max(yknockback, 0.0f));
+				}
 			} else
 			{
-				SetMotion(motion.x, property.knockback.y);
+				SetMotion(motion.x, yknockback);
 			}
 		}
 
-		if (!AmIFacingBackward())
+		if (flipKnockback)
 		{
-			knock *= -1;
+			knockback *= -1;
 		}
 
-		ProcessHit(damage, stun, blocked, knock);
-	}
-
-	protected virtual void ProcessHit(int damage, int stun, bool blocked, float knockback)
-	{
-		if (blocked)
+		if (CompareCurrentState(CharacterState.KNOCKDOWN) ||
+				(currentlyGrounded && property.HasTag(AttackTags.KNOCKDOWN)) ||
+				(!currentlyGrounded && property.HasTag(AttackTags.AIRKNOCK)))
+		{
+			SetState(CharacterState.KNOCKDOWN);
+			knocked = 30;
+			combo += 1;
+		}
+		else if (blocked)
 		{
 			SetState(CharacterState.BLOCKSTUN);
 		}
@@ -384,16 +445,22 @@ public abstract class BaseCharacter : MonoBehaviour
 			combo += 1;
 		}
 
+		ProcessHit(damage, stun, knockback);
+	}
+
+	protected virtual void ProcessHit(int damage, int stun, float knockback)
+	{
 		this.health -= damage;
 		this.hitstun = stun;
 		this.knockback = knockback;
 	}
 
-	public virtual void Reset()
+	public virtual void ResetChar()
 	{
 		combo = 0;
 		health = maxHealth;
 		hitstun = 0;
+		knocked = 0;
 		knockback = 0;
 		motion = Vector2.zero;
 		SetState(CharacterState.STANDING);
@@ -430,6 +497,11 @@ public abstract class BaseCharacter : MonoBehaviour
 		return (otherPerson.position.x < whoIMove.position.x);
 	}
 
+	public bool CompareCurrentState(CharacterState state)
+	{
+		return (int)state == stateIndex;
+	}
+
 	[SerializeField] private bool editorHitboxes;
 
 	private void OnDrawGizmos()
@@ -460,28 +532,30 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	private void DrawBoxes(CharacterAnimation.FrameData frameData)
 	{
+		var scaled = whoIMove.lossyScale;
+
 		foreach (BaseBoxData box in frameData.hitboxes)
 		{
-			Vector3 usedPos = box.position;
+			Vector3 usedPos = box.position * scaled;
 			if (myVisuals.flipX)
 			{
 				usedPos.x *= -1;
 			}
 
 			Gizmos.color = Color.cyan;
-			Gizmos.DrawWireCube(transform.position + usedPos, box.size);
+			Gizmos.DrawWireCube(transform.position + usedPos, box.size * scaled);
 		}
 
 		foreach (HurtBoxData box in frameData.hurtboxes)
 		{
-			Vector3 usedPos = box.position;
+			Vector3 usedPos = box.position * scaled;
 			if (myVisuals.flipX)
 			{
 				usedPos.x *= -1;
 			}
 
 			Gizmos.color = Color.red;
-			Gizmos.DrawWireCube(transform.position + usedPos, box.size);
+			Gizmos.DrawWireCube(transform.position + usedPos, box.size * scaled);
 		}
 	}
 }

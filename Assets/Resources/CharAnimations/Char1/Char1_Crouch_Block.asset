@@ -19,12 +19,9 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: b66298f0c49bd7a429cca292f847af01, type: 3}
   hitboxDatas:
   - duration: 0
-    boxes:
-    - position: {x: -0.1, y: -0.5}
-      size: {x: 0.8, y: 1}
     hitboxes:
-    - position: {x: -0.1, y: -0.5}
-      size: {x: 0.8, y: 1}
+    - position: {x: -0.1, y: -0.4}
+      size: {x: 0.8, y: 1.2}
     hurtboxes: []
   loop: 1
   changeStateOnFinish: 0

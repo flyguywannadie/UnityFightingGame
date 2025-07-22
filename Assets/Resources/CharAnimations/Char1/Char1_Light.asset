@@ -35,13 +35,13 @@ MonoBehaviour:
       size: {x: 1.1, y: 0.4}
     hurtboxes:
     - position: {x: 0.6, y: 0.3}
-      size: {x: 1, y: 0.3}
+      size: {x: 1, y: 0.6}
       hurtboxProperty:
         damage: 5
         hitstun: 20
         blockstun: 12
         attackHeight: 0
-        knockback: {x: 2, y: 0}
+        knockback: {x: 2, y: 2}
         AttackTags: 
   - duration: 7
     hitboxes:

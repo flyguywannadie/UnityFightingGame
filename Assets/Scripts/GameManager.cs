@@ -37,8 +37,8 @@ public class GameManager : MonoBehaviour
 		characters[0].transform.parent.position = new Vector3(-4,0,0);
 		characters[1].transform.parent.position = new Vector3(4,0,0);
 
-		characters[0].Reset();
-		characters[1].Reset();
+		characters[0].ResetChar();
+		characters[1].ResetChar();
 	}
 
 	private void FixedUpdate()

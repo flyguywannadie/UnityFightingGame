@@ -11,6 +11,7 @@ public class State_Crouching : BaseState
 	{
 		c.SetMotion(0, 0);
 		c.SetAnimation(CommonAnimations.CROUCH);
+		c.LoseCombo();
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)

@@ -40,7 +40,7 @@ MonoBehaviour:
         blockstun: 25
         attackHeight: 0
         knockback: {x: 10, y: 0}
-        AttackTags: 
+        AttackTags: 05000000
   - duration: 6
     hitboxes:
     - position: {x: 0, y: -0.2}
@@ -50,7 +50,7 @@ MonoBehaviour:
   changeStateOnFinish: 1
   endState: 0
   Events:
-  - callFrame: 10
+  - callFrame: 6
     name: AnimTest
   - callFrame: 23
     name: AnimStop

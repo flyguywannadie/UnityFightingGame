@@ -33,14 +33,14 @@ MonoBehaviour:
       size: {x: 0.85, y: 1.7}
     hurtboxes:
     - position: {x: 0.31, y: -0.1}
-      size: {x: 0.6, y: 1.76}
+      size: {x: 0.6, y: 2}
       hurtboxProperty:
         damage: 20
         hitstun: 25
         blockstun: 10
         attackHeight: 2
-        knockback: {x: 2, y: -10}
-        AttackTags: 
+        knockback: {x: -3, y: -10}
+        AttackTags: 050000000100000002000000
   - duration: 7
     hitboxes:
     - position: {x: -0.2, y: -0.2}

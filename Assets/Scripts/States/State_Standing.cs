@@ -11,6 +11,7 @@ public class State_Standing : BaseState
 	{
 		c.SetMotion(0,0);
 		c.SetAnimation(CommonAnimations.IDLE);
+		c.LoseCombo();
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)

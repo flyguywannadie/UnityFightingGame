@@ -28,6 +28,7 @@ public class State_JumpCrouch : BaseState
 		c.SetMotion(0, 0);
 		c.SetAnimation(CommonAnimations.JUMP);
 		c.LoseControl();
+		c.LoseCombo();
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)

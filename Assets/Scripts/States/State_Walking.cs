@@ -10,6 +10,7 @@ public class State_Walking : BaseState
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
 		Walk(c, input);
+		c.LoseCombo();
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)

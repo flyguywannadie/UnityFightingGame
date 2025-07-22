@@ -10,6 +10,6 @@ public class BuiltHitbox : BaseBuildableBox
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		Debug.Log("BuiltHitbox: " + tag + " " + name + " has been hit by: " + collision.name);
+		//Debug.Log("BuiltHitbox: " + tag + " " + name + " has been hit by: " + collision.name);
 	}
 }
