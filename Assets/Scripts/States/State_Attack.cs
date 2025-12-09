@@ -19,7 +19,7 @@ public class State_Attack : BaseState
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)
 	{
-		if (c.IsOnGround())
+		if (c.IsOnGround() && c.motion.y <= 0.1f)
 		{
 			c.SetMotion(0, 0);
 		}

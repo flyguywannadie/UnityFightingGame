@@ -218,7 +218,13 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		whoIMove.Translate(usedMotion * Time.fixedDeltaTime);
 
-		whoIMove.position = new Vector3(Mathf.Clamp(whoIMove.position.x, -9.0f, 9.0f), whoIMove.position.y,0);
+		float xclamp = Mathf.Clamp(whoIMove.position.x, -9.0f, 8.8f);
+		if (AmIFacingBackward())
+		{
+			xclamp = Mathf.Clamp(whoIMove.position.x, -8.8f, 9.0f);
+		}
+
+		whoIMove.position = new Vector3(xclamp, whoIMove.position.y,0);
 
 		if (!currentlyGrounded && IsOnGround())
 		{
@@ -253,6 +259,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		switch(stateIndex)
 		{
+			case (int)CharacterState.ONGROUND:
 			case (int)CharacterState.STANDING:
 			case (int)CharacterState.WALKING:
 				animID += 100;
@@ -263,6 +270,8 @@ public abstract class BaseCharacter : MonoBehaviour
 			case (int)CharacterState.INAIR:
 				animID += 300;
 				break;
+			default:
+				return;
 		}
 
 		if (myLastInput.Light())
@@ -377,7 +386,7 @@ public abstract class BaseCharacter : MonoBehaviour
 				push *= -1;
 			}
 
-			ProcessHit(0, 0, push);
+			ProcessHit(0, hitstun, push);
 			return;
 		}
 
@@ -407,7 +416,7 @@ public abstract class BaseCharacter : MonoBehaviour
 		{
 			damage = 0;
 			stun = property.blockstun;
-			knockback *= 0.5f;
+			//knockback *= 0.5f;
 		} else
 		{
 			if (currentlyGrounded)
