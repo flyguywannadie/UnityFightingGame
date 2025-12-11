@@ -33,7 +33,7 @@ public class State_JumpCrouch : BaseState
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)
 	{
-		Debug.Log(storedMotion.y);
+		//Debug.Log(storedMotion.y);
 		c.AddMotion(storedMotion.x, storedMotion.y);
 		c.GainControl();
 	}

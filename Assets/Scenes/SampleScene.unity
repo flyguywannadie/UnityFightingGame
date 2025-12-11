@@ -572,6 +572,9 @@ MonoBehaviour:
   characters:
   - {fileID: 231097114}
   - {fileID: 1821535271}
+  frameAdvanceMode: 0
+  advanceFrame: 0
+  interactions: []
 --- !u!1 &55983432
 GameObject:
   m_ObjectHideFlags: 0
@@ -1179,7 +1182,42 @@ MonoBehaviour:
     inputFlag: 0
     frames: 0
   moves:
-  - {fileID: 11400000, guid: aa38cfde28737d7419f8e2d3cad6ac31, type: 2}
+  - name: Fireball Light
+    inAir: 0
+    motion: {fileID: 11400000, guid: aa38cfde28737d7419f8e2d3cad6ac31, type: 2}
+    animID: 102
+    Light: 1
+    Heavy: 0
+    Special: 0
+  - name: Crouch LIght
+    inAir: 0
+    motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
+    animID: 200
+    Light: 1
+    Heavy: 0
+    Special: 0
+  - name: Forward Light
+    inAir: 0
+    motion: {fileID: 11400000, guid: 943d968378bd7614581d9f335f01a3e5, type: 2}
+    animID: 101
+    Light: 1
+    Heavy: 0
+    Special: 0
+  - name: Light
+    inAir: 0
+    motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
+    animID: 100
+    Light: 1
+    Heavy: 0
+    Special: 0
+  - name: Air Light
+    inAir: 1
+    motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
+    animID: 300
+    Light: 1
+    Heavy: 0
+    Special: 0
+  inputBuffer: {fileID: 16322286}
   editorHitboxes: 1
 --- !u!114 &231097115
 MonoBehaviour:
@@ -4420,8 +4458,8 @@ MonoBehaviour:
   myLastInput:
     inputFlag: 0
     frames: 0
-  moves:
-  - {fileID: 11400000, guid: aa38cfde28737d7419f8e2d3cad6ac31, type: 2}
+  moves: []
+  inputBuffer: {fileID: 0}
   editorHitboxes: 1
 --- !u!114 &1821535272
 MonoBehaviour:

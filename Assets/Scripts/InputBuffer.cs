@@ -219,6 +219,85 @@ public class InputBuffer : MonoBehaviour
 	//	inputs[inputIndex].inputFlag = newinputflag;
 	//}
 
+	public bool ReadBufferForMotion(MotionDefinition motion, bool flip)
+	{
+		if (motion.motion.Length == 0)
+		{
+			return true;
+		}
+
+        if (motion.motion.Length > inputs.Count)
+        {
+            return false;
+        }
+
+        BufferedInput b = motion.motion[0].DirectionAsInputFlag();
+        BufferedInput b2 = inputs[0];
+
+		if (flip)
+		{
+			b2.FlipForwardBack();
+		}
+
+        if (motion.motion.Length == 1)
+		{
+            return b2.CompareDirectionLeniant(b);
+		}
+
+        /*
+		 * 	var sequenceOrder = 0
+			for x in checkedBuffer: #checking through the buffer
+				if (sequenceOrder > 0) : #ignore time for the first sequence to enable command normals and not worrying about idling before doing a motion
+					time += x.frames # add frames to time
+					#print(time)
+					if (time > timeGiven) :
+						print(time, " > ", timeGiven)
+						return false
+
+				if (sequenceOrder >= sequence.length()) : # skip loop if the sequence has been run through
+					continue
+
+				print(x.input, " -o: ", sequence[sequenceOrder], " -t: ", time) # debug print buffer and sequence and time it has taken
+				if (x.input[0] == sequence[sequenceOrder]) :
+					sequenceOrder += 1
+					checked += x.input[0]
+		 */
+
+        int motionIndex = motion.motion.Length - 1;
+        int totalTime = 0;
+
+        for (int i = 0; i < inputs.Count; i++)
+		{
+            b = motion.motion[motionIndex].DirectionAsInputFlag();
+			b2 = inputs[i];
+
+			if (flip)
+            {
+                b2.FlipForwardBack();
+            }
+
+            if (b2.CompareDirectionStrict(b))
+			{
+				motionIndex--;
+
+				if (motionIndex < 0)
+				{
+					return true;
+				}
+			}
+
+            totalTime += b2.frames;
+            //Debug.Log(b2.inputFlag + " - " + b.inputFlag + " - " + totalTime);
+            
+			if (totalTime > 20)
+            {
+                return false;
+            }
+		}
+
+		return false;
+	}
+
 	private void AddNewInput(BufferedInput input)
 	{
 		inputs.Insert(0, input);

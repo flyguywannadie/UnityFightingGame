@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -26,15 +27,6 @@ public enum CommonAnimations
 	CROUCHHIT = 16,
 	AIRBLOCK = 17,
 	AIRHIT = 18,
-	LIGHT = 19,
-	LIGHTC = 20,
-	LIGHTA = 21,
-	HEAVY = 22,
-	HEAVYC = 23,
-	HEAVYA = 24,
-	SPECIAL = 25,
-	SPECIALC = 26,
-	SPECIALA = 27,
 }
 
 public enum CharacterState
@@ -76,7 +68,22 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] private int stateIndex = 0;
 	[SerializeField] private int queuedState = 0;
 	[SerializeField] private BufferedInput myLastInput;
-	[SerializeField] private MoveDefinition[] moves;
+	[SerializeField] private CharacterMove[] moves;
+
+	[SerializeField] private InputBuffer inputBuffer;
+
+    [Serializable]
+	public class CharacterMove
+	{
+		public string name;
+		[SerializeField] public bool inAir;
+		[SerializeField] public MotionDefinition motion;
+		[SerializeField] public int animID;
+
+		[Header("Required Button Input"),SerializeField] public bool Light;
+		[SerializeField] public bool Heavy;
+        [SerializeField] public bool Special;
+    }
 
 	public void Start()
 	{
@@ -194,7 +201,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		states[stateIndex].StateUpdate(this, input);
 		
-		if (inControl)
+		if (inControl && input.PressingAttacks())
 		{
 			TryAttacks();
 		}
@@ -246,7 +253,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
 	protected virtual void TryAttacks()
 	{
-		if (queuedState != stateIndex)
+        if (queuedState != stateIndex)
 		{
 			ChangeState();
 			if (!inControl)
@@ -255,42 +262,39 @@ public abstract class BaseCharacter : MonoBehaviour
 			}
 		}
 
-		int animID = 0;
+		CharacterMove usedMove = null;
 
-		switch(stateIndex)
+		foreach (CharacterMove move in moves)
 		{
-			case (int)CharacterState.ONGROUND:
-			case (int)CharacterState.STANDING:
-			case (int)CharacterState.WALKING:
-				animID += 100;
-				break;
-			case (int)CharacterState.CROUCHING:
-				animID += 200;
-				break;
-			case (int)CharacterState.INAIR:
-				animID += 300;
-				break;
-			default:
-				return;
+			if (!IsOnGround() == move.inAir)
+			{
+                bool correctButtons = !(move.Light ^ myLastInput.Light()) && !(move.Heavy ^ myLastInput.Heavy()) && !(move.Special ^ myLastInput.Special());
+
+                //Debug.Log(move.Light + " " + myLastInput.Light() + " " + move.Heavy + " " + myLastInput.Heavy() + " " + move.Special + " " + myLastInput.Special());
+
+                //Debug.Log(!(move.Light ^ myLastInput.Light()) + " " + !(move.Heavy ^ myLastInput.Heavy()) + " " + !(move.Special ^ myLastInput.Special()));
+
+                //Debug.Log(correctButtons);
+
+                if (correctButtons)
+                {
+                    bool correctMotion = inputBuffer.ReadBufferForMotion(move.motion, AmIFacingBackward());
+                    if (correctMotion)
+                    {
+                        usedMove = move;
+                        break;
+                    }
+                }
+            }
 		}
 
-		if (myLastInput.Light())
+		if (usedMove == null)
 		{
-			SetState(CharacterState.ATTACK);
-			SetAnimation(animID);
+			return;
 		}
 
-		if (myLastInput.Heavy())
-		{
-			SetState(CharacterState.ATTACK);
-			SetAnimation(animID + 1);
-		}
-
-		if (myLastInput.Special())
-		{
-			SetState(CharacterState.ATTACK);
-			SetAnimation(animID + 2);
-		}
+		SetState(CharacterState.ATTACK);
+		SetAnimation(usedMove.animID);
 	}
 
 	public virtual void LoseControl()

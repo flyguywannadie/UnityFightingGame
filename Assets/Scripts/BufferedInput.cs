@@ -150,6 +150,16 @@ public class BufferedInput
 		return Forward() & Up();
 	}
 
+	public bool CompareDirectionLeniant(BufferedInput b)
+	{
+        return (b.Up() && Up()) || (b.Forward() && Forward()) || (b.Down() && Down()) || (b.Back() && Back());
+    }
+
+	public bool CompareDirectionStrict(BufferedInput b)
+	{
+        return !(b.Up() ^ Up()) && !(b.Forward() ^ Forward()) && !(b.Down() ^ Down()) && !(b.Back() ^ Back());
+    }
+
 	#endregion
 
 	#region Input Attack Boolean Logic

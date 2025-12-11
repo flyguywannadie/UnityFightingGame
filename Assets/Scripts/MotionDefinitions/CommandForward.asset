@@ -10,9 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4023b0a550f4ec04996f0a62b343bb32, type: 3}
-  m_Name: Light
+  m_Name: CommandForward
   m_EditorClassIdentifier: 
-  moveName: Light Punch
-  action: 1
-  motion: []
-  moveState: 100
+  motion:
+  - direction: 0
+    frameRequirement: 0
