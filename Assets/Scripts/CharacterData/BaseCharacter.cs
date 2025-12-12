@@ -210,8 +210,9 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		states[stateIndex].StateUpdate(this, input);
 		
-		if (inControl && input.PressingAttacks())
+		if ((inControl || animator.InCancelWindow()) && input.PressingAttacks())
 		{
+			Debug.Log("IN cancel window: " + animator.InCancelWindow());
 			TryAttacks();
 		}
 
@@ -311,26 +312,29 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		foreach (CharacterMove move in moves)
 		{
-			if (!IsOnGround() == move.inAir)
+			if (animator.CanCancelIntoMove(move.animID))//animator.InCancelWindow())
 			{
-                bool correctButtons = !(move.Light ^ myLastInput.Light()) && !(move.Heavy ^ myLastInput.Heavy()) && !(move.Special ^ myLastInput.Special());
+				if (!IsOnGround() == move.inAir)
+				{
+					bool correctButtons = !(move.Light ^ myLastInput.Light()) && !(move.Heavy ^ myLastInput.Heavy()) && !(move.Special ^ myLastInput.Special());
 
-                //Debug.Log(move.Light + " " + myLastInput.Light() + " " + move.Heavy + " " + myLastInput.Heavy() + " " + move.Special + " " + myLastInput.Special());
+					//Debug.Log(move.Light + " " + myLastInput.Light() + " " + move.Heavy + " " + myLastInput.Heavy() + " " + move.Special + " " + myLastInput.Special());
 
-                //Debug.Log(!(move.Light ^ myLastInput.Light()) + " " + !(move.Heavy ^ myLastInput.Heavy()) + " " + !(move.Special ^ myLastInput.Special()));
+					//Debug.Log(!(move.Light ^ myLastInput.Light()) + " " + !(move.Heavy ^ myLastInput.Heavy()) + " " + !(move.Special ^ myLastInput.Special()));
 
-                //Debug.Log(correctButtons);
+					//Debug.Log(correctButtons);
 
-                if (correctButtons)
-                {
-                    bool correctMotion = inputBuffer.ReadBufferForMotion(move.motion, AmIFacingBackward());
-                    if (correctMotion)
-                    {
-                        usedMove = move;
-                        break;
-                    }
-                }
-            }
+					if (correctButtons)
+					{
+						bool correctMotion = inputBuffer.ReadBufferForMotion(move.motion, AmIFacingBackward());
+						if (correctMotion)
+						{
+							usedMove = move;
+							break;
+						}
+					}
+				}
+			}
 		}
 
 		if (usedMove == null)
