@@ -184,5 +184,44 @@ public class BufferedInput
 		return (inputFlag & SPECIAL) == SPECIAL;
 	}
 
-	#endregion
+    #endregion
+
+    public override string ToString()
+    {
+		string toret = "";
+		int temp = 0b0001111 & inputFlag;
+
+		switch (temp)
+		{
+			case 0b0000:
+				toret += ".*.";
+				break;
+            case FORWARD:
+                toret += "..>";
+                break;
+            case (FORWARD | DOWN):
+                toret += ".v>";
+                break;
+            case DOWN:
+                toret += ".v.";
+                break;
+            case (DOWN | BACK):
+                toret += "<v.";
+                break;
+            case BACK:
+                toret += "<..";
+                break;
+            case (BACK | UP):
+                toret += "<^.";
+                break;
+            case UP:
+                toret += ".^.";
+                break;
+            case (UP | FORWARD):
+                toret += ".^>";
+                break;
+        }
+
+		return toret + "(" + frames + ")";
+    }
 }

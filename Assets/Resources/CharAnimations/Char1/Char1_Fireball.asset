@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 708d93a153861124eb2aa81a47b21204, type: 3}
+  m_Name: Char1_Fireball
+  m_EditorClassIdentifier: 
+  ID: 0
+  customID: 104
+  Data:
+  - duration: 9
+    sprite: {fileID: 21300000, guid: 323032770b4a8c74b86632bce410dcc8, type: 3}
+  - duration: 10
+    sprite: {fileID: 21300000, guid: 1848c43667f8af64994968a26e1f6c2e, type: 3}
+  - duration: 25
+    sprite: {fileID: 21300000, guid: 006a0d7921c0a1e48a08aaeb309ac5a9, type: 3}
+  hitboxDatas:
+  - duration: 9
+    hitboxes:
+    - position: {x: 0, y: -0.2}
+      size: {x: 0.7, y: 1.7}
+    hurtboxes: []
+  - duration: 25
+    hitboxes:
+    - position: {x: 0.25, y: -0.2}
+      size: {x: 1, y: 1.7}
+    hurtboxes: []
+  loop: 0
+  changeStateOnFinish: 1
+  endState: 0
+  Events:
+  - callFrame: 10
+    name: Fireball

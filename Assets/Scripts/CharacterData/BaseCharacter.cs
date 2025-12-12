@@ -1,10 +1,6 @@
 using System;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Windows;
-using UnityEngine.WSA;
-using static Unity.Collections.AllocatorManager;
 
 public enum CommonAnimations
 {
@@ -70,8 +66,6 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] private BufferedInput myLastInput;
 	[SerializeField] private CharacterMove[] moves;
 
-	[SerializeField] private InputBuffer inputBuffer;
-
     [Serializable]
 	public class CharacterMove
 	{
@@ -84,6 +78,10 @@ public abstract class BaseCharacter : MonoBehaviour
 		[SerializeField] public bool Heavy;
         [SerializeField] public bool Special;
     }
+
+	[SerializeField] private InputBuffer inputBuffer;
+
+	[SerializeField] private List<GameObject> Spawnables;
 
 	public void Start()
 	{
@@ -99,6 +97,17 @@ public abstract class BaseCharacter : MonoBehaviour
 		InitializeStates();
 		editorHitboxes = false;
 		SetState(CharacterState.STANDING);
+	}
+
+	public void SetPlayerStatus(bool player1)
+	{
+		if (player1)
+		{
+			this.tag = "Player1";
+		} else
+		{
+			this.tag = "Player2";
+		}
 	}
 
 	protected virtual void InitializeStates()
@@ -214,6 +223,42 @@ public abstract class BaseCharacter : MonoBehaviour
 		{
 			ChangeState();
 		}
+	}
+
+	protected virtual void SpawnProjectile(int index, Vector3 offset)
+	{
+		if (Spawnables.Count <= 0)
+		{
+			Debug.LogError("Spawnables must have objects if you want to use the SpawnProjectile function");
+			return;
+		}
+
+		if (index < 0 || index >= Spawnables.Count)
+		{
+			Debug.LogWarning("The index of " + index + "is outside the bounds of Spawnables and has been clamped\nYour used projectile may not be correct");
+		}
+
+		index = Mathf.Clamp(index, 0, Spawnables.Count - 1);
+
+		if (Spawnables[index] == null)
+		{
+            Debug.LogError("Spawnable at index " + index + " is null");
+            return;
+		}
+
+		ProjectileScript proj = Instantiate(Spawnables[index], transform.position, Quaternion.identity).GetComponent<ProjectileScript>();
+
+		if (AmIFacingBackward())
+		{
+			offset.x *= -1;
+			proj.transform.localScale = new Vector3(Mathf.Abs(proj.transform.localScale.x) * -1, proj.transform.localScale.y, proj.transform.localScale.z);
+        }
+
+		proj.gameObject.transform.position += offset;
+		proj.tag = this.tag;
+		proj.SetInstigator(this);
+
+		GameManager.instance.AddProjectile(proj);
 	}
 
 	protected virtual void MoveCharacter()

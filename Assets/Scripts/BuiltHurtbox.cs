@@ -3,12 +3,18 @@ using UnityEngine;
 
 public class BuiltHurtbox : BaseBuildableBox
 {
-	[SerializeField] private HurtboxProperties myHurtboxProperty;
+	[SerializeField] protected HurtboxProperties myHurtboxProperty;
+    [SerializeField] private BaseCharacter instigator;
 
-	protected override void Start()
+    protected override void Start()
 	{
 		base.Start();
 		gameObject.layer = LayerMask.NameToLayer(gameObject.tag + "Hurt");
+	}
+
+	public void SetInstigator(BaseCharacter character)
+	{
+		instigator = character;
 	}
 
 	public override void Build(Vector3 newpos, BaseBoxData usedBox)
@@ -39,7 +45,7 @@ public class BuiltHurtbox : BaseBuildableBox
 		if (!myHurtboxProperty.HasTag(AttackTags.IGNOREPUSHBACK))
 		{
 			var pushback = new HurtboxProperties(Vector2.right * 2, new List<AttackTags>() { AttackTags.ONLYPUSH });
-			GameManager.instance.QueueCollision(box.attachedRigidbody.GetComponent<BaseCharacter>(), pushback);
+			GameManager.instance.QueueCollision(instigator, pushback);
 		}
 		//Debug.Log("BuiltHurtbox: " + tag + " " + name + " has hit with thing: " + collision.name);
 		box.enabled = false;

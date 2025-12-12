@@ -236,10 +236,10 @@ public class InputBuffer : MonoBehaviour
 
 		if (flip)
 		{
-			b2.FlipForwardBack();
+			b.FlipForwardBack();
 		}
 
-        if (motion.motion.Length == 1)
+		if (motion.motion.Length == 1)
 		{
             return b2.CompareDirectionLeniant(b);
 		}
@@ -272,11 +272,13 @@ public class InputBuffer : MonoBehaviour
 			b2 = inputs[i];
 
 			if (flip)
-            {
-                b2.FlipForwardBack();
-            }
+			{
+				b.FlipForwardBack();
+			}
 
-            if (b2.CompareDirectionStrict(b))
+            //Debug.Log(b2.ToString() + " - " + b.ToString() + " - " + totalTime);
+
+			if (b2.CompareDirectionStrict(b))
 			{
 				motionIndex--;
 
@@ -287,7 +289,6 @@ public class InputBuffer : MonoBehaviour
 			}
 
             totalTime += b2.frames;
-            //Debug.Log(b2.inputFlag + " - " + b.inputFlag + " - " + totalTime);
             
 			if (totalTime > 20)
             {

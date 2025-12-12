@@ -4,7 +4,7 @@ public class BaseBuildableBox : MonoBehaviour
 {
 	[SerializeField] protected BoxCollider2D box;
 
-	protected virtual void Start()
+    protected virtual void Start()
 	{
 		box = GetComponent<BoxCollider2D>();
 		box.isTrigger = true;

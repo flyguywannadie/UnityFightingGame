@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -7,6 +8,7 @@ public class GameManager : MonoBehaviour
 	public static GameManager instance { get; private set; }
 	[SerializeField] private InputBuffer[] characterControllers;
 	[SerializeField] private BaseCharacter[] characters;
+	[SerializeField] private List<ProjectileScript> projectiles;
 
 	[SerializeField] private bool frameAdvanceMode = false;
 	[SerializeField] private bool advanceFrame = false;
@@ -26,6 +28,11 @@ public class GameManager : MonoBehaviour
 		public void DoInteraction()
 		{
 			//Debug.Log(taker.name + " Has Been Hit");
+			if (taker == null)
+			{
+				Debug.LogWarning("Taker is null");
+				return;
+			}
 			taker.GetHit(property);
 		}
 	}
@@ -44,7 +51,10 @@ public class GameManager : MonoBehaviour
 
 		characters[0].ResetChar();
 		characters[1].ResetChar();
-	}
+
+		characters[0].SetPlayerStatus(true);
+		characters[1].SetPlayerStatus(false);
+    }
 
 	private void FixedUpdate()
 	{
@@ -55,7 +65,26 @@ public class GameManager : MonoBehaviour
 				control.InputUpdate();
 			}
 
-			if (interactions.Count > 0)
+            if (projectiles.Count > 0)
+            {
+				List<ProjectileScript> toremove = new List<ProjectileScript>();
+
+				foreach (ProjectileScript proj in projectiles)
+				{
+					if (proj.ProjectileUpdate())
+					{
+						toremove.Add(proj);
+					}
+				}
+
+                foreach (ProjectileScript p in toremove)
+                {
+                    projectiles.Remove(p);
+					p.Expire();
+                }
+            }
+
+            if (interactions.Count > 0)
 			{
 				foreach (CharInteraction collision in interactions)
 				{
@@ -66,6 +95,11 @@ public class GameManager : MonoBehaviour
 
 			advanceFrame = false;
 		}
+	}
+
+	public void AddProjectile(ProjectileScript proj)
+	{
+		projectiles.Add(proj);
 	}
 
 	public void Update()

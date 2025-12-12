@@ -69,4 +69,10 @@ public class Character1 : BaseCharacter
 			AddMotion(10, 0);
 		}
 	}
+
+	public void Fireball()
+	{
+		//Debug.Log("Spawn Fireball");
+		SpawnProjectile(0, new Vector3(1, 0));
+    }
 }

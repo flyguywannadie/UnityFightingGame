@@ -572,6 +572,7 @@ MonoBehaviour:
   characters:
   - {fileID: 231097114}
   - {fileID: 1821535271}
+  projectiles: []
   frameAdvanceMode: 0
   advanceFrame: 0
   interactions: []
@@ -1117,7 +1118,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b10273dbb245d884ba9ac62ee94881b3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 323032770b4a8c74b86632bce410dcc8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1185,7 +1186,14 @@ MonoBehaviour:
   - name: Fireball Light
     inAir: 0
     motion: {fileID: 11400000, guid: aa38cfde28737d7419f8e2d3cad6ac31, type: 2}
-    animID: 102
+    animID: 104
+    Light: 1
+    Heavy: 0
+    Special: 0
+  - name: DragonPunch
+    inAir: 0
+    motion: {fileID: 11400000, guid: b2570be024d69b948ab0b204a036955e, type: 2}
+    animID: 101
     Light: 1
     Heavy: 0
     Special: 0
@@ -1196,12 +1204,12 @@ MonoBehaviour:
     Light: 1
     Heavy: 0
     Special: 0
-  - name: Forward Light
+  - name: Crouch Heavy
     inAir: 0
-    motion: {fileID: 11400000, guid: 943d968378bd7614581d9f335f01a3e5, type: 2}
-    animID: 101
-    Light: 1
-    Heavy: 0
+    motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
+    animID: 201
+    Light: 0
+    Heavy: 1
     Special: 0
   - name: Light
     inAir: 0
@@ -1210,6 +1218,13 @@ MonoBehaviour:
     Light: 1
     Heavy: 0
     Special: 0
+  - name: Heavy
+    inAir: 0
+    motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
+    animID: 101
+    Light: 0
+    Heavy: 1
+    Special: 0
   - name: Air Light
     inAir: 1
     motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
@@ -1217,7 +1232,16 @@ MonoBehaviour:
     Light: 1
     Heavy: 0
     Special: 0
+  - name: Air Heavy
+    inAir: 1
+    motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
+    animID: 301
+    Light: 0
+    Heavy: 1
+    Special: 0
   inputBuffer: {fileID: 16322286}
+  Spawnables:
+  - {fileID: 7292784395290753730, guid: 1759bed9eaa936c40804063773b8a5bf, type: 3}
   editorHitboxes: 1
 --- !u!114 &231097115
 MonoBehaviour:
@@ -1235,9 +1259,7 @@ MonoBehaviour:
   currentFrame: 0
   visuals: {fileID: 231097112}
   animations:
-  - {fileID: 11400000, guid: b803e13195dc7be4abb3f67996f304e1, type: 2}
-  - {fileID: 11400000, guid: f0ac3a58875fadb4491c1dba277ee1fd, type: 2}
-  - {fileID: 11400000, guid: c44525661c903ed41b9657dedcfae5c7, type: 2}
+  - {fileID: 11400000, guid: 26888fac9be97854686550bc46cbaf72, type: 2}
   currentAnimation: 0
   currentAnimFrame: 0
   currentHitboxFrame: 0
@@ -1368,6 +1390,7 @@ MonoBehaviour:
     attackHeight: 0
     knockback: {x: 1, y: 0}
     AttackTags: 
+  instigator: {fileID: 0}
 --- !u!1 &347023510
 GameObject:
   m_ObjectHideFlags: 0
@@ -1421,6 +1444,7 @@ MonoBehaviour:
     attackHeight: 0
     knockback: {x: 1, y: 0}
     AttackTags: 
+  instigator: {fileID: 0}
 --- !u!61 &347023513
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1712,6 +1736,7 @@ MonoBehaviour:
     attackHeight: 0
     knockback: {x: 1, y: 0}
     AttackTags: 
+  instigator: {fileID: 0}
 --- !u!61 &510018081
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2122,6 +2147,7 @@ MonoBehaviour:
     attackHeight: 0
     knockback: {x: 1, y: 0}
     AttackTags: 
+  instigator: {fileID: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -2531,6 +2557,7 @@ MonoBehaviour:
     attackHeight: 0
     knockback: {x: 1, y: 0}
     AttackTags: 
+  instigator: {fileID: 0}
 --- !u!61 &708932993
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2920,6 +2947,7 @@ MonoBehaviour:
     attackHeight: 0
     knockback: {x: 1, y: 0}
     AttackTags: 
+  instigator: {fileID: 0}
 --- !u!61 &1144171923
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3140,6 +3168,7 @@ MonoBehaviour:
     attackHeight: 0
     knockback: {x: 1, y: 0}
     AttackTags: 
+  instigator: {fileID: 0}
 --- !u!61 &1227035486
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4035,6 +4064,7 @@ MonoBehaviour:
     attackHeight: 0
     knockback: {x: 1, y: 0}
     AttackTags: 
+  instigator: {fileID: 0}
 --- !u!1 &1610256006
 GameObject:
   m_ObjectHideFlags: 0
@@ -4285,6 +4315,7 @@ MonoBehaviour:
     attackHeight: 0
     knockback: {x: 1, y: 0}
     AttackTags: 
+  instigator: {fileID: 0}
 --- !u!61 &1760059837
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4460,6 +4491,7 @@ MonoBehaviour:
     frames: 0
   moves: []
   inputBuffer: {fileID: 0}
+  Spawnables: []
   editorHitboxes: 1
 --- !u!114 &1821535272
 MonoBehaviour:
@@ -4671,6 +4703,7 @@ MonoBehaviour:
   - {fileID: 708932992}
   - {fileID: 510018080}
   character: {fileID: 52288768}
+  instigator: {fileID: 231097114}
 --- !u!1 &1956800222
 GameObject:
   m_ObjectHideFlags: 0
@@ -4804,6 +4837,7 @@ MonoBehaviour:
     attackHeight: 0
     knockback: {x: 1, y: 0}
     AttackTags: 
+  instigator: {fileID: 0}
 --- !u!1 &2116335564
 GameObject:
   m_ObjectHideFlags: 0
@@ -4848,6 +4882,7 @@ MonoBehaviour:
   - {fileID: 606435705}
   - {fileID: 1227035485}
   character: {fileID: 1956800223}
+  instigator: {fileID: 0}
 --- !u!4 &2116335566
 Transform:
   m_ObjectHideFlags: 0

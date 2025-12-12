@@ -8,14 +8,20 @@ public class FrameDataBoxBuilder : MonoBehaviour
 	[SerializeField] private List<BuiltHitbox> hitboxPool;
 	[SerializeField] private List<BuiltHurtbox> hurtboxPool;
 	[SerializeField] private Transform character;
+	[SerializeField] private BaseCharacter instigator;
 
-	private void Start()
+	public void Start()
 	{
-		// I don't know if it is necessary to do this so I am not right now
-		
-		// spawn in all the boxes
-		// add them to box pool
-	}
+        // I don't know if it is necessary to do this so I am not right now
+
+        // spawn in all the boxes
+        // add them to box pool
+
+        foreach (BuiltHurtbox box in hurtboxPool)
+        {
+			box.SetInstigator(instigator);
+        }
+    }
 
 	public void BuildHitbox(CharacterAnimation.FrameData frameData)
 	{
