@@ -41,7 +41,7 @@ MonoBehaviour:
         hitstun: 25
         blockstun: 15
         attackHeight: 1
-        knockback: {x: 5, y: 0}
+        knockback: {x: 3, y: 0}
         AttackTags: 03000000
   - duration: 15
     hitboxes:

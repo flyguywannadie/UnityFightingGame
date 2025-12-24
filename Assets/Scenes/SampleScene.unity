@@ -1118,7 +1118,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 323032770b4a8c74b86632bce410dcc8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 12dd2fe44da4d6e45967837cd0621412, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1182,63 +1182,58 @@ MonoBehaviour:
   myLastInput:
     inputFlag: 0
     frames: 0
-  moves:
-  - name: Fireball Light
-    inAir: 0
-    motion: {fileID: 11400000, guid: aa38cfde28737d7419f8e2d3cad6ac31, type: 2}
-    animID: 104
-    Light: 1
-    Heavy: 0
-    Special: 0
-  - name: DragonPunch
-    inAir: 0
-    motion: {fileID: 11400000, guid: b2570be024d69b948ab0b204a036955e, type: 2}
-    animID: 101
-    Light: 1
-    Heavy: 0
-    Special: 0
-  - name: Crouch LIght
+  normals:
+  - name: crouchjab
     inAir: 0
     motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
     animID: 200
     Light: 1
     Heavy: 0
     Special: 0
-  - name: Crouch Heavy
-    inAir: 0
-    motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
-    animID: 201
-    Light: 0
-    Heavy: 1
-    Special: 0
-  - name: Light
+  - name: jab
     inAir: 0
     motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
     animID: 100
     Light: 1
     Heavy: 0
     Special: 0
-  - name: Heavy
+  - name: crouch Heavy
+    inAir: 0
+    motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
+    animID: 201
+    Light: 0
+    Heavy: 1
+    Special: 0
+  - name: fierce
     inAir: 0
     motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
     animID: 101
     Light: 0
     Heavy: 1
     Special: 0
-  - name: Air Light
-    inAir: 1
+  - name: crouch special
+    inAir: 0
+    motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
+    animID: 202
+    Light: 0
+    Heavy: 0
+    Special: 1
+  - name: special
+    inAir: 0
     motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
-    animID: 300
+    animID: 102
+    Light: 0
+    Heavy: 0
+    Special: 1
+  specials:
+  - name: Fireball
+    inAir: 0
+    motion: {fileID: 11400000, guid: aa38cfde28737d7419f8e2d3cad6ac31, type: 2}
+    animID: 0
     Light: 1
     Heavy: 0
     Special: 0
-  - name: Air Heavy
-    inAir: 1
-    motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
-    animID: 301
-    Light: 0
-    Heavy: 1
-    Special: 0
+  cancelable: 0
   inputBuffer: {fileID: 16322286}
   Spawnables:
   - {fileID: 7292784395290753730, guid: 1759bed9eaa936c40804063773b8a5bf, type: 3}
@@ -1256,10 +1251,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animPath: CharAnimations/Char1
-  currentFrame: 0
+  currentFrame: 42
   visuals: {fileID: 231097112}
   animations:
-  - {fileID: 11400000, guid: 26888fac9be97854686550bc46cbaf72, type: 2}
+  - {fileID: 11400000, guid: 91d8a7003d761304ba7b078ed1df73b2, type: 2}
   currentAnimation: 0
   currentAnimFrame: 0
   currentHitboxFrame: 0
@@ -4489,7 +4484,9 @@ MonoBehaviour:
   myLastInput:
     inputFlag: 0
     frames: 0
-  moves: []
+  normals: []
+  specials: []
+  cancelable: 0
   inputBuffer: {fileID: 0}
   Spawnables: []
   editorHitboxes: 1

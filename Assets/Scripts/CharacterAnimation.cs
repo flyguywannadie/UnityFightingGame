@@ -44,9 +44,9 @@ public class CharacterAnimation : ScriptableObject
     public bool changeStateOnFinish = false;
     public CharacterState endState;
     public List<AnimEvent> Events;
-    public int cancelWindowStart = -1;
-    public int cancelWindowEnd = -1;
-    public List<int> cancelIDs;
+    //public int cancelWindowStart = -1;
+    //public int cancelWindowEnd = -1;
+    //public List<int> cancelIDs;
 
     public Sprite GetCurrentSprite(int frame)
     {

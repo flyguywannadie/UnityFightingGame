@@ -96,19 +96,19 @@ public class CharacterAnimator : MonoBehaviour
 		return animations[currentAnimation].GetHitboxData(currentFrame);
 	}
 
-	public bool InCancelWindow()
-	{
-		if (animations[currentAnimation].cancelWindowStart == -1 && animations[currentAnimation].cancelWindowEnd == -1)
-		{
-			return true;
-		}
+	//public bool InCancelWindow()
+	//{
+	//	if (animations[currentAnimation].cancelWindowStart == -1 && animations[currentAnimation].cancelWindowEnd == -1)
+	//	{
+	//		return true;
+	//	}
 
-		return (currentFrame >= animations[currentAnimation].cancelWindowStart && currentFrame <= animations[currentAnimation].cancelWindowEnd);
-	}
+	//	return (currentFrame >= animations[currentAnimation].cancelWindowStart && currentFrame <= animations[currentAnimation].cancelWindowEnd);
+	//}
 
-    public bool CanCancelIntoMove(int newID)
-    {
-		return true; // for debug time
-        return animations[currentAnimation].cancelIDs.Contains(newID);
-    }
+ //   public bool CanCancelIntoMove(int newID)
+ //   {
+	//	return true; // for debug time
+ //       return animations[currentAnimation].cancelIDs.Contains(newID);
+ //   }
 }

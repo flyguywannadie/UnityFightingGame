@@ -64,7 +64,9 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] private int stateIndex = 0;
 	[SerializeField] private int queuedState = 0;
 	[SerializeField] private BufferedInput myLastInput;
-	[SerializeField] private CharacterMove[] moves;
+	[SerializeField] private CharacterMove[] normals;
+	[SerializeField] private CharacterMove[] specials;
+	[SerializeField] private bool cancelable;
 
     [Serializable]
 	public class CharacterMove
@@ -210,11 +212,14 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		states[stateIndex].StateUpdate(this, input);
 		
-		if ((inControl || animator.InCancelWindow()) && input.PressingAttacks())
+		if ((inControl || cancelable) && input.PressingAttacks())
 		{
-			Debug.Log("IN cancel window: " + animator.InCancelWindow());
 			TryAttacks();
 		}
+		//else if (CompareCurrentState(CharacterState.ATTACK))
+		//{
+
+		//}
 
 		animator.AnimatorUpdate(this);
 
@@ -310,28 +315,25 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		CharacterMove usedMove = null;
 
-		foreach (CharacterMove move in moves)
+		foreach (CharacterMove move in normals)
 		{
-			if (animator.CanCancelIntoMove(move.animID))//animator.InCancelWindow())
+			if (!IsOnGround() == move.inAir)
 			{
-				if (!IsOnGround() == move.inAir)
+				bool correctButtons = !(move.Light ^ myLastInput.Light()) && !(move.Heavy ^ myLastInput.Heavy()) && !(move.Special ^ myLastInput.Special());
+
+				//Debug.Log(move.Light + " " + myLastInput.Light() + " " + move.Heavy + " " + myLastInput.Heavy() + " " + move.Special + " " + myLastInput.Special());
+
+				//Debug.Log(!(move.Light ^ myLastInput.Light()) + " " + !(move.Heavy ^ myLastInput.Heavy()) + " " + !(move.Special ^ myLastInput.Special()));
+
+				//Debug.Log(correctButtons);
+
+				if (correctButtons)
 				{
-					bool correctButtons = !(move.Light ^ myLastInput.Light()) && !(move.Heavy ^ myLastInput.Heavy()) && !(move.Special ^ myLastInput.Special());
-
-					//Debug.Log(move.Light + " " + myLastInput.Light() + " " + move.Heavy + " " + myLastInput.Heavy() + " " + move.Special + " " + myLastInput.Special());
-
-					//Debug.Log(!(move.Light ^ myLastInput.Light()) + " " + !(move.Heavy ^ myLastInput.Heavy()) + " " + !(move.Special ^ myLastInput.Special()));
-
-					//Debug.Log(correctButtons);
-
-					if (correctButtons)
+					bool correctMotion = inputBuffer.ReadBufferForMotion(move.motion, AmIFacingBackward());
+					if (correctMotion)
 					{
-						bool correctMotion = inputBuffer.ReadBufferForMotion(move.motion, AmIFacingBackward());
-						if (correctMotion)
-						{
-							usedMove = move;
-							break;
-						}
+						usedMove = move;
+						break;
 					}
 				}
 			}
@@ -342,8 +344,9 @@ public abstract class BaseCharacter : MonoBehaviour
 			return;
 		}
 
+		cancelable = false;
 		SetState(CharacterState.ATTACK);
-		SetAnimation(usedMove.animID);
+		SetAnimation(usedMove.animID, false);
 	}
 
 	public virtual void LoseControl()
@@ -399,9 +402,9 @@ public abstract class BaseCharacter : MonoBehaviour
 		SetAnimation((int)animID);
 	}
 
-	public void SetAnimation(int animID)
+	public void SetAnimation(int animID, bool ignoreSameID = true)
 	{
-		if (animator.GetCurrentAnimationID() == animID)
+		if (animator.GetCurrentAnimationID() == animID && ignoreSameID)
 		{
 			return;
 		}
@@ -564,6 +567,11 @@ public abstract class BaseCharacter : MonoBehaviour
 	public bool CompareCurrentState(CharacterState state)
 	{
 		return (int)state == stateIndex;
+	}
+
+	public void SetCancelable(bool yn)
+	{
+		cancelable = yn;
 	}
 
 	[SerializeField] private bool editorHitboxes;
