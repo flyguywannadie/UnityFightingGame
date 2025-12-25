@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private bool frameAdvanceMode = false;
 	[SerializeField] private bool advanceFrame = false;
 
+	[SerializeField] private int hitstop = 0;
+
 	[Serializable]
 	private class CharInteraction
 	{
@@ -58,6 +60,12 @@ public class GameManager : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		if (hitstop > 0)
+		{
+			hitstop--;
+			return;
+		}
+
 		if (!frameAdvanceMode || (frameAdvanceMode && advanceFrame))
 		{
 			foreach (InputBuffer control in characterControllers)
@@ -100,6 +108,11 @@ public class GameManager : MonoBehaviour
 	public void AddProjectile(ProjectileScript proj)
 	{
 		projectiles.Add(proj);
+	}
+
+	public void AddHitstop(int amount)
+	{
+		hitstop += amount;
 	}
 
 	public void Update()

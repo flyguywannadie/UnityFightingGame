@@ -50,5 +50,6 @@ public class BuiltHurtbox : BaseBuildableBox
 		//Debug.Log("BuiltHurtbox: " + tag + " " + name + " has hit with thing: " + collision.name);
 		box.enabled = false;
 		instigator.SetCancelable(true);
+		GameManager.instance.AddHitstop(3);
 	}
 }

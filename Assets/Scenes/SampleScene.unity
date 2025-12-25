@@ -1118,7 +1118,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 12dd2fe44da4d6e45967837cd0621412, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 47a9f1794d879ed4ca06012d0fabf075, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1184,6 +1184,7 @@ MonoBehaviour:
     frames: 0
   normals:
   - name: crouchjab
+    priority: 2
     inAir: 0
     motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
     animID: 200
@@ -1191,6 +1192,7 @@ MonoBehaviour:
     Heavy: 0
     Special: 0
   - name: jab
+    priority: 1
     inAir: 0
     motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
     animID: 100
@@ -1198,6 +1200,7 @@ MonoBehaviour:
     Heavy: 0
     Special: 0
   - name: crouch Heavy
+    priority: 4
     inAir: 0
     motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
     animID: 201
@@ -1205,6 +1208,7 @@ MonoBehaviour:
     Heavy: 1
     Special: 0
   - name: fierce
+    priority: 3
     inAir: 0
     motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
     animID: 101
@@ -1212,6 +1216,7 @@ MonoBehaviour:
     Heavy: 1
     Special: 0
   - name: crouch special
+    priority: 6
     inAir: 0
     motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
     animID: 202
@@ -1219,6 +1224,7 @@ MonoBehaviour:
     Heavy: 0
     Special: 1
   - name: special
+    priority: 5
     inAir: 0
     motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
     animID: 102
@@ -1227,6 +1233,7 @@ MonoBehaviour:
     Special: 1
   specials:
   - name: Fireball
+    priority: 0
     inAir: 0
     motion: {fileID: 11400000, guid: aa38cfde28737d7419f8e2d3cad6ac31, type: 2}
     animID: 0
@@ -1234,6 +1241,7 @@ MonoBehaviour:
     Heavy: 0
     Special: 0
   cancelable: 0
+  priority: 0
   inputBuffer: {fileID: 16322286}
   Spawnables:
   - {fileID: 7292784395290753730, guid: 1759bed9eaa936c40804063773b8a5bf, type: 3}
@@ -1251,7 +1259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animPath: CharAnimations/Char1
-  currentFrame: 42
+  currentFrame: 0
   visuals: {fileID: 231097112}
   animations:
   - {fileID: 11400000, guid: 91d8a7003d761304ba7b078ed1df73b2, type: 2}
@@ -4487,6 +4495,7 @@ MonoBehaviour:
   normals: []
   specials: []
   cancelable: 0
+  priority: 0
   inputBuffer: {fileID: 0}
   Spawnables: []
   editorHitboxes: 1
