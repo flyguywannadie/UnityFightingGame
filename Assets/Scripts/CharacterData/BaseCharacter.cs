@@ -82,6 +82,7 @@ public abstract class BaseCharacter : MonoBehaviour
 		[Header("Required Button Input"),SerializeField] public bool Light;
 		[SerializeField] public bool Heavy;
         [SerializeField] public bool Special;
+		[SerializeField] public bool AnyOfTheRequiredInputs;
     }
 
 	[SerializeField] private InputBuffer inputBuffer;
@@ -376,23 +377,32 @@ public abstract class BaseCharacter : MonoBehaviour
             {
                 if (!IsOnGround() == move.inAir)
                 {
-                    bool correctButtons = !(move.Light ^ myLastInput.Light()) && !(move.Heavy ^ myLastInput.Heavy()) && !(move.Special ^ myLastInput.Special());
+                    bool correctButtons;
 
-                    //Debug.Log(move.Light + " " + myLastInput.Light() + " " + move.Heavy + " " + myLastInput.Heavy() + " " + move.Special + " " + myLastInput.Special());
-
-                    //Debug.Log(!(move.Light ^ myLastInput.Light()) + " " + !(move.Heavy ^ myLastInput.Heavy()) + " " + !(move.Special ^ myLastInput.Special()));
-
-                    //Debug.Log(correctButtons);
-
-                    if (correctButtons)
-                    {
-                        bool correctMotion = inputBuffer.ReadBufferForMotion(move.motion, AmIFacingBackward());
-                        if (correctMotion)
-                        {
-                            usedMove = move;
-                            break;
-                        }
+					if (move.AnyOfTheRequiredInputs)
+					{
+                        correctButtons = !(move.Light ^ myLastInput.Light()) || !(move.Heavy ^ myLastInput.Heavy()) || !(move.Special ^ myLastInput.Special());
+                    } 
+					else
+					{
+                        correctButtons = !(move.Light ^ myLastInput.Light()) && !(move.Heavy ^ myLastInput.Heavy()) && !(move.Special ^ myLastInput.Special());
                     }
+
+					//Debug.Log(move.Light + " " + myLastInput.Light() + " " + move.Heavy + " " + myLastInput.Heavy() + " " + move.Special + " " + myLastInput.Special());
+
+					//Debug.Log(!(move.Light ^ myLastInput.Light()) + " " + !(move.Heavy ^ myLastInput.Heavy()) + " " + !(move.Special ^ myLastInput.Special()));
+
+					//Debug.Log(correctButtons);
+
+					if (correctButtons)
+					{
+						bool correctMotion = inputBuffer.ReadBufferForMotion(move.motion, AmIFacingBackward());
+						if (correctMotion)
+						{
+							usedMove = move;
+							break;
+						}
+					}
                 }
             }
         }
