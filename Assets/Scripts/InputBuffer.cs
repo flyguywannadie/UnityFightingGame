@@ -16,6 +16,7 @@ public class InputBuffer : MonoBehaviour
 
     [SerializeField] private SpriteRenderer direction;
     [SerializeField] private Sprite[] directions;
+	[SerializeField] private UIInputBuffer uibuffer;
 
     [SerializeField] private BaseCharacter myCharacter;
 
@@ -146,6 +147,11 @@ public class InputBuffer : MonoBehaviour
 
 		UpdateBuffer();
 
+		if (uibuffer)
+		{
+			uibuffer.UpdateUI(inputs);
+		}
+
 		sentInput.CopyInput(inputs[0]);
 
 		myCharacter.CharUpdate(sentInput);
@@ -153,30 +159,25 @@ public class InputBuffer : MonoBehaviour
 
 	private void UpdateBuffer()
 	{
-		int dir = 4;
 		BufferedInput newInput = new BufferedInput();
 
 		if (a)
 		{
-			dir -= 1;
 			newInput.SetBack();
 			//a = false;
 		}
 		if (s)
 		{
-			dir -= 3;
 			newInput.SetDown();
 			//s = false;
 		}
 		if (d)
 		{
-			dir += 1;
 			newInput.SetForward();
 			//d = false;
 		}
 		if (w)
 		{
-			dir += 3;
 			newInput.SetUp();
 			//w = false;
 		}
@@ -195,8 +196,6 @@ public class InputBuffer : MonoBehaviour
 			newInput.SetSpecial();
 			o = false;
 		}
-
-		direction.sprite = directions[dir];
 
 		if (newInput.inputFlag != inputs[0].inputFlag)
 		{
@@ -241,6 +240,10 @@ public class InputBuffer : MonoBehaviour
 
 		if (motion.motion.Length == 1)
 		{
+            if ((int)motion.motion[0].direction >= (int)MotionDefinition.Direction.DOWNFORWARD)
+			{
+				return b2.CompareDirectionStrict(b);
+			}
             return b2.CompareDirectionLeniant(b);
 		}
 

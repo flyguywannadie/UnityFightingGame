@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private InputBuffer[] characterControllers;
 	[SerializeField] private BaseCharacter[] characters;
 	[SerializeField] private List<ProjectileScript> projectiles;
+	[SerializeField] private UIInputBuffer UIBuffer;
 
 	[SerializeField] private bool frameAdvanceMode = false;
 	[SerializeField] private bool advanceFrame = false;
@@ -151,6 +152,12 @@ public class GameManager : MonoBehaviour
 		{
 			RestartGame();
 		}
+
+		if (Input.GetKeyDown(KeyCode.B))
+		{
+			UIBuffer.Toggle();
+
+        }
 
 		if (Input.GetKeyDown(KeyCode.G))
 		{

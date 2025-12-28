@@ -8,14 +8,14 @@ public class MotionDefinition : ScriptableObject
 {
     public enum Direction
     {
-        FORWARD,
-        DOWNFORWARD,
-        DOWN,
-        DOWNBACK,
-        BACK,
-        UPBACK,
-        UP,
-        UPFORWARD
+        FORWARD = 0,
+        DOWN = 1,
+        BACK = 2,
+        UP = 3,
+        DOWNFORWARD = 4,
+        DOWNBACK = 5,
+        UPBACK = 6,
+        UPFORWARD = 7
     }
 
     [Serializable]

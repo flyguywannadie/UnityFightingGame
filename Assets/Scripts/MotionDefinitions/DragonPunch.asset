@@ -15,7 +15,7 @@ MonoBehaviour:
   motion:
   - direction: 0
     frameRequirement: 0
-  - direction: 2
-    frameRequirement: 0
   - direction: 1
+    frameRequirement: 0
+  - direction: 4
     frameRequirement: 0

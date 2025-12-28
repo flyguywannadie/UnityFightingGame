@@ -186,6 +186,35 @@ public class BufferedInput
 
     #endregion
 
+	public int GetDirection()
+	{
+        int temp = 0b0001111 & inputFlag;
+
+        switch (temp)
+        {
+            case 0b0000:
+				return 4;
+            case FORWARD:
+                return 5;
+            case (FORWARD | DOWN):
+                return 8;
+            case DOWN:
+                return 7;
+            case (DOWN | BACK):
+                return 6;
+            case BACK:
+                return 3;
+            case (BACK | UP):
+                return 0;
+            case UP:
+                return 1;
+            case (UP | FORWARD):
+                return 2;
+        }
+
+		return 4;
+    }
+
     public override string ToString()
     {
 		string toret = "";

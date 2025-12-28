@@ -12,16 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4023b0a550f4ec04996f0a62b343bb32, type: 3}
   m_Name: Fireball
   m_EditorClassIdentifier: 
-  moveName: Fireball
-  action: 1
   motion:
-  - direction: 2
-    button: 0
-    frameRequirement: 0
   - direction: 1
-    button: 0
+    frameRequirement: 0
+  - direction: 4
     frameRequirement: 0
   - direction: 0
-    button: 0
     frameRequirement: 0
-  moveState: 104

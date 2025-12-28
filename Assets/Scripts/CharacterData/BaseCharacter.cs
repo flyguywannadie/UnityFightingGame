@@ -65,7 +65,6 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] private int queuedState = 0;
 	[SerializeField] private BufferedInput myLastInput;
 	[SerializeField] private CharacterMove[] normals;
-	[SerializeField] private CharacterMove[] specials;
 	[SerializeField] private bool cancelable;
 	[SerializeField] private int priority;
 
@@ -74,7 +73,7 @@ public abstract class BaseCharacter : MonoBehaviour
 	{
 		public string name;
 		[SerializeField] public int priority;
-		[SerializeField] public bool specialCancel;
+		//[SerializeField] public bool specialCancel;
 		[SerializeField] public bool inAir;
 		[SerializeField] public MotionDefinition motion;
 		[SerializeField] public int animID;
@@ -218,7 +217,7 @@ public abstract class BaseCharacter : MonoBehaviour
 		
 		if ((inControl || cancelable) && input.PressingAttacks())
 		{
-			TryMoves(normals);
+			TryMoves();
 		}
 		//else if (CompareCurrentState(CharacterState.ATTACK))
 		//{
@@ -306,59 +305,7 @@ public abstract class BaseCharacter : MonoBehaviour
 		}
 	}
 
-	protected virtual bool TryNormals()
-	{
-        if (queuedState != stateIndex)
-		{
-			ChangeState();
-			if (!inControl)
-			{
-				return false;
-			}
-		}
-
-		CharacterMove usedMove = null;
-
-		foreach (CharacterMove move in normals)
-		{
-			if (move.priority > priority)
-			{
-                if (!IsOnGround() == move.inAir)
-                {
-                    bool correctButtons = !(move.Light ^ myLastInput.Light()) && !(move.Heavy ^ myLastInput.Heavy()) && !(move.Special ^ myLastInput.Special());
-
-                    //Debug.Log(move.Light + " " + myLastInput.Light() + " " + move.Heavy + " " + myLastInput.Heavy() + " " + move.Special + " " + myLastInput.Special());
-
-                    //Debug.Log(!(move.Light ^ myLastInput.Light()) + " " + !(move.Heavy ^ myLastInput.Heavy()) + " " + !(move.Special ^ myLastInput.Special()));
-
-                    //Debug.Log(correctButtons);
-
-                    if (correctButtons)
-                    {
-                        bool correctMotion = inputBuffer.ReadBufferForMotion(move.motion, AmIFacingBackward());
-                        if (correctMotion)
-                        {
-                            usedMove = move;
-                            break;
-                        }
-                    }
-                }
-            }
-		}
-
-		if (usedMove == null)
-		{
-			return false;
-		}
-
-		priority = usedMove.priority;
-		cancelable = false;
-		SetState(CharacterState.ATTACK);
-		SetAnimation(usedMove.animID, false);
-		return true;
-	}
-
-    protected virtual bool TryMoves(CharacterMove[] moves)
+    protected virtual bool TryMoves()
     {
         if (queuedState != stateIndex)
         {
@@ -371,7 +318,7 @@ public abstract class BaseCharacter : MonoBehaviour
 
         CharacterMove usedMove = null;
 
-        foreach (CharacterMove move in moves)
+        foreach (CharacterMove move in normals)
         {
             if (move.priority > priority)
             {
