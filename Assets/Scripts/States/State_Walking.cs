@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class State_Walking : BaseState
 {
+	int runTime = 0;
+	BufferedInput prevInput = new BufferedInput();
+
 	public override bool WasAttackBlocked(BufferedInput input, HurtboxProperties property)
 	{
 		return (input.Back() && !(property.attackHeight == AttackHeight.LOW));
@@ -9,14 +12,27 @@ public class State_Walking : BaseState
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
-		Walk(c, input);
+  //      Debug.Log("ON Enter - " + runTime + " -- " + GameManager.instance.GetTime() + " Compare: " + GameManager.instance.CompareTime(runTime));
+  //      //Debug.Log("ON Enter - " + input.GetDirection() + " -- " + prevInput.GetDirection());
+  //      if (input.GetDirection() == prevInput.GetDirection() && GameManager.instance.CompareTime(runTime) < 8)
+		//{
+		//	if (input.Forward())
+		//	{
+		//		c.SetState(CharacterState.RUNNING);
+		//	}
+		//	return;
+		//}
+  //      prevInput.CopyInput(input);
+        Walk(c, input);
 		c.LoseCombo();
 	}
 
 	public override void OnExitState(BaseCharacter c, BufferedInput input)
 	{
-		c.SetMotion(0, 0);
-	}
+        //runTime = GameManager.instance.GetTime();
+		//Debug.Log("ON Exit - " + runTime);
+        //c.SetMotion(0, 0);
+    }
 
 	public override void StateUpdate(BaseCharacter c, BufferedInput input)
 	{
@@ -35,7 +51,7 @@ public class State_Walking : BaseState
 		if (!input.Walking())
 		{
 			c.SetState(CharacterState.STANDING);
-			return;
+            return;
 		}
 
 		Walk(c, input);

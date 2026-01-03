@@ -15,7 +15,7 @@ public class MotionDefinition : ScriptableObject
         DOWNFORWARD = 4,
         DOWNBACK = 5,
         UPBACK = 6,
-        UPFORWARD = 7
+        UPFORWARD = 7,
     }
 
     [Serializable]

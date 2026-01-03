@@ -594,6 +594,7 @@ MonoBehaviour:
   frameAdvanceMode: 0
   advanceFrame: 0
   hitstop: 0
+  time: 0
   interactions: []
 --- !u!1 &55983432
 GameObject:
@@ -1170,7 +1171,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 47a9f1794d879ed4ca06012d0fabf075, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 371e09bf22a97a948b8179ae68fe5e72, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1234,88 +1235,9 @@ MonoBehaviour:
   myLastInput:
     inputFlag: 0
     frames: 0
-  normals:
-  - name: Fireball
-    priority: 10
-    specialCancel: 0
-    inAir: 0
-    motion: {fileID: 11400000, guid: aa38cfde28737d7419f8e2d3cad6ac31, type: 2}
-    animID: 104
-    Light: 1
-    Heavy: 1
-    Special: 1
-    AnyOfTheRequiredInputs: 1
-  - name: crouchjab
-    priority: 2
-    specialCancel: 0
-    inAir: 0
-    motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
-    animID: 200
-    Light: 1
-    Heavy: 0
-    Special: 0
-    AnyOfTheRequiredInputs: 0
-  - name: jab
-    priority: 1
-    specialCancel: 0
-    inAir: 0
-    motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
-    animID: 100
-    Light: 1
-    Heavy: 0
-    Special: 0
-    AnyOfTheRequiredInputs: 0
-  - name: crouch Heavy
-    priority: 4
-    specialCancel: 0
-    inAir: 0
-    motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
-    animID: 201
-    Light: 0
-    Heavy: 1
-    Special: 0
-    AnyOfTheRequiredInputs: 0
-  - name: fierce
-    priority: 3
-    specialCancel: 0
-    inAir: 0
-    motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
-    animID: 101
-    Light: 0
-    Heavy: 1
-    Special: 0
-    AnyOfTheRequiredInputs: 0
-  - name: Launcher
-    priority: 6
-    specialCancel: 0
-    inAir: 0
-    motion: {fileID: 11400000, guid: 5e491961a7356974eb3d17eeee1215fb, type: 2}
-    animID: 204
-    Light: 0
-    Heavy: 0
-    Special: 1
-    AnyOfTheRequiredInputs: 0
-  - name: crouch special
-    priority: 6
-    specialCancel: 0
-    inAir: 0
-    motion: {fileID: 11400000, guid: d85030dd46fed8c49ada5d57806ccaa1, type: 2}
-    animID: 202
-    Light: 0
-    Heavy: 0
-    Special: 1
-    AnyOfTheRequiredInputs: 0
-  - name: special
-    priority: 5
-    specialCancel: 0
-    inAir: 0
-    motion: {fileID: 11400000, guid: 917805d7c7788e7459cdeb284742cb22, type: 2}
-    animID: 102
-    Light: 0
-    Heavy: 0
-    Special: 1
-    AnyOfTheRequiredInputs: 0
-  cancelable: 0
+  moves: []
+  movePath: CharMoves/Char1
+  cancelable: 1
   priority: 0
   inputBuffer: {fileID: 16322286}
   Spawnables:
@@ -1337,7 +1259,7 @@ MonoBehaviour:
   currentFrame: 0
   visuals: {fileID: 231097112}
   animations:
-  - {fileID: 11400000, guid: 91d8a7003d761304ba7b078ed1df73b2, type: 2}
+  - {fileID: 11400000, guid: dcb27e2947ba70a4785c561eb0ce2cb2, type: 2}
   currentAnimation: 0
   currentAnimFrame: 0
   currentHitboxFrame: 0
@@ -5717,7 +5639,8 @@ MonoBehaviour:
   myLastInput:
     inputFlag: 0
     frames: 0
-  normals: []
+  moves: []
+  movePath: CharMoves/Char1
   cancelable: 0
   priority: 0
   inputBuffer: {fileID: 0}

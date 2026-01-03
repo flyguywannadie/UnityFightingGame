@@ -23,6 +23,7 @@ public enum CommonAnimations
 	CROUCHHIT = 16,
 	AIRBLOCK = 17,
 	AIRHIT = 18,
+	RUN = 19,
 }
 
 public enum CharacterState
@@ -38,6 +39,7 @@ public enum CharacterState
 	KNOCKDOWN = 8,
 	ONGROUND = 9,
 	NOACTION = 10,
+	RUNNING = 11,
 }
 
 public abstract class BaseCharacter : MonoBehaviour
@@ -64,25 +66,10 @@ public abstract class BaseCharacter : MonoBehaviour
 	[SerializeField] private int stateIndex = 0;
 	[SerializeField] private int queuedState = 0;
 	[SerializeField] private BufferedInput myLastInput;
-	[SerializeField] private CharacterMove[] normals;
+	[SerializeField] private List<CharacterMove> moves;
+	[SerializeField] private string movePath;
 	[SerializeField] private bool cancelable;
 	[SerializeField] private int priority;
-
-    [Serializable]
-	public class CharacterMove
-	{
-		public string name;
-		[SerializeField] public int priority;
-		//[SerializeField] public bool specialCancel;
-		[SerializeField] public bool inAir;
-		[SerializeField] public MotionDefinition motion;
-		[SerializeField] public int animID;
-
-		[Header("Required Button Input"),SerializeField] public bool Light;
-		[SerializeField] public bool Heavy;
-        [SerializeField] public bool Special;
-		[SerializeField] public bool AnyOfTheRequiredInputs;
-    }
 
 	[SerializeField] private InputBuffer inputBuffer;
 
@@ -102,7 +89,8 @@ public abstract class BaseCharacter : MonoBehaviour
 		InitializeStates();
 		editorHitboxes = false;
 		SetState(CharacterState.STANDING);
-	}
+        moves = new List<CharacterMove>(Resources.LoadAll<CharacterMove>(movePath));
+    }
 
 	public void SetPlayerStatus(bool player1)
 	{
@@ -130,6 +118,7 @@ public abstract class BaseCharacter : MonoBehaviour
 			new State_Knockdown(),
 			new State_OnGround(),
 			new State_NoAction(),
+			new State_Running(),
 		};
 	}
 
@@ -318,9 +307,9 @@ public abstract class BaseCharacter : MonoBehaviour
 
         CharacterMove usedMove = null;
 
-        foreach (CharacterMove move in normals)
+        foreach (CharacterMove move in moves)
         {
-            if (move.priority > priority)
+            if (move.cancelPriority > priority)
             {
                 if (!IsOnGround() == move.inAir)
                 {
@@ -359,10 +348,10 @@ public abstract class BaseCharacter : MonoBehaviour
             return false;
         }
 
-        priority = usedMove.priority;
+        priority = usedMove.cancelPriority;
         cancelable = false;
         SetState(CharacterState.ATTACK);
-        SetAnimation(usedMove.animID, false);
+        SetAnimation(usedMove.anim.GetAnimID(), false);
         return true;
     }
 
@@ -554,7 +543,7 @@ public abstract class BaseCharacter : MonoBehaviour
 		knockback = 0;
 		motion = Vector2.zero;
 		SetState(CharacterState.STANDING);
-		SetAnimation(CommonAnimations.IDLE);
+        SetAnimation(CommonAnimations.IDLE);
 	}
 
 	public int GetHitstun()

@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private bool advanceFrame = false;
 
 	[SerializeField] private int hitstop = 0;
+	//[SerializeField] private int time = 0;
 
 	[Serializable]
 	private class CharInteraction
@@ -49,7 +50,9 @@ public class GameManager : MonoBehaviour
 
 	private void RestartGame()
 	{
-		characters[0].transform.parent.position = new Vector3(-4,0,0);
+        //time = 0;
+
+        characters[0].transform.parent.position = new Vector3(-4,0,0);
 		characters[1].transform.parent.position = new Vector3(4,0,0);
 
 		characters[0].ResetChar();
@@ -69,7 +72,9 @@ public class GameManager : MonoBehaviour
 
 		if (!frameAdvanceMode || (frameAdvanceMode && advanceFrame))
 		{
-			foreach (InputBuffer control in characterControllers)
+            //time += 1;
+
+            foreach (InputBuffer control in characterControllers)
 			{
 				control.InputUpdate();
 			}
@@ -115,6 +120,16 @@ public class GameManager : MonoBehaviour
 	{
 		hitstop += amount;
 	}
+
+	//public int GetTime()
+	//{
+ //       return time;
+	//}
+
+	//public int CompareTime(int t)
+	//{
+	//	return time - t;
+	//}
 
 	public void Update()
 	{
