@@ -12,18 +12,20 @@ public class State_Walking : BaseState
 
 	public override void OnEnterState(BaseCharacter c, BufferedInput input)
 	{
-  //      Debug.Log("ON Enter - " + runTime + " -- " + GameManager.instance.GetTime() + " Compare: " + GameManager.instance.CompareTime(runTime));
-  //      //Debug.Log("ON Enter - " + input.GetDirection() + " -- " + prevInput.GetDirection());
-  //      if (input.GetDirection() == prevInput.GetDirection() && GameManager.instance.CompareTime(runTime) < 8)
-		//{
-		//	if (input.Forward())
-		//	{
-		//		c.SetState(CharacterState.RUNNING);
-		//	}
-		//	return;
-		//}
-  //      prevInput.CopyInput(input);
-        Walk(c, input);
+		//      Debug.Log("ON Enter - " + runTime + " -- " + GameManager.instance.GetTime() + " Compare: " + GameManager.instance.CompareTime(runTime));
+		//      //Debug.Log("ON Enter - " + input.GetDirection() + " -- " + prevInput.GetDirection());
+		if (input.GetDirection() == prevInput.GetDirection() && runTime < 8)
+		{
+			if (input.Forward())
+			{
+				c.SetState(CharacterState.RUNNING);
+			}
+			prevInput.Clear();
+            return;
+		}
+		prevInput.CopyInput(input);
+		runTime = 0;
+		Walk(c, input);
 		c.LoseCombo();
 	}
 
@@ -53,6 +55,8 @@ public class State_Walking : BaseState
 			c.SetState(CharacterState.STANDING);
             return;
 		}
+
+		runTime++;
 
 		Walk(c, input);
 	}

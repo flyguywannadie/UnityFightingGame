@@ -317,7 +317,7 @@ public class InputBuffer : MonoBehaviour
 		return (Input.GetKey(key) || Input.GetKeyDown(key));
 	}
 
-	private void ClearBuffer()
+	public void ClearBuffer()
 	{
 		inputs.Clear();
 	}

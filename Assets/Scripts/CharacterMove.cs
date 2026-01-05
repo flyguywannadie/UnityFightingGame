@@ -13,4 +13,14 @@ public class CharacterMove : ScriptableObject
     [SerializeField] public bool Heavy;
     [SerializeField] public bool Special;
     [SerializeField] public bool AnyOfTheRequiredInputs;
+
+    public int GetMovePriority()
+    {
+        return motion.GetComplexity();
+    }
+
+    public override string ToString()
+    {
+        return "Move: " + name + " - " + motion.name;
+    }
 }

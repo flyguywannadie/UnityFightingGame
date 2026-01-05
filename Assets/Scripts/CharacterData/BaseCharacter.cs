@@ -305,53 +305,62 @@ public abstract class BaseCharacter : MonoBehaviour
             }
         }
 
-        CharacterMove usedMove = null;
+		CharacterMove move = null;
+        List<CharacterMove> usedMoves = new List<CharacterMove>();
 
-        foreach (CharacterMove move in moves)
+        foreach (CharacterMove m in moves)
         {
-            if (move.cancelPriority > priority)
+            if (m.cancelPriority > priority)
             {
-                if (!IsOnGround() == move.inAir)
+                if (!IsOnGround() == m.inAir)
                 {
                     bool correctButtons;
 
-					if (move.AnyOfTheRequiredInputs)
+					if (m.AnyOfTheRequiredInputs)
 					{
-                        correctButtons = !(move.Light ^ myLastInput.Light()) || !(move.Heavy ^ myLastInput.Heavy()) || !(move.Special ^ myLastInput.Special());
+                        correctButtons = !(m.Light ^ myLastInput.Light()) || !(m.Heavy ^ myLastInput.Heavy()) || !(m.Special ^ myLastInput.Special());
                     } 
 					else
 					{
-                        correctButtons = !(move.Light ^ myLastInput.Light()) && !(move.Heavy ^ myLastInput.Heavy()) && !(move.Special ^ myLastInput.Special());
+                        correctButtons = !(m.Light ^ myLastInput.Light()) && !(m.Heavy ^ myLastInput.Heavy()) && !(m.Special ^ myLastInput.Special());
                     }
 
-					//Debug.Log(move.Light + " " + myLastInput.Light() + " " + move.Heavy + " " + myLastInput.Heavy() + " " + move.Special + " " + myLastInput.Special());
+                    //Debug.Log(m.Light + " " + myLastInput.Light() + " " + m.Heavy + " " + myLastInput.Heavy() + " " + m.Special + " " + myLastInput.Special());
 
-					//Debug.Log(!(move.Light ^ myLastInput.Light()) + " " + !(move.Heavy ^ myLastInput.Heavy()) + " " + !(move.Special ^ myLastInput.Special()));
+                    //Debug.Log(!(m.Light ^ myLastInput.Light()) + " " + !(m.Heavy ^ myLastInput.Heavy()) + " " + !(m.Special ^ myLastInput.Special()));
 
-					//Debug.Log(correctButtons);
+                    //Debug.Log(correctButtons);
 
-					if (correctButtons)
+                    if (correctButtons)
 					{
-						bool correctMotion = inputBuffer.ReadBufferForMotion(move.motion, AmIFacingBackward());
+						bool correctMotion = inputBuffer.ReadBufferForMotion(m.motion, AmIFacingBackward());
 						if (correctMotion)
 						{
-							usedMove = move;
-							break;
+                            usedMoves.Add(m);
 						}
 					}
                 }
             }
         }
 
-        if (usedMove == null)
+        if (usedMoves.Count <= 0)
         {
             return false;
         }
+		move = usedMoves[0];
+		
+		foreach (CharacterMove m2 in usedMoves)
+		{
+			if (m2.GetMovePriority() > move.GetMovePriority())
+			{
+				move = m2;
+			}
+		}
 
-        priority = usedMove.cancelPriority;
+        priority = move.cancelPriority;
         cancelable = false;
         SetState(CharacterState.ATTACK);
-        SetAnimation(usedMove.anim.GetAnimID(), false);
+        SetAnimation(move.anim.GetAnimID(), false);
         return true;
     }
 

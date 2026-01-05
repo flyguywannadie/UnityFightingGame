@@ -65,4 +65,17 @@ public class MotionDefinition : ScriptableObject
     }
 
     public MotionPiece[] motion;
+
+    public int GetComplexity()
+    {
+        int complexity = motion.Length;
+
+        foreach( MotionPiece piece in motion)
+        {
+            complexity += piece.frameRequirement;
+            complexity += (int)piece.direction;
+        }
+
+        return complexity;
+    }
 }
