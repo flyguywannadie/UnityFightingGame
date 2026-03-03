@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterAnimator : MonoBehaviour
 {
-	public string animPath = "CharAnimations/Char1";
+	public string animPath = "CharAnimations/";
 
 	public int currentFrame = 0;
 
@@ -18,48 +18,48 @@ public class CharacterAnimator : MonoBehaviour
 
 	public FrameDataBoxBuilder hitboxBuilder;
 
-	private void Start()
+	public void SetupAnimator(string name)
 	{
 		currentFrame = 0;
 		currentHitboxFrame = -1;
-		animations = new List<CharacterAnimation>(Resources.LoadAll<CharacterAnimation>(animPath));
+		animations = new List<CharacterAnimation>(Resources.LoadAll<CharacterAnimation>(animPath + name));
 		ChangeAnimationToID((int)CommonAnimations.IDLE);
 	}
 
 	public void AnimatorUpdate(BaseCharacter c)
 	{
-		CharacterAnimation current = animations[currentAnimation];
+		//CharacterAnimation current = animations[currentAnimation];
 
-		currentFrame++;
+		//currentFrame++;
 
-		if (currentFrame > current.GetAnimationDuration())
-		{
-			if (current.loop)
-			{
-				currentFrame = 0;
-			}
-			else if (current.changeStateOnFinish)
-			{
-				currentFrame--;
-				c.SetState(current.endState);
-			}
-		}
+		//if (currentFrame > current.GetAnimationDuration())
+		//{
+		//	if (current.loop)
+		//	{
+		//		currentFrame = 0;
+		//	}
+		//	else if (current.changeStateOnFinish)
+		//	{
+		//		currentFrame--;
+		//		c.SetState(current.endState);
+		//	}
+		//}
 
-		visuals.sprite = current.GetCurrentSprite(currentFrame);
+		//visuals.sprite = current.GetCurrentSprite(currentFrame);
 
-		int hitboxIndex = current.GetHitboxDataIndex(currentFrame);
-		if (hitboxIndex > currentHitboxFrame)
-		{
-			CharacterAnimation.FrameData hitboxdata = current.GetHitboxData(hitboxIndex);
-			hitboxBuilder.BuildHitbox(hitboxdata);
-			currentHitboxFrame = hitboxIndex;
-		}
+		//int hitboxIndex = current.GetHitboxDataIndex(currentFrame);
+		//if (hitboxIndex > currentHitboxFrame)
+		//{
+		//	CharacterAnimation.FrameData hitboxdata = current.GetHitboxData(hitboxIndex);
+		//	hitboxBuilder.BuildHitbox(hitboxdata);
+		//	currentHitboxFrame = hitboxIndex;
+		//}
 
-		List<CharacterAnimation.AnimEvent> es = current.Events.FindAll(x => x.callFrame == currentFrame);
-		foreach (CharacterAnimation.AnimEvent e in es)
-		{
-			c.Invoke(e.name, 0f);
-		}
+		//List<CharacterAnimation.AnimEvent> es = current.Events.FindAll(x => x.callFrame == currentFrame);
+		//foreach (CharacterAnimation.AnimEvent e in es)
+		//{
+		//	c.Invoke(e.name, 0f);
+		//}
 	}
 
 	public void ChangeAnimationToID(int id)

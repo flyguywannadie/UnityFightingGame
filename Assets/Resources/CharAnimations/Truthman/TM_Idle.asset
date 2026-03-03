@@ -10,16 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 708d93a153861124eb2aa81a47b21204, type: 3}
-  m_Name: Char1_AirKnockDown
+  m_Name: TM_Idle
   m_EditorClassIdentifier: 
-  ID: 9
+  ID: 1
   customID: 0
-  anim: {fileID: 7400000, guid: 01825446f3a62a8499abfc3e013b84a4, type: 2}
+  Data:
+  - duration: 3
+    sprite: {fileID: 21300000, guid: ef4582c86375d0f4b9b5397c6a3041f0, type: 3}
   hitboxDatas:
   - duration: 0
     hitboxes:
-    - position: {x: 0, y: -0.15}
-      size: {x: 0.4, y: 2}
+    - position: {x: 0, y: -0.5}
+      size: {x: 1.8, y: 2.5}
+    - position: {x: -0.15, y: 0.75}
+      size: {x: 1.35, y: 1.05}
     hurtboxes: []
   loop: 1
   changeStateOnFinish: 0

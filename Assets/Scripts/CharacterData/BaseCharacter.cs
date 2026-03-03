@@ -348,7 +348,9 @@ public abstract class BaseCharacter : MonoBehaviour
             return false;
         }
 		move = usedMoves[0];
-		
+
+		//Debug.Log(usedMoves.Count);
+
 		foreach (CharacterMove m2 in usedMoves)
 		{
 			if (m2.GetMovePriority() > move.GetMovePriority())
@@ -614,9 +616,9 @@ public abstract class BaseCharacter : MonoBehaviour
 
 		CharacterAnimation current = animator.animations[currentAnimation];
 
-		animator.currentFrame = Mathf.Clamp(currentFrame, 0, current.GetAnimationDuration());
+		//animator.currentFrame = Mathf.Clamp(currentFrame, 0, current.GetAnimationDuration());
 
-		animator.visuals.sprite = current.GetCurrentSprite(currentFrame);
+		//animator.visuals.sprite = current.GetCurrentSprite(currentFrame);
 
 		CharacterAnimation.FrameData frameData = current.GetHitboxData(current.GetHitboxDataIndex(currentFrame));
 

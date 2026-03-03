@@ -38,7 +38,8 @@ public class CharacterAnimation : ScriptableObject
 
     public CommonAnimations ID;
     public int customID;
-    public AnimFrames[] Data;
+    //public AnimFrames[] Data;
+    public AnimationClip anim;
     [FormerlySerializedAs("HitboxData")] public List<FrameData> hitboxDatas;
 	public bool loop = true;
     public bool changeStateOnFinish = false;
@@ -48,34 +49,34 @@ public class CharacterAnimation : ScriptableObject
     //public int cancelWindowEnd = -1;
     //public List<int> cancelIDs;
 
-    public Sprite GetCurrentSprite(int frame)
-    {
-        for (int i = 0; i < Data.Length; i++)
-        {
-            if (Data[i].duration > frame)
-            {
-                return Data[i].sprite;
-            }
-            else
-            {
-                frame -= Data[i].duration;
-            }
-        }
+    //public Sprite GetCurrentSprite(int frame)
+    //{
+    //    for (int i = 0; i < Data.Length; i++)
+    //    {
+    //        if (Data[i].duration > frame)
+    //        {
+    //            return Data[i].sprite;
+    //        }
+    //        else
+    //        {
+    //            frame -= Data[i].duration;
+    //        }
+    //    }
 
-        return Data[Data.Length - 1].sprite;
-    }
+    //    return Data[Data.Length - 1].sprite;
+    //}
 
-    public int GetAnimationDuration()
-    {
-        int total = 0;
+  //  public int GetAnimationDuration()
+  //  {
+  //      int total = 0;
 
-		foreach (AnimFrames frame in Data)
-		{
-            total += frame.duration;
-		}
+		//foreach (AnimFrames frame in Data)
+		//{
+  //          total += frame.duration;
+		//}
 
-		return total;
-    }
+		//return total;
+  //  }
 
     public int GetHitboxDataIndex(int frame)
     {

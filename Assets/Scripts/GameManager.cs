@@ -61,8 +61,8 @@ public class GameManager : MonoBehaviour
 		characters[0].SetPlayerStatus(true);
 		characters[1].SetPlayerStatus(false);
 
-		characterControllers[0].ClearBuffer();
-		characterControllers[1].ClearBuffer();
+		//characterControllers[0].ClearBuffer();
+		//characterControllers[1].ClearBuffer();
     }
 
 	private void FixedUpdate()

@@ -16,6 +16,8 @@ public class CharacterMove : ScriptableObject
 
     public int GetMovePriority()
     {
+        //Debug.Log("Move: " + name + " - " + motion.GetComplexity());
+
         return motion.GetComplexity();
     }
 

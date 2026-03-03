@@ -10,16 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 708d93a153861124eb2aa81a47b21204, type: 3}
-  m_Name: Char1_AirKnockDown
+  m_Name: TM_Walk
   m_EditorClassIdentifier: 
-  ID: 9
+  ID: 2
   customID: 0
-  anim: {fileID: 7400000, guid: 01825446f3a62a8499abfc3e013b84a4, type: 2}
+  Data:
+  - duration: 30
+    sprite: {fileID: 21300000, guid: 2aa3c5fcb7876094e832b878b5e97efd, type: 3}
+  - duration: 30
+    sprite: {fileID: 21300000, guid: 182af893fea926d468a67aa6b2a62c45, type: 3}
+  - duration: 30
+    sprite: {fileID: 21300000, guid: 26d2dd73c17c15045843b8a18fe7a2ea, type: 3}
+  - duration: 30
+    sprite: {fileID: 21300000, guid: 7c1bb201da350d142b6273a38f53445d, type: 3}
   hitboxDatas:
   - duration: 0
     hitboxes:
-    - position: {x: 0, y: -0.15}
-      size: {x: 0.4, y: 2}
+    - position: {x: 0, y: 0}
+      size: {x: 1, y: 1}
     hurtboxes: []
   loop: 1
   changeStateOnFinish: 0
